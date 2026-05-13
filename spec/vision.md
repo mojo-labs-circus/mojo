@@ -26,6 +26,9 @@ This is not a research tool and it is not trying to solve frontier AI problems. 
 
 ## What Becomes Possible
 
+**Your first mate — and a crew of the world's best specialists**
+The personal agent is not just an assistant. It is the orchestrator that sits between you and every AI tool you use. It knows you completely — your projects, your context, your preferences, all on your own hardware. When something needs doing, it figures out which tool is best for that task, hands them only what they need, takes the output back, and compiles it into something relevant to you. Claude Code, Codex, Cursor, whatever comes next — the best specialist AIs in the world become your crew. Your first mate manages them. You captain the ship. Nothing personal ever has to touch a cloud product; the first mate acts as the privacy layer, giving the scallywags the bare minimum to do the job and nothing more. You get enterprise-grade capability without enterprise-grade exposure.
+
 **A private AI that actually knows you**
 Because the AI's memory lives on your own hardware, it accumulates real context over time. Not a stateless chat window that forgets everything the moment you close it — a genuine assistant that remembers your projects, your preferences, your ongoing work. Because nothing leaves your machines, it can know things that cloud AI cannot: your local files, your system state, notes you would never type into someone else's service.
 
@@ -40,6 +43,23 @@ Updates roll out across all machines from one place. The system converges everyt
 
 **A platform others can build on**
 The framework is designed to be forked. A company can take it, put their own name on it, customise it for their users, and ship it as their own product — without rebuilding the underlying infrastructure. The framework handles the hard parts; the product layer sits on top.
+
+
+## The Developer Layer
+
+Technology does not stop. Every generation of tools becomes the foundation the next generation builds on. The internet was a foundation. Open source was a foundation. This is a foundation — and someone has to build what comes next on top of it.
+
+This section is for those people.
+
+MojOS gives everyone a personal agent. But for the developers who want to push the river forward — who look at a new foundation and immediately start thinking about what can be built on top of it — the circus offers something more. A way to operate at a level that used to require a much larger team. A way to build serious software without losing the understanding and ownership that make it genuinely yours.
+
+The mechanism is the mojo language. A `.mojo` file is a machine-readable spec — goals, components, guardrails, success criteria — that when run, spins up a full AI engineering company: architects, coders, reviewers, QA, an ethics team. The spec is the brief. The company builds to it. The developer directs everything, checks in from anywhere, and nothing ships without their sign-off. The same file runs on any machine in the circus, scaling to whatever compute is available.
+
+The overarching principle is anti-vibe-coding. Vibe-coding is describing something loosely and accepting whatever the AI produces without really understanding what you got. This is the opposite. The AI handles execution; the developer handles judgment, direction, and conceptual ownership. The goal is to operate like **Boris Cherny** with a full engineering org behind you — someone who could walk into any part of the system, understand what is happening and why, and have a strong opinion about whether it is right. Not omniscience. Conceptual command.
+
+**Tony Stark** probably could not tell you the exact resistance value of every circuit in the Iron Man suit. But he could tell you why every subsystem exists, whether it was working correctly, and exactly what to change if it was not. That is the bar.
+
+The river keeps flowing. This is for the people who make sure it does.
 
 
 ## Who It Is Built For
