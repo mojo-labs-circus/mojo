@@ -1,54 +1,105 @@
 # Next Move: Restructure
 
-> **NOT READY.** This is a rough brain dump from one conversation. The names, structure, and everything else in here still needs to be properly reworked and agreed on before any of it is acted on.
+## The Vision
 
-## The Realisation
+The Circus is a personal AI system built around one idea: **Jarvis as a partner, not a tool.** A presence that lives on your machine, works alongside you, does things while you do things, and surfaces what you need when you need it.
 
-What we're building is actually 4 separate but composable projects under one roof — not one monolithic OS. Each is independently useful. Together they form the full vision.
+The aesthetic is a workshop, not a factory. Woody, not metal. A space that draws the light out of you — that makes you want to create something you're passionate about. See `spec/aesthetic.md`.
 
-| Project | What it is |
-|---|---|
-| **MojOS** | Clarke's personal Arch Linux setup — opinionated defaults, his way of running a machine |
-| **dotfiles** | Look and feel — shell config, theming, UI |
-| **Jarvis** | AI server + clients — the Ringmaster, web app, TUI, future clients. Useful completely standalone |
-| **Ring** | Circus integration layer — connects machines together, coordinates a tech stack across a network |
-
-The end product is pick-and-choose across all 4. Someone could run just Jarvis. Someone else could use Ring without Jarvis. Clarke runs all 4.
+Long term: a room full of screens, spatial computing, ambient information. Near term: whatever hardware you have, scaled to match. A laptop is a smaller workshop. A desktop with multiple monitors is a bigger one. Same system, same feel, different size.
 
 ---
 
-## The Naming Problem
+## The Four Pieces
 
-`circus` is currently the repo name AND what we've been calling the integration layer — collision. Proposal:
+Everything is composable and pick-and-choose. Each piece works standalone. Together they form the full vision.
 
-- **Circus** stays as the umbrella brand/repo name
-- The integration layer is called **Ring** — machines join the ring, the Ringmaster runs it. On-brand and distinct.
-- The repo stays at `circus` (or gets renamed — open question below)
+| Piece | What it is |
+|---|---|
+| **Jarvis** | The AI server hub. Runs on a dedicated machine. Central data store, heavy compute, multi-user coordination. |
+| **Mojo-agent** | The local AI partner. Runs on any machine, any OS. The primary experience for anyone at a computer. |
+| **MojOS** | Arch Linux with the agent deeply integrated at the session level. The full workshop, purpose-built. |
+| **Dotfiles** | The look and feel. The aesthetic. Works on MojOS or any other setup. |
+
+---
+
+## The Device Model
+
+The device determines the experience — not the user.
+
+| Device | Experience | Why |
+|---|---|---|
+| Computer (any OS) | Mojo-agent | Embedded in the machine, works alongside you, the real partner experience |
+| MojOS machine | Mojo-agent (deeper) | Same agent, fully integrated from the OS up — the full workshop |
+| Phone / tablet | Thin client | No full compute, glance-and-go, quick instructions |
+| Watch | Thin client | Ultra-thin surface, surface what Jarvis wants to show, fire quick commands |
+
+**Agent-first. Server-optional. Thin clients as escape hatches.**
+
+Everyone gets an agent. Jarvis is the power booster — extra compute, shared memory, coordination across machines. If Jarvis goes down, agents still work locally. Nothing stops completely.
+
+---
+
+## How Jarvis Fits In
+
+Jarvis (the server) doesn't change. It's still the hub:
+
+- All shared data and memory lives here
+- Runs heavy models the agent can't run locally
+- Serves mojo-agents when they need more power
+- Also serves thin clients directly for phones, watches, shared machines
+
+Same server. Two types of clients: agents (primary) and thin clients (fallback).
+
+---
+
+## MojOS vs Just the Agent
+
+The difference is commitment level, not capability.
+
+**Mojo-agent** — "I like my setup, I just want the agent on it." Your OS stays yours. The agent runs alongside it. Works on Mac, Windows, any Linux.
+
+**MojOS** — "I want the whole thing, purpose-built." Arch Linux configured from the ground up around the agent. The workshop. Hyprland, dotfiles, the agent, everything pre-integrated and working together.
+
+Same agent codebase underneath. MojOS just goes deeper.
+
+---
+
+## The Install Story
+
+Three installers, any combination valid:
+
+| Installer | What it does |
+|---|---|
+| `install-jarvis.sh` | Runs on any Linux server. Sets up Ubuntu and Jarvis in one shot. |
+| `install-mojos.sh` | Bare metal install. Full MojOS workshop from scratch. |
+| `install-agent.sh` | Any existing machine. Drops the mojo-agent onto whatever OS is there. |
+
+Dotfiles are separate — installable independently on any machine.
 
 ---
 
 ## Proposed Repo Structure
 
-Monorepo for now (easier to manage spec across all 4, can split later):
+Monorepo for now. Can split later when pieces mature enough to live alone.
 
 ```
 circus/
-├── spec/                    ← all planning (keep, expand per project)
+├── spec/
 │   ├── vision.md
-│   ├── jarvis/              ← was ringmaster/
-│   ├── ring/                ← was mojos/ (agent + circus integration)
-│   ├── mojos/               ← MojOS OS setup
-│   └── dotfiles/            ← look and feel
-├── jarvis/                  ← AI server + all clients (was mojos/ringmaster + clients/)
-│   ├── server/              ← FastAPI + LangGraph + Ollama
-│   └── clients/
+│   ├── aesthetic.md             ← done
+│   ├── jarvis/                  ← was spec/ringmaster/
+│   ├── agent/                   ← split from spec/mojos/
+│   ├── mojos/                   ← OS spec only
+│   └── dotfiles/                ← new
+├── jarvis/
+│   ├── server/                  ← was mojos/ringmaster/
+│   └── clients/                 ← was clients/ (thin client surfaces)
 │       ├── web/
 │       └── tui/
-├── ring/                    ← circus integration layer (was mojos/agent/)
-│   └── agent/               ← per-machine agent
-├── mojos/                   ← MojOS install system (was mojos/os/)
-│   └── os/
-└── dotfiles/                ← look and feel (new — currently lives elsewhere)
+├── agent/                       ← was mojos/agent/
+├── mojos/                       ← was mojos/os/
+└── dotfiles/                    ← currently lives elsewhere
 ```
 
 ---
@@ -58,38 +109,24 @@ circus/
 | From | To | Notes |
 |---|---|---|
 | `mojos/ringmaster/` | `jarvis/server/` | Core rename |
-| `clients/` | `jarvis/clients/` | Clients belong to Jarvis |
-| `mojos/agent/` | `ring/agent/` | Agent is Ring, not MojOS |
-| `mojos/os/` | `mojos/os/` | Stays, just loses the agent sibling |
+| `clients/` | `jarvis/clients/` | Thin client surfaces belong to Jarvis |
+| `mojos/agent/` | `agent/` | Agent is its own top-level piece |
+| `mojos/os/` | `mojos/` | Loses the agent sibling, just the OS now |
 | `spec/ringmaster/` | `spec/jarvis/` | Rename to match |
-| `spec/mojos/` | Split into `spec/ring/` and `spec/mojos/` | Agent spec ≠ OS spec |
+| `spec/mojos/` | Split → `spec/agent/` + `spec/mojos/` | Agent spec ≠ OS spec |
 
 ---
 
 ## Open Questions
 
-1. **Repo rename?** Does `circus` stay as the repo/GitHub name or does it get a new name now that `circus` means the umbrella not the integration layer? Probably fine to keep — Circus is the umbrella brand.
-2. **dotfiles** — currently live somewhere outside this repo. Do they come in now or later?
-3. **Separate repos eventually?** Jarvis in particular might want its own repo when it's a real deployed service. Fine to stay monorepo for now.
-4. **Install-time decision** — at MojOS install time, user chooses which of the 4 projects they want. Connects to the fork model (full Clarke stack vs. bare minimum vs. custom). Design this properly before building.
+1. **Dotfiles** — currently live in a separate repo. When do they come in here?
+2. **Separate repos eventually?** Jarvis in particular might want its own repo when it's a real deployed service. Fine monorepo for now.
 
 ---
 
-## Install-Time Fork Model (future)
+## Next Actions
 
-At install time you choose your flavour:
-
-- **Full Clarke stack** — all 4 projects, Clarke's exact config. Fork of his personal setup.
-- **Base** — just the pieces you want. Pick from the matrix.
-- **Custom fork** — someone else's curated combination (e.g. a user-friendly fork Clarke writes later)
-
-This is what makes it composable and extensible like Linux itself.
-
----
-
-## Before Any of This
-
-Two things to complete first, before any restructure work begins:
-
-1. **Finish Claude Code setup** — execute `claude-setup-plan.md` in full (global CLAUDE.md, settings, project settings, sprint workflow, component CLAUDE.md stubs)
-2. **Rewrite `mojos/ringmaster/CLAUDE.md`** — currently stale Jarvis context referencing deleted files. Needs a clean rewrite for the current Circus architecture and actual implementation state before any component session is opened there
+1. Execute the restructure above — move dirs, rename spec folders
+2. Rewrite `CLAUDE.md` to reflect the new architecture and component names
+3. Rewrite `mojos/ringmaster/CLAUDE.md` → will become `jarvis/server/CLAUDE.md` — currently stale
+4. Finish Claude Code setup (`claude-setup-plan.md`)
