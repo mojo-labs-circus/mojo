@@ -34,3 +34,5 @@ The repo restructure is done. `mojo-labs-circus` org is live with all repos in p
 7. **Plan development phases** — based on audit findings, decide the concrete build steps toward Mk1. What gets built first, in what order, and what the milestones look like.
 
 8. **Create `mojo-sdk`** — once `performer` and `client-tui` both need to call the Ringmaster API, create the shared client lib. Don't wait for duplication to become painful — create it at the start of dev phase planning.
+
+9. **Set up local dev structure** — clone all repos locally, get the environment ready for active development over summer. Make sure everything is set up on the laptop: repos cloned, dependencies installable, dev tooling in place. Goal: sit down and be able to work on any component immediately.
