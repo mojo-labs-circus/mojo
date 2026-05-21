@@ -6,7 +6,7 @@ The repo restructure is done. `mojo-labs-circus` org is live with all repos in p
 
 | Repo | Status | Notes |
 |---|---|---|
-| `mojo` | Live — spec only | This repo. Clean. |
+| `circus` | Live — spec only | This repo. Clean. |
 | `ringmaster` | Live — code + full history | Extracted from `mojos/ringmaster/` |
 | `performer` | Live — empty stub | No code existed yet |
 | `mojos` | Live — empty stub | No code existed yet |
@@ -27,7 +27,7 @@ The repo restructure is done. `mojo-labs-circus` org is live with all repos in p
 
 4. **Full audit of `client-tui`** — the 2 stub files are basically nothing. What needs building?
 
-5. **Rewrite `CLAUDE.md` for `mojo`** — current one reflects the old monorepo layout. Needs to describe the new org structure and spec-only role of this repo.
+5. **Rewrite `CLAUDE.md` for `circus`** — current one reflects the old monorepo layout. Needs to describe the new org structure and spec-only role of this repo.
 
 6. **Write a `CLAUDE.md` for each component repo** — each one needs its own dev session context: what the component does, how it fits in, how to work on it.
 

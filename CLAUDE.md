@@ -2,6 +2,22 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Why This Exists
+
+This is a personal project. Clarke is not trying to start a company, make money, or compete with anyone. The goal is to solve real problems for himself and his family:
+
+- **Privacy** — AI that doesn't send personal data to someone else's servers
+- **Autonomy** — no usage limits, no subscription pricing, no one else's design decisions
+- **Personalisation** — a system that actually knows the family over time
+- **Persistent memory** — a partner that doesn't forget
+- **Admin** — handles the boring stuff so we don't have to
+
+If this ever starts to feel like a product pitch, a startup, or a competition with other projects — that's drift. Pull it back. Clarke is not Steve Jobs. He's not Bill Gates. He's just a person who wants Jarvis for his family, built on his own hardware, under his own roof.
+
+If someone else solves a piece of this better, use their solution. No ego in the plumbing.
+
+---
+
 ## What This Is
 
 MojOS Circus — a private, self-hosted AI framework. A group of machines forms a coordinated intelligent system over Tailscale. One machine runs as the Ringmaster (AI server + hub). Others run MojOS as performers (local AI agent + local compute). Non-MojOS machines (Mac, Windows, mobile) connect via thin clients directly to the Ringmaster.
@@ -10,32 +26,37 @@ MojOS Circus — a private, self-hosted AI framework. A group of machines forms 
 
 ## Directory Map
 
+This repo is spec and planning only. Component repos are siblings under `~/projects/`.
+
 ```
-circus/
+circus/                         ← this repo — spec and planning only
 ├── spec/                       ← all planning and spec docs
 │   ├── vision.md               ← product vision and pitch
 │   ├── ringmaster/             ← Ringmaster architecture specs
 │   │   └── ideas/              ← future ideas (skills, ai, clients, memory, infrastructure)
 │   └── mojos/                  ← MojOS OS/agent specs
 │       └── ideas/              ← exploratory ideas (fleet-sync, fork, multi-circus, etc.)
-├── clients/                    ← all clients — OS-agnostic, work on any machine
-│   ├── tui/                    ← terminal UI client
-│   └── web/                    ← web client for non-MojOS users (family on Mac/Windows)
-└── mojos/
-    ├── ringmaster/             ← AI server backend (FastAPI + LangGraph + Ollama)
-    ├── agent/                  ← local mojo-agent for performer machines
-    └── os/                     ← MojOS install system (bootstrap, install, configure scripts)
+└── memory/                     ← persistent session memory for top-level Claude sessions
+
+Sibling repos (all at ~/projects/<name>/):
+  ringmaster/                   ← AI server backend (FastAPI + LangGraph + Ollama)
+  performer/                    ← local mojo-agent for performer machines
+  mojos/                        ← MojOS install system (bootstrap, install, configure scripts)
+  client-tui/                   ← terminal UI client
+  client-web/                   ← web client for non-MojOS users (family on Mac/Windows)
+  mojo-sdk/                     ← shared API contracts / client lib for Ringmaster
 ```
 
 ## Component Roles
 
-| Component | Where it runs | Who uses it |
-|---|---|---|
-| `mojos/ringmaster/` | ringbaker server | Everyone — the AI hub |
-| `mojos/agent/` | pearlybaker, nomadbaker | Clarke only — local AI + proxy to Ringmaster |
-| `clients/web/` | any browser | Family on Mac/Windows, Clarke on any machine |
-| `clients/tui/` | any terminal | Clarke on MojOS machines |
-| `mojos/os/` | bare metal install | Any machine joining the circus |
+| Component | Repo | Where it runs | Who uses it |
+|---|---|---|---|
+| Ringmaster | `../ringmaster/` | ringbaker server | Everyone — the AI hub |
+| Performer agent | `../performer/` | pearlybaker, nomadbaker | Clarke only — local AI + proxy to Ringmaster |
+| Web client | `../client-web/` | any browser | Family on Mac/Windows, Clarke on any machine |
+| TUI client | `../client-tui/` | any terminal | Clarke on MojOS machines |
+| MojOS installer | `../mojos/` | bare metal install | Any machine joining the circus |
+| SDK | `../mojo-sdk/` | shared library | performer and clients |
 
 ## Key Architecture Decisions
 
@@ -48,8 +69,8 @@ circus/
 
 ## Planning Conventions
 
-- Spec lives in `spec/` — never inside component directories.
-- Each component has its own `CLAUDE.md` for dev session context (e.g. `mojos/ringmaster/CLAUDE.md`).
+- Spec lives in `spec/` — never inside component repos.
+- Each component repo has its own `CLAUDE.md` for dev session context (e.g. `../ringmaster/CLAUDE.md`).
 - This file is for project-level orientation only — not dev workflow.
 - Open architecture questions and decisions belong in the relevant `spec/` file, not in code comments.
 

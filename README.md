@@ -10,33 +10,34 @@ The OS and AI layers are designed together from the start. They share a single c
 
 ---
 
-## Directory Map
+## Repo Structure
+
+This repo (`circus`) is spec and planning only. Component code lives in sibling repos under `~/projects/`.
 
 ```
-circus/
-├── spec/                   ← all planning and spec docs
-├── clients/
-│   ├── tui/                ← terminal UI client
-│   └── web/                ← web client for non-MojOS users
-└── mojos/
-    ├── ringmaster/         ← AI server backend (FastAPI + LangGraph + Ollama)
-    ├── agent/              ← local mojo-agent for performer machines
-    └── os/                 ← MojOS install system
+~/projects/
+├── circus/         ← this repo — spec, planning, memory
+├── ringmaster/     ← AI server backend (FastAPI + LangGraph + Ollama)
+├── performer/      ← local mojo-agent for performer machines
+├── mojos/          ← MojOS install system
+├── client-tui/     ← terminal UI client
+├── client-web/     ← web client for non-MojOS users
+└── mojo-sdk/       ← shared API contracts / client lib
 ```
 
 ## Components
 
-| Component | Where it runs | Who uses it |
-|---|---|---|
-| `mojos/ringmaster/` | ringbaker | Everyone — the AI hub |
-| `mojos/agent/` | pearlybaker, nomadbaker | Clarke only — local AI + proxy to Ringmaster |
-| `clients/web/` | any browser | Family on Mac/Windows |
-| `clients/tui/` | any terminal | Clarke on MojOS machines |
-| `mojos/os/` | bare metal | Any machine joining the circus |
+| Component | Repo | Where it runs | Who uses it |
+|---|---|---|---|
+| Ringmaster | `ringmaster` | ringbaker | Everyone — the AI hub |
+| Performer agent | `performer` | pearlybaker, nomadbaker | Clarke only |
+| Web client | `client-web` | any browser | Family on Mac/Windows |
+| TUI client | `client-tui` | any terminal | Clarke on MojOS machines |
+| MojOS installer | `mojos` | bare metal | Any machine joining the circus |
 
 ## How We Work
 
-Top-level circus sessions handle spec, cross-component decisions, and repo structure. Implementation happens in component sessions opened from the component's own directory. Spec lives in `spec/` — never inside component directories.
+`circus` sessions handle spec, cross-component decisions, and repo structure. Implementation happens in component sessions opened from each component's own repo. Spec lives in `circus/spec/` — never inside component repos.
 
 ---
 
