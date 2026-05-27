@@ -1,12 +1,12 @@
 # mojo-agent
 
-The Jarvis OS agent. Runs on every MojOS machine as a systemd service. Behaviour depends on `FLEET_PROFILE`. See [topology.md](topology.md) for role definitions.
+The MojOS agent. Runs on every MojOS machine as a systemd service. Behaviour depends on `FLEET_PROFILE`. See [topology.md](topology.md) for role definitions.
 
 ---
 
 ## Local Stack
 
-Every MojOS machine runs a full local Jarvis instance:
+Every MojOS machine runs a full local agent stack:
 
 | Component | Purpose |
 |---|---|
@@ -50,7 +50,7 @@ Two-stage. Only relevant in circus mode — standalone handles everything locall
 
 A lightweight local model classifies `local_capable: true/false` for cases the rules don't resolve. No LLM call for clear-cut cases. The routing decision never requires a ringmaster round-trip.
 
-Ringmaster fallback is always graceful — if unreachable, local Jarvis handles everything. No explicit offline mode.
+Ringmaster fallback is always graceful — if unreachable, mojo-agent handles everything. No explicit offline mode.
 
 > **Open — needs planning.** What the performer sends to the ringmaster, how context is bundled, streaming response routing. See [memory.md](memory.md) for memory sync specifics.
 

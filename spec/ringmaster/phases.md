@@ -9,7 +9,7 @@ Phase 1 (Foundation) and Phase 2 (Memory) are complete — LangGraph skeleton, T
 > Dad can use it. The whole family is on it. That's the bar.
 
 **Target:** End of summer 2026
-**Branch:** `mk1` (currently `phase-3` — rename when convenient)
+**Branch:** `mk1`
 
 Admin and power features (SYSTEM node, CODE node, CONSTITUTIONAL check, tier gating) live in Mk2. Mk1 is one tier — everyone gets the same capabilities.
 
@@ -30,7 +30,7 @@ Admin and power features (SYSTEM node, CODE node, CONSTITUTIONAL check, tier gat
 - [ ] ROUTER updated — `needs_memory` flag per intent. No tier gating in Mk1 — all users have equal access
 - [ ] RESPONDER updated — checks `error` field, derives and sets `refresh` list from `intent`, formats response for `client_type`
 - [ ] TUI rewritten — connects to FastAPI WebSocket, opens on startup, reconnects automatically on drop, disables input on `confirm_request`
-- [ ] `tui/auth.py` — `~/.jarvis/auth.json`, silent refresh, handles 401 token version mismatch, deletes on logout, login prompt if missing or expired
+- [ ] `tui/auth.py` — `~/.ringmaster/auth.json`, silent refresh, handles 401 token version mismatch, deletes on logout, login prompt if missing or expired
 - [ ] TUI handles `done` frames and re-fetches panels listed in `refresh`
 - [ ] Unit tests alongside every node
 - [ ] Pre-commit hook — `pytest tests/unit/` blocks commits on failure
@@ -63,8 +63,8 @@ Admin and power features (SYSTEM node, CODE node, CONSTITUTIONAL check, tier gat
 - [ ] Alembic introduced — all schema changes from this point forward go through migrations
 - [ ] Migration script: SQLite → Postgres
 - [ ] Docker Compose — Postgres, ChromaDB, Ollama, FastAPI, web client
-- [ ] Data on `/tank/docker/jarvis/` (ZFS, auto-snapshotted)
-- [ ] Caddy — `jarvis.home`
+- [ ] Data on `/tank/docker/ringmaster/` (ZFS, auto-snapshotted)
+- [ ] Caddy — `ringmaster.home`
 - [ ] Tailscale access from all devices
 - [ ] ofelia for daily maintenance job
 - [ ] All clients pointed at server — config update only, no code changes
@@ -72,23 +72,23 @@ Admin and power features (SYSTEM node, CODE node, CONSTITUTIONAL check, tier gat
 ### Family onboarding
 
 - [ ] Family on Tailscale — invite link per person, NordVPN coexistence guide where needed
-- [ ] Family accounts created via invite flow, all register via `jarvis.home`
+- [ ] Family accounts created via invite flow, all register via `ringmaster.home`
 - [ ] Per-user vaults initialised
 - [ ] Shared family vault populated with household knowledge
 - [ ] Shared vault ingested — `memory_shared` ChromaDB collection populated
 
 ### Exit criteria
 
-Family can log in from any browser on the tailnet, chat with JARVIS, manage tasks, search the web, and JARVIS remembers things about them across sessions. Clarke has TUI working alongside the web client. All data on home server, ZFS, behind Tailscale. Any family member can get an account via the invite flow. No admin panel or power features required — those are Mk2.
+Family can log in from any browser on the tailnet, chat with the Ringmaster, manage tasks, search the web, and the assistant remembers things about them across sessions. Clarke has TUI working alongside the web client. All data on home server, ZFS, behind Tailscale. Any family member can get an account via the invite flow. No admin panel or power features required — those are Mk2.
 
 ---
 
 ## Mk2 — Dev Tool
-> JARVIS helps Clarke build. Clarke can admin it properly.
+> The Ringmaster helps Clarke build. Clarke can admin it properly.
 
 **Target:** End of 2027
 
-All the power and admin features deferred from Mk1, plus the Coding Team that enables JARVIS to help build Mk3.
+All the power and admin features deferred from Mk1, plus the Coding Team that enables the Ringmaster to help build Mk3.
 
 ### Power + admin features
 
@@ -122,11 +122,11 @@ A dedicated planning session is required before any Coding Team implementation �
 
 ### Exit criteria
 
-Clarke can run shell commands and execute code via JARVIS. Coding Team working for complex tasks. Skills system live — ROUTER retrieves from personal and shared collections. Admin panel working. Tier gating enforced. JARVIS starts helping build JARVIS.
+Clarke can run shell commands and execute code via the Ringmaster. Coding Team working for complex tasks. Skills system live — ROUTER retrieves from personal and shared collections. Admin panel working. Tier gating enforced. The Ringmaster starts helping build the Ringmaster.
 
 ---
 
-## Mk3 — Cool JARVIS
+## Mk3 — Native Clients
 > Voice, native clients, whatever Mk1 and Mk2 usage reveals is actually needed.
 
 **Target:** End of 2029 (not locked — shaped by real usage from Mk1 and Mk2)
@@ -135,12 +135,12 @@ Native clients built with Mk2's Coding Team assistance.
 
 ### Native clients
 
-- [ ] `jarvis-swift-core` — shared Swift Package (auth, token refresh, WebSocket client, API models) consumed by both iOS and macOS clients
-- [ ] `jarvis-ios` — Swift/SwiftUI, everyone — admin panel for Clarke
-- [ ] `jarvis-desktop-macos` — Swift/SwiftUI, everyone else
-- [ ] `jarvis-desktop-windows` — C#/WinUI 3, brother
-- [ ] `jarvis-desktop-linux` — Python/GTK4 + libadwaita, Clarke — admin panel
-- [ ] TUI extracted to `jarvis-tui` own repo, own venv
+- [ ] `mojo-swift-core` — shared Swift Package (auth, token refresh, WebSocket client, API models) consumed by both iOS and macOS clients
+- [ ] `client-ios` — Swift/SwiftUI, everyone — admin panel for Clarke
+- [ ] `client-macos` — Swift/SwiftUI, everyone else
+- [ ] `client-windows` — C#/WinUI 3, brother
+- [ ] `client-linux` — Python/GTK4 + libadwaita, Clarke — admin panel
+- [ ] TUI extracted to `client-tui` own repo, own venv
 
 ### Voice
 
@@ -153,4 +153,4 @@ The specific STT/TTS software may change before this phase — revisit at Mk3 pl
 
 ### Exit criteria
 
-Full native experience on every family device. Hands-free JARVIS. The complete platform.
+Full native experience on every family device. Hands-free via the Ringmaster. The complete platform.

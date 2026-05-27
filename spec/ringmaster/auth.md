@@ -1,10 +1,10 @@
-# JARVIS — Auth
+# Ringmaster — Auth
 
 ---
 
 ## 🔐 Auth
 
-JARVIS uses a two-token JWT auth pattern. The goal is that family members never see a login prompt during normal use.
+The Ringmaster uses a two-token JWT auth pattern. The goal is that family members never see a login prompt during normal use.
 
 ### Tokens
 
@@ -171,7 +171,7 @@ Phase 3 does **not** rotate the refresh token — the same refresh token remains
 - **Interactive password prompt** — `Enter password for clarkehines:` — password never touches disk, a file, or an environment variable
 - **Initial state** — creates the record with `tier = "admin"`, `assistant_name = "JARVIS"`, `token_version = 0`
 - **Confirmation output** — prints `Created user clarkehines` on success, `User clarkehines already exists, skipping` if already present
-- **Requires `JARVIS_SECRET_KEY`** — `seed_db.py` imports `config.py`, which reads `JARVIS_SECRET_KEY` at module import time and hard-fails if it is not set. Export it in your shell (or load your `.env`) before running this script, even though the script itself does not use JWT signing.
+- **Requires `RINGMASTER_SECRET_KEY`** — `seed_db.py` imports `config.py`, which reads `RINGMASTER_SECRET_KEY` at module import time and hard-fails if it is not set. Export it in your shell (or load your `.env`) before running this script, even though the script itself does not use JWT signing.
 
 ### `config.yaml` and `config.py`
 
@@ -182,10 +182,10 @@ Phase 3 does **not** rotate the refresh token — the same refresh token remains
 - `ollama` — base URL and timeout. `base_url` is the key that changes between dev and Docker deployment.
 - `server` — host and port. Host differs between dev (`127.0.0.1`) and production (`0.0.0.0`).
 - `auth` — token expiry (`access_token_expire_hours`, `refresh_token_expire_days`) and brute force config (`brute_force_limit`, `brute_force_window_minutes`).
-- `db` — `path` is dev-only (SQLite files written here). Ignored when `JARVIS_DB_BACKEND=postgres`. All repository factories read `JARVIS_DB_BACKEND` from the environment, defaulting to `sqlite`.
+- `db` — `path` is dev-only (SQLite files written here). Ignored when `RINGMASTER_DB_BACKEND=postgres`. All repository factories read `RINGMASTER_DB_BACKEND` from the environment, defaulting to `sqlite`.
 - `history` — `context_window_budget` in tokens. Oldest exchanges dropped first when loading history.
 - `maintenance` — `retention_days` (history TTL), `log_error_threshold` (ERROR count before admin notified), `idle_threshold_minutes` (how long since last activity before a connection is considered idle — default 15).
-- `logging` — `path`: operational log, dev default `~/.jarvis/jarvis.log`. `improve_log_path`: persistent improvement/fine-tuning log, dev default `~/.jarvis/improve.jsonl` — never wiped by the maintenance job. Both paths are machine-specific and change at deployment time via `config.yaml` only.
+- `logging` — `path`: operational log, dev default `~/.ringmaster/ringmaster.log`. `improve_log_path`: persistent improvement/fine-tuning log, dev default `~/.ringmaster/improve.jsonl` — never wiped by the maintenance job. Both paths are machine-specific and change at deployment time via `config.yaml` only.
 - `memory` — `vault_base` (differs per machine), `chunk_size`, `chunk_overlap`.
 - `skills` — `shared_approved_path` (differs per machine).
 - `system` — `allowed_paths` list for SYSTEM node sandboxing. Machine-specific. Also contains `admin_contact` — a human-readable name/handle for the platform admin (e.g. `"Clarke"`), used in hardcoded user-facing messages such as tier-gate responses and error copy. Not sensitive, rarely changes.
@@ -194,8 +194,8 @@ Phase 3 does **not** rotate the refresh token — the same refresh token remains
 - `tier_gate_messages` — per-capability hardcoded messages delivered by RESPONDER when a Standard user's request is downgraded. One entry per gated capability: `system` and `code`. Each message covers what the capability is, what it does, why it is not granted to Standard tier, and how to request access (referencing `system.admin_contact`). Content written by the user — no inference call is made for these responses. Tunable without a code change.
 
 **`config.py` rules:**
-- `JARVIS_SECRET_KEY` is read at module import time — hard-fails immediately with `KeyError` if unset. No silent fallback.
-- `get_postgres_url()` reads `JARVIS_DB_URL` at call time, not import time. Only called by Postgres repository factories.
+- `RINGMASTER_SECRET_KEY` is read at module import time — hard-fails immediately with `KeyError` if unset. No silent fallback.
+- `get_postgres_url()` reads `RINGMASTER_DB_URL` at call time, not import time. Only called by Postgres repository factories.
 - `ALGORITHM = "HS256"` is hardcoded — not a config key. Changing it would immediately invalidate all active tokens.
 
 ---

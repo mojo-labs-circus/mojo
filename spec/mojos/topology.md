@@ -6,15 +6,15 @@ Assigned by chassis type, not manual config.
 
 | Role | Chassis | Behaviour |
 |---|---|---|
-| **Solo** | Non-server, not in a circus | Default state. Full local Jarvis. No server connection. |
-| **Performer** | Non-server, joined a circus | Local Jarvis runs as a proxy to the ringmaster. |
-| **Ringmaster** | Server chassis | Auto-configures on install. Circus hub. Full Jarvis server stack. |
+| **Solo** | Non-server, not in a circus | Default state. Full local mojo-agent. No server connection. |
+| **Performer** | Non-server, joined a circus | mojo-agent runs as a proxy to the ringmaster. |
+| **Ringmaster** | Server chassis | Auto-configures on install. Circus hub. Full Ringmaster stack. |
 
 ---
 
 ## The Proxy Model (Performer)
 
-Every request from a MojOS terminal on a performer hits local Jarvis first. Local Jarvis decides:
+Every request from a MojOS terminal on a performer hits mojo-agent first. mojo-agent decides:
 - Handle locally (OS tasks, private memory, offline, anything local hardware can handle)
 - Forward to ringmaster (complex reasoning, shared memory, web search)
 
@@ -23,7 +23,7 @@ The terminal always talks to `localhost/ws` — it never knows whether the respo
 What the proxy adds:
 - Local context injection (machine state, OS info) bundled into forwarded requests
 - Privacy filtering — private memory never forwarded
-- Offline resilience — local Jarvis handles what it can; requests queue until ringmaster reachable
+- Offline resilience — mojo-agent handles what it can; requests queue until ringmaster reachable
 - OS-level answers without a round trip
 
 > Thin clients (web, mobile) connecting through the local proxy is deferred. See `ideas/thin-client-proxy.md`.

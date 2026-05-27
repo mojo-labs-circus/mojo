@@ -1,6 +1,6 @@
-# System-Level .jarvis Files
+# System-Level .mojo Files
 
-MojOS pre-populates `.jarvis` files in key system directories at install time. These form the base of every compiled context — user and project files layer on top via section override.
+MojOS pre-populates `.mojo` files in key system directories at install time. These form the base of every compiled context — user and project files layer on top via section override.
 
 Section names are stable and documented here so users know what they can target for override.
 
@@ -10,14 +10,14 @@ Section names are stable and documented here so users know what they can target 
 
 | Path | Role |
 |---|---|
-| `/.jarvis` | Machine-level baseline. Safety rules, base tools, machine identity. |
-| `/etc/.jarvis` | System config context. Flags this area as system-managed. |
-| `/home/.jarvis` | Minimal pass-through. Scopes Jarvis to user home space. |
-| `~/.jarvis` | User-level defaults. Identity, preferences, workflow. Most commonly overridden. |
+| `/.mojo` | Machine-level baseline. Safety rules, base tools, machine identity. |
+| `/etc/.mojo` | System config context. Flags this area as system-managed. |
+| `/home/.mojo` | Minimal pass-through. Scopes the agent to user home space. |
+| `~/.mojo` | User-level defaults. Identity, preferences, workflow. Most commonly overridden. |
 
 ---
 
-## /.jarvis
+## /.mojo
 
 ```
 ---
@@ -26,7 +26,7 @@ inherit:
 ---
 
 ## Identity
-This is a MojOS machine. Jarvis is the local AI agent.
+This is a MojOS machine. mojo-agent is the local AI agent.
 Machine: {HOSTNAME}. Role: {FLEET_PROFILE}.
 
 ## Safety
@@ -45,7 +45,7 @@ Write and execute permissions are granted at lower levels.
 
 ---
 
-## /etc/.jarvis
+## /etc/.mojo
 
 ```
 ---
@@ -64,7 +64,7 @@ Prefer editing .mojo_config and running mojo-update to change system state.
 
 ---
 
-## /home/.jarvis
+## /home/.mojo
 
 ```
 ---
@@ -78,7 +78,7 @@ User home directories. Each subdirectory belongs to a single user.
 
 ---
 
-## ~/.jarvis
+## ~/.mojo
 
 ```
 ---
@@ -88,8 +88,8 @@ inherit:
 
 ## Identity
 User: {SYSTEM_USER}.
-Jarvis style: {JARVIS_STYLE}.
-Preferred language: {JARVIS_LANGUAGE}.
+Agent style: {MOJO_STYLE}.
+Preferred language: {MOJO_LANGUAGE}.
 
 ## Workflow
 Default to concise responses.
@@ -107,18 +107,18 @@ Private memory is stored locally and never forwarded to the ringmaster.
 
 ## Section Names (Stable)
 
-These section names are used across system files and are safe to target for override in user or project `.jarvis` files:
+These section names are used across system files and are safe to target for override in user or project `.mojo` files:
 
 | Section | Defined in |
 |---|---|
-| `Identity` | `/.jarvis`, `~/.jarvis` |
-| `Safety` | `/.jarvis`, `/etc/.jarvis` |
-| `Tools` | `/.jarvis`, `~/.jarvis` |
-| `Workflow` | `~/.jarvis` |
-| `Context` | `/etc/.jarvis`, `/home/.jarvis` |
-| `Privacy` | `~/.jarvis` |
+| `Identity` | `/.mojo`, `~/.mojo` |
+| `Safety` | `/.mojo`, `/etc/.mojo` |
+| `Tools` | `/.mojo`, `~/.mojo` |
+| `Workflow` | `~/.mojo` |
+| `Context` | `/etc/.mojo`, `/home/.mojo` |
+| `Privacy` | `~/.mojo` |
 
-Project-level `.jarvis` files can introduce any new sections they need — these are just the reserved system names.
+Project-level `.mojo` files can introduce any new sections they need — these are just the reserved system names.
 
 ---
 
@@ -131,5 +131,5 @@ System files use `{VAR}` placeholders filled from `.mojo_config` at install time
 | `{HOSTNAME}` | `HOSTNAME` |
 | `{FLEET_PROFILE}` | `FLEET_PROFILE` |
 | `{SYSTEM_USER}` | `SYSTEM_USER` |
-| `{JARVIS_STYLE}` | `JARVIS_STYLE` (deferred — fork/identity feature) |
-| `{JARVIS_LANGUAGE}` | `JARVIS_LANGUAGE` (deferred — fork/identity feature) |
+| `{MOJO_STYLE}` | `MOJO_STYLE` (deferred — fork/identity feature) |
+| `{MOJO_LANGUAGE}` | `MOJO_LANGUAGE` (deferred — fork/identity feature) |

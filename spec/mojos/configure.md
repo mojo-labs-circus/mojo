@@ -186,7 +186,7 @@ All configurators receive `.mojo_config` path as `$MOJO_CONFIG`.
 - Laptop adds: `tlp`, `bluetooth`
 - Workstation adds: `cups`
 - Server adds: `postgresql`, `nginx`/`caddy`
-- Server + Jarvis: Jarvis systemd services, ChromaDB, Ollama
+- Server + Ringmaster: Ringmaster systemd services, ChromaDB, Ollama
 - Hybrid: `mojo-agent`
 - Nvidia: `nvidia-persistenced`
 
@@ -194,7 +194,7 @@ All configurators receive `.mojo_config` path as `$MOJO_CONFIG`.
 **Driven by:** `FLEET_PROFILE`
 - **Standalone:** no-op
 - **Hybrid:** ensure Tailscale installed + authenticated, write `mojo-agent` config with `AGENT_TOKEN`, verify ringmaster connectivity
-- **Server:** ensure Postgres running + circus schema exists, Jarvis services installed, manage `FLEET_KEY`
+- **Server:** ensure Postgres running + circus schema exists, Ringmaster services installed, manage `FLEET_KEY`
 
 See [circus.md](circus.md) for circus formation detail.
 

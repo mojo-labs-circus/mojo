@@ -1,17 +1,17 @@
-# JARVIS — API: Logging, Error Handling & WebSocket Contract
+# Ringmaster — API: Logging, Error Handling & WebSocket Contract
 
 ---
 
 ## 📋 Logging
 
-JARVIS uses Python's standard `logging` module throughout. All modules log to a shared rotating file handler — never to stdout in production.
+The Ringmaster uses Python's standard `logging` module throughout. All modules log to a shared rotating file handler — never to stdout in production.
 
 ### Log Handler
 
 `RotatingFileHandler` — configured once at application startup in `main.py`:
 - Max file size: 10 MB
 - Files retained: 5 (50 MB cap total)
-- Log path: configured via `logging.path` in `config.yaml` — defaults to `~/.jarvis/jarvis.log` in dev, overridden for Docker deployment
+- Log path: configured via `logging.path` in `config.yaml` — defaults to `~/.ringmaster/ringmaster.log` in dev, overridden for Docker deployment
 - Log level: `INFO` by default — `ERROR` entries are what the maintenance job counts
 
 ### Log Threshold Notification
@@ -36,7 +36,7 @@ Admin notifications via ntfy are reserved for acute failures requiring immediate
 
 Nodes catch expected failures — Ollama timeout, ChromaDB unavailable, repository error — and write a structured error onto state rather than raising. The graph continues to RESPONDER, which formats a clean message for the client.
 
-`JarvisState` carries an `error` field for this purpose:
+`RingmasterState` carries an `error` field for this purpose:
 
 ```python
 error: str | None   # set by any node on expected failure, checked by RESPONDER
@@ -54,7 +54,7 @@ Two distinct failure scenarios are handled differently:
 
 **Scenario A — Primary model fails or times out.** For example `llama3.1:8b` errors mid-request or exceeds the timeout in the agent node. This failure happens in the agent node's inference call — not in ROUTER, which has already completed using `mistral:7b`. The node writes a message to `status_message` on state (e.g. `"Primary model unavailable, retrying with fallback..."`) — FastAPI picks this up via `astream_events` and forwards it as a `status` frame in the normal way. The node then starts a fresh inference call using the fallback model (`mistral:7b`). Any partial `token` frames already sent to the client are discarded — the client clears the partial response on receiving the `status` frame and waits for the new stream. The user is told the full assistant is temporarily unavailable but basic responses are still working.
 
-**Scenario B — Ollama process is unreachable.** No model fallback is possible — all models are served by Ollama. JARVIS returns a clean "service temporarily unavailable" message to the user and immediately notifies the admin via ntfy. No inference attempt is made. Note that if Ollama is unreachable, ROUTER itself fails before any agent node runs — the global exception handler catches this and sends the `error` frame directly, bypassing the node-level error pattern entirely. This is the explicit exception to that pattern.
+**Scenario B — Ollama process is unreachable.** No model fallback is possible — all models are served by Ollama. The Ringmaster returns a clean "service temporarily unavailable" message to the user and immediately notifies the admin via ntfy. No inference attempt is made. Note that if Ollama is unreachable, ROUTER itself fails before any agent node runs — the global exception handler catches this and sends the `error` frame directly, bypassing the node-level error pattern entirely. This is the explicit exception to that pattern.
 
 ### Admin Notifications — `notifications/notify.py`
 
@@ -121,7 +121,7 @@ FastAPI uses LangGraph's `astream_events` API instead of `ainvoke`. This yields 
 | CODE | *(silent by default)* |
 | RESPONDER | *(silent by default)* |
 
-**Mid-node status** — nodes write a specific message to `status_message: str | None` on `JarvisState` during execution. FastAPI picks this up via `astream_events` and fires a `status` frame with that message. This allows granular, accurate updates throughout a node's execution:
+**Mid-node status** — nodes write a specific message to `status_message: str | None` on `RingmasterState` during execution. FastAPI picks this up via `astream_events` and fires a `status` frame with that message. This allows granular, accurate updates throughout a node's execution:
 
 - SYSTEM reports the specific command it is about to run before executing it
 - CODE reports its current reasoning stage as it works through a problem
@@ -140,7 +140,7 @@ Every frame is a JSON object with a `type` field. The client pattern-matches on 
 {"type": "done",            "message_id": "abc123", "refresh": ["tasks"]}
 {"type": "error",           "message_id": "abc123", "message": "Service temporarily unavailable"}
 {"type": "status",          "message_id": "abc123", "message": "Searching the web..."}
-{"type": "confirm_request", "message_id": "abc123", "payload": {"type": "command", "value": "rm -rf /tmp/jarvis-scratch"}}
+{"type": "confirm_request", "message_id": "abc123", "payload": {"type": "command", "value": "rm -rf /tmp/ringmaster-scratch"}}
 {"type": "confirm",         "message_id": "abc123"}
 {"type": "cancel",          "message_id": "abc123"}
 {"type": "profile",         "message_id": "__push__"}
@@ -172,7 +172,7 @@ Every frame carries a `message_id` generated by the client at request time (shor
 Regular messages (no `type` field):
 ```json
 {"message_id": "abc123", "content": "what's on my task list"}
-{"message_id": "abc123", "content": "what's on my task list", "active_project": "jarvis"}
+{"message_id": "abc123", "content": "what's on my task list", "active_project": "ringmaster"}
 ```
 
 Interrupt responses (`type` field present):
@@ -192,7 +192,7 @@ FastAPI dispatches on the presence of `type`:
 
 No other client-originated `type` values are valid.
 
-`active_project` is optional on regular messages. **Mk2 concern** — project-scoped filtering is not implemented in Mk1. The field is present in the frame schema and `JarvisState` so no client or server rewiring is needed when Mk2 adds it. In Mk1, FastAPI reads it from the envelope but it has no effect — always treated as `None` by the graph.
+`active_project` is optional on regular messages. **Mk2 concern** — project-scoped filtering is not implemented in Mk1. The field is present in the frame schema and `RingmasterState` so no client or server rewiring is needed when Mk2 adds it. In Mk1, FastAPI reads it from the envelope but it has no effect — always treated as `None` by the graph.
 
 ### Server Push
 
@@ -210,20 +210,20 @@ Any node can pause graph execution and request confirmation from the user before
 5. User responds — client sends a `confirm` or `cancel` frame back to FastAPI
 6. Client re-enables the message input field
 7. FastAPI calls `graph.resume()` with the user's decision
-8. If confirmed, the node proceeds with execution. If cancelled, the node writes a hardcoded cancellation message to `step_response` — no Ollama call is made for the cancellation. The message includes the cancelled command or action from `interrupt_payload` and hands control back to the user (e.g. "Cancelled: `rm -rf /tmp/jarvis-scratch`. What would you like to do instead?"). The graph then continues to RESPONDER normally.
+8. If confirmed, the node proceeds with execution. If cancelled, the node writes a hardcoded cancellation message to `step_response` — no Ollama call is made for the cancellation. The message includes the cancelled command or action from `interrupt_payload` and hands control back to the user (e.g. "Cancelled: `rm -rf /tmp/ringmaster-scratch`. What would you like to do instead?"). The graph then continues to RESPONDER normally.
 
 The same hardcoded cancellation rule applies to Coding Team nodes — on cancel, the node writes a hardcoded message describing what was cancelled, derived from `interrupt_payload`, with no inference call.
 
 **`confirm_request` payload shapes:**
 ```json
-{"type": "command", "value": "rm -rf /tmp/jarvis-scratch"}
+{"type": "command", "value": "rm -rf /tmp/ringmaster-scratch"}
 {"type": "plan",    "value": "Architect proposes: create auth module, restructure graph.py, add three new nodes"}
 {"type": "execute", "value": "Tester about to run full test suite against live database"}
 ```
 
 The client renders the prompt appropriately based on `payload.type`. The `message_id` on the `confirm_request` frame matches the original request so the client can correlate them.
 
-**`interrupt_payload` on `JarvisState`:** Nodes write to this field before calling `interrupt()`. FastAPI reads it to build the `confirm_request` frame. Zero-initialised to `None` by FastAPI before invocation.
+**`interrupt_payload` on `RingmasterState`:** Nodes write to this field before calling `interrupt()`. FastAPI reads it to build the `confirm_request` frame. Zero-initialised to `None` by FastAPI before invocation.
 
 ### The `refresh` Array
 

@@ -20,7 +20,7 @@
 | Containerisation | Docker + Docker Compose | Server deployment |
 | Reverse proxy | Caddy | TLS + routing |
 | Remote access | Tailscale | All clients connect via Tailscale |
-| ZFS storage | `/tank/docker/jarvis/` | Postgres + ChromaDB + vaults on server |
+| ZFS storage | `/tank/docker/ringmaster/` | Postgres + ChromaDB + vaults on server |
 | Task scheduler | ofelia | Daily maintenance job — purge expired tokens, invites, old history |
 | Voice STT | Whisper / TBD at Phase 10 | Phase 10 — separate container, FastAPI proxy |
 | Voice TTS | Piper / TBD at Phase 10 | Phase 10 — separate container, FastAPI proxy |

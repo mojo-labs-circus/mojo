@@ -10,7 +10,7 @@ A performer can join multiple circuses. Each circus is fully independent.
 
 - One active circus at a time, stored as `active_circus_id`
 - All operations (vault, routing, sync) scoped to active circus
-- Jarvis never routes across circus boundaries silently
+- mojo-agent never routes across circus boundaries silently
 - Offline from active ringmaster → local cache for that circus only, no fallback to another circus
 - Local vault namespaced by circus: `vault/{circus_id}/...`
 

@@ -35,7 +35,7 @@ my-os/
 ```yaml
 os_name: BakerOS
 os_slug: baker
-agent_name: Jarvis
+agent_name: <user-defined>
 author: the_baker
 distro_default: arch    # preferred distro — informational, not enforced
 wm_default: hyprland
@@ -45,7 +45,7 @@ wm_default: hyprland
 
 ## config/persona.md
 
-System prompt additions that extend (not replace) the base Jarvis persona.
+System prompt additions that extend (not replace) the base agent persona.
 
 ```markdown
 You are running on BakerOS, a personal agentic OS built for the_baker.

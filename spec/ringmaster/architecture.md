@@ -1,4 +1,4 @@
-# JARVIS — Architecture & Users
+# Ringmaster — Architecture & Users
 
 
 ## 🏗️ Architecture Overview
@@ -39,7 +39,7 @@
 
 2. FastAPI authenticates — validates token, checks `token\_version` against database, identifies user, loads their profile and tier
 
-3. FastAPI constructs `JarvisState` — populates identity fields (`user\_id`, `tier`, `client\_type`, `assistant\_name`, `message\_id`, `current\_input`, `active\_project`). All node-populated fields are zero-initialised (`""`, `None`, `\[\]` as appropriate) — see JarvisState Fields. History is not pre-loaded into state; nodes that need conversational context call `tools/history.py` directly with the limit appropriate for their role.
+3. FastAPI constructs `RingmasterState` — populates identity fields (`user\_id`, `tier`, `client\_type`, `assistant\_name`, `message\_id`, `current\_input`, `active\_project`). All node-populated fields are zero-initialised (`""`, `None`, `\[\]` as appropriate) — see RingmasterState Fields. History is not pre-loaded into state; nodes that need conversational context call `tools/history.py` directly with the limit appropriate for their role.
 
 4. ROUTER classifies intent — writes `intent`, `tier\_gate`, and `detected\_skills` to state. Reads the approved skills registry to detect skill intents. Intentionally thin — no memory decisions.
 
@@ -69,7 +69,7 @@
 
 - **FastAPI owns the WebSocket.** FastAPI sends all frames (`token`, `done`, `error`, `status`). LangGraph nodes never touch the WebSocket — they only transform state.
 
-- **FastAPI owns state initialisation.** FastAPI constructs the full `JarvisState` before every invocation. All node-populated fields are zero-initialised. Nodes never write to identity fields.
+- **FastAPI owns state initialisation.** FastAPI constructs the full `RingmasterState` before every invocation. All node-populated fields are zero-initialised. Nodes never write to identity fields.
 
 - **The graph ends at RESPONDER.** MEMORY\_PERSIST is a FastAPI background task, not a graph node. The graph's job is done the moment RESPONDER writes `assembled\_response` to state.
 
@@ -77,7 +77,7 @@
 
 - **All secrets via environment variables.** Nothing sensitive ever touches `config.yaml` or git. See Secrets section.
 
-- **Errors are handled at the node level.** Nodes catch expected failures and write to `JarvisState.error` — RESPONDER formats clean messages for the client. Unexpected exceptions bubble to FastAPI's global handler.
+- **Errors are handled at the node level.** Nodes catch expected failures and write to `RingmasterState.error` — RESPONDER formats clean messages for the client. Unexpected exceptions bubble to FastAPI's global handler.
 
 - **Any node setting `error` routes immediately to RESPONDER.** This applies at the top-level graph — ROUTER, PLANNER, MEMORY\_RETRIEVE, and ORCHESTRATOR itself route directly to RESPONDER when `error` is set, skipping all downstream nodes. Agent nodes dispatched within ORCHESTRATOR's reactive loop (CONVERSATION, TASKS, MEMORY, WEB, SYSTEM, CODE, SKILLS) are the exception: their outbound edge always routes back to ORCHESTRATOR regardless of error state. ORCHESTRATOR reads the error, marks the step failed, clears `error`, and continues the loop. RESPONDER formats the error with tier-appropriate detail: Admin gets full technical detail (component, error class, what failed and where), Power gets operational detail (what couldn't be completed, plain reason), Standard gets plain English specific to what the user asked for (no technical terms, but not vague — e.g. "I couldn't retrieve your memories for this request" not "something went wrong"). Regardless of tier, the error is always logged at `ERROR` level so full detail is available on the server.
 
@@ -92,7 +92,7 @@
 
 ## 👥 Users & Tenancy
 
-JARVIS is a multi-user platform. All data is scoped by `user\_id`. Infrastructure is shared. Privacy between users is enforced at the data layer — no user can ever access another's data.
+The Ringmaster is a multi-user platform. All data is scoped by `user\_id`. Infrastructure is shared. Privacy between users is enforced at the data layer — no user can ever access another's data.
 
 ### User Tiers
 

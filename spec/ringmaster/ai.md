@@ -1,4 +1,4 @@
-# JARVIS — AI: Model Stack & Agent Nodes
+# Ringmaster — AI: Model Stack & Agent Nodes
 
 ---
 
@@ -48,7 +48,7 @@ Model names are never hardcoded. All assignments are read from `config.yaml` via
 
 ## 🤖 Agent Nodes (LangGraph)
 
-Every node receives a `JarvisState` that includes `user_id`, `tier`, `client_type`, and `assistant_name`. Conversation history is not pre-loaded into state — nodes that need it call `tools/history.py` directly with the limit appropriate for their role. All data operations are scoped to the requesting user via repository interfaces. Nodes never touch raw storage directly and never touch another user's data.
+Every node receives a `RingmasterState` that includes `user_id`, `tier`, `client_type`, and `assistant_name`. Conversation history is not pre-loaded into state — nodes that need it call `tools/history.py` directly with the limit appropriate for their role. All data operations are scoped to the requesting user via repository interfaces. Nodes never touch raw storage directly and never touch another user's data.
 
 All agent nodes call `should_retrieve()` before their LLM call — whether retrieval actually happens is decided at runtime based on the current `active_step_prompt`. The contract is in `tools/memory.py`. The only exception is MEMORY itself — explicit memory intent always retrieves, so it calls `retrieve_context()` directly without the gate. Coordination and formatting nodes (ROUTER, PLANNER, DECOMPOSER, ORCHESTRATOR, RESPONDER) do not retrieve memory.
 
@@ -87,10 +87,10 @@ class StepResult(TypedDict):
     reason: str | None         # failure or block reason. None on success.
 ```
 
-### JarvisState Fields
+### RingmasterState Fields
 
 ```python
-class JarvisState(TypedDict):
+class RingmasterState(TypedDict):
     # Identity — populated by FastAPI before invocation
     user_id: str                    # always present, never None — hardcoded to "clarkehines" in dev
     tier: str                       # "admin" | "power" | "standard" — populated by FastAPI from live DB record
@@ -305,7 +305,7 @@ PROMPT_ENGINEER runs first on every message — it rewrites `current_input` into
 - Operations: create, update, complete, list, delete
 - Task status values: `open | closed`
 - Task priority values: `low | medium | high`
-- Dev backend: SQLite (same interface, selected via `JARVIS_DB_BACKEND` env var)
+- Dev backend: SQLite (same interface, selected via `RINGMASTER_DB_BACKEND` env var)
 - No node-entry status frame by default (`STATUS_MESSAGES["tasks"]` is empty) — writes a specific `status_message` immediately before each operation (before insert, before query, before update, before delete) so the message is accurate for both reads and mutations. The message content is tier-aware: Admin sees technical detail (e.g. "Inserting task into `tasks` via SQLiteTaskRepository..."), Power sees operational detail (e.g. "Adding your task..."), Standard sees plain language (e.g. "Adding task...")
 - Delete operations use the interrupt/confirm pattern — node identifies the task, writes it to `interrupt_payload`, user confirms before the delete executes. On cancel, writes a hardcoded cancellation message to `step_response`, no further action taken.
 - Any operation on a task that no longer exists (update, complete, delete) is treated as a graceful no-op — the node writes a tier-appropriate message to `step_response` (e.g. "That task has already been deleted") rather than raising an error. This handles the race condition where a REST `DELETE /tasks/{id}` call completes while a chat-initiated delete is sitting at the interrupt/confirm gate.

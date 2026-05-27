@@ -87,7 +87,7 @@ Runs as regular user after first boot into the desktop. Shared base for all prof
 **post-install/server.sh**
 - Install + initialise Postgres
 - Install ChromaDB, Ollama + full model stack
-- Install Jarvis services
+- Install Ringmaster services
 - Configure fleet registry schema
 - Stage `post-reboot/server.sh`
 
@@ -107,7 +107,7 @@ Runs as regular user after first boot into the desktop. Shared base for all prof
 
 1. `tailscale up` → browser auth
 2. Verify Postgres running, fleet registry schema exists
-3. Start Jarvis services, verify healthy
+3. Start Ringmaster services, verify healthy
 4. Generate initial `FLEET_KEY` (join code for new machines)
 5. Self-delete
 

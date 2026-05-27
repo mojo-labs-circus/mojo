@@ -6,11 +6,11 @@
 
 ## The Mission
 
-One Jarvis. Knows you. Works everywhere. Adapts to whatever hardware you have.
+One agent. Knows you. Works everywhere. Adapts to whatever hardware you have.
 
-Three things Jarvis must carry across all surfaces:
+Three things the agent must carry across all surfaces:
 1. **Identity** — personality, name, preferences. Identical everywhere, always.
-2. **Memory** — what Jarvis knows.
+2. **Memory** — what the agent knows.
 3. **Tasks** — active work, open loops. Small data, high value.
 
 **Private memory never leaves the device it lives on. Ever.**
@@ -19,9 +19,9 @@ Three things Jarvis must carry across all surfaces:
 
 ## Two Modes
 
-**MojOS Agentic OS** — Jarvis running as part of your OS on a machine. Full local stack. Works standalone (Solo) or as a client to a MojOS Server. This is the primary MojOS experience.
+**MojOS Agentic OS** — mojo-agent running as part of your OS on a machine. Full local stack. Works standalone (Solo) or as a client to a MojOS Server. This is the primary MojOS experience.
 
-**MojOS Server** — Jarvis running headless as a hub. Always on, always reachable. The source of truth for identity, memory, and tasks. Not every node in a circus will be running MojOS.
+**MojOS Server** — Ringmaster running headless as a hub. Always on, always reachable. The source of truth for identity, memory, and tasks. Not every node in a circus will be running MojOS.
 
 ---
 
@@ -29,23 +29,23 @@ Three things Jarvis must carry across all surfaces:
 
 Not every circus member runs MojOS.
 
-**Non-MojOS clients** (web, mobile, app, any thin client) → direct to main Jarvis on server via `/ws/chat`.
+**Non-MojOS clients** (web, mobile, app, any thin client) → direct to the Ringmaster on server via `/ws/chat`.
 
-**MojOS Agentic OS** → local Jarvis proxy → server (when needed).
+**MojOS Agentic OS** → mojo-agent proxy → server (when needed).
 
-The local Jarvis is a **proxy**, not a parallel surface. Every request from a client on a MojOS machine hits local Jarvis first. Local Jarvis decides: handle it here, or forward to server. The client always talks to `localhost` — it never knows or cares whether the response came from local or server.
+mojo-agent is a **proxy**, not a parallel surface. Every request from a client on a MojOS machine hits mojo-agent first. mojo-agent decides: handle it here, or forward to server. The client always talks to `localhost` — it never knows or cares whether the response came from local or server.
 
 What the proxy enables:
 - **Local context injection** — machine state, open apps, OS info bundled into forwarded requests
 - **Privacy filtering** — private memory stays local, never forwarded
-- **Offline resilience** — local Jarvis handles what it can; server requests queue until reachable
+- **Offline resilience** — mojo-agent handles what it can; server requests queue until reachable
 - **OS-level answers without a round trip** — anything about this machine is answered locally
 
 ---
 
 ## Solo
 
-No server in the picture. MojOS Agentic OS on a single machine. Full Jarvis experience. Nothing to sync, nothing to register with. Complete as-is.
+No server in the picture. MojOS Agentic OS on a single machine. Full local agent experience. Nothing to sync, nothing to register with. Complete as-is.
 
 Solo is the **default state** for any MojOS install on a non-server chassis. There is one version of MojOS — not separate solo/circus editions.
 
@@ -55,21 +55,21 @@ Solo is the **default state** for any MojOS install on a non-server chassis. The
 
 **Install model:**
 - Non-server chassis (desktop, laptop): installs as Solo. Becomes a performer only after explicitly joining a circus.
-- Server chassis: automatically configures as a ringmaster on install. Docker containers spin up, Jarvis starts, the circus is live. No manual setup step required.
+- Server chassis: automatically configures as a ringmaster on install. Docker containers spin up, the Ringmaster starts, the circus is live. No manual setup step required.
 
 **Joining a circus (`mojo-circus-join`):**
 1. Connects the machine to that circus's Tailscale tailnet
-2. Authenticates with the user's Jarvis credentials for that circus
+2. Authenticates with the user's Ringmaster credentials for that circus
 
-Users get credentials by registering with an invite token. The admin on a ringmaster generates invite tokens and distributes them. Users register via any Jarvis client or directly on a MojOS machine.
+Users get credentials by registering with an invite token. The admin on a ringmaster generates invite tokens and distributes them. Users register via any client or directly on a MojOS machine.
 
-**Each circus is fully self-contained:** its own Tailscale tailnet, its own ringmaster, its own Jarvis auth server. MojOS is a framework — anyone can run their own circus on their own tailnet.
+**Each circus is fully self-contained:** its own Tailscale tailnet, its own ringmaster, its own Ringmaster auth server. MojOS is a framework — anyone can run their own circus on their own tailnet.
 
 **Multi-circus:**
 A performer can join multiple circuses. Each circus is fully independent. The local vault is namespaced by circus: `vault/{circus_id}/...`. Memory, tasks, and routing context are all circus-scoped.
 
 **Active circus:**
-One active circus at a time. Stored as a simple local config value (`active_circus_id`). Every local Jarvis operation — vault reads/writes, routing decisions, sync — is scoped to the active circus. Jarvis never silently routes across circus boundaries. When offline from the active ringmaster, local cache for that circus serves what it has; no fallback to another circus's data.
+One active circus at a time. Stored as a simple local config value (`active_circus_id`). Every local agent operation — vault reads/writes, routing decisions, sync — is scoped to the active circus. The agent never silently routes across circus boundaries. When offline from the active ringmaster, local cache for that circus serves what it has; no fallback to another circus's data.
 
 This is the "your data, your control" principle: you always know which circus is active and data never crosses a boundary without explicit intent.
 
@@ -77,7 +77,7 @@ This is the "your data, your control" principle: you always know which circus is
 
 ## MojOS Agentic OS Stack
 
-Every MojOS machine runs a complete local Jarvis instance:
+Every MojOS machine runs a complete local agent stack:
 - Local LangGraph graph
 - Local Ollama
 - Local vault
@@ -89,29 +89,29 @@ Every MojOS machine runs a complete local Jarvis instance:
 
 ## Filesystem-Scoped Agent Config
 
-> The filesystem is the primary interface of the OS. Jarvis's behavior is defined by where you are in it.
+> The filesystem is the primary interface of the OS. The agent's behavior is defined by where you are in it.
 
-**Where you are is how Jarvis works.**
+**Where you are is how the agent works.**
 
-In Unix, your CWD is your working context — everything you do is relative to it. MojOS extends this: your CWD is also your agent context. Navigate to a directory and Jarvis adapts automatically. No manual mode switching, no explicit "switch context" command. The OS and the agent are unified at the filesystem level.
+In Unix, your CWD is your working context — everything you do is relative to it. MojOS extends this: your CWD is also your agent context. Navigate to a directory and the agent adapts automatically. No manual mode switching, no explicit "switch context" command. The OS and the agent are unified at the filesystem level.
 
-This is what "agentic OS" means in practice — Jarvis isn't a layer on top of the OS, it's woven into it.
+This is what "agentic OS" means in practice — mojo-agent isn't a layer on top of the OS, it's woven into it.
 
 ---
 
-### `.jarvis/` directories
+### `.mojo/` directories
 
-Any directory can contain a `.jarvis/` directory that configures how Jarvis behaves when operating there. MojOS ships with sensible defaults at the system and user levels. Projects and directories layer on top.
+Any directory can contain a `.mojo/` directory that configures how the agent behaves when operating there. MojOS ships with sensible defaults at the system and user levels. Projects and directories layer on top.
 
-Contents of a `.jarvis/` directory:
-- `instructions.md` — narrative context: what is this directory, how should Jarvis behave here
+Contents of a `.mojo/` directory:
+- `instructions.md` — narrative context: what is this directory, how should the agent behave here
 - `config` — tools, permissions, hooks
 
 ---
 
 ### Traversal
 
-When Jarvis is operating in a directory, it walks root → CWD, loading each `.jarvis/` config in order. Most-specific scope wins on conflict.
+When the agent is operating in a directory, it walks root → CWD, loading each `.mojo/` config in order. Most-specific scope wins on conflict.
 
 ---
 
@@ -120,8 +120,8 @@ When Jarvis is operating in a directory, it walks root → CWD, loading each `.j
 Child configs can override, extend, or replace anything a parent set. No locks. A parent that disables a capability can be explicitly re-enabled by a child.
 
 ```
-~/uni-work/.jarvis/config             →  allow_coding: false
-~/uni-work/ai-project/.jarvis/config  →  allow_coding: true   ← wins
+~/uni-work/.mojo/config             →  allow_coding: false
+~/uni-work/ai-project/.mojo/config  →  allow_coding: true   ← wins
 ```
 
 ---
@@ -133,7 +133,7 @@ Context management is baked in. Each config block is explicitly scoped:
 - **`local:`** — only loaded when operating in this exact directory. Does not propagate to children.
 - **`inherit:`** — propagates to all child directories. Picked up during traversal.
 
-When Jarvis is at `~/uni-work/ai-project/`:
+When the agent is at `~/uni-work/ai-project/`:
 - Loads `inherit:` blocks from every ancestor (identity, global rules, workspace prefs)
 - Loads the full config (both blocks) for the current directory
 - `local:` blocks from ancestors are not loaded — they stay scoped to their own level
@@ -144,7 +144,7 @@ This keeps context tight. Rules and context that are irrelevant to the current d
 
 ### Deferred
 
-- **Settings UI** — each `.jarvis/` level will have a visual settings page. Later Mk.
+- **Settings UI** — each `.mojo/` level will have a visual settings page. Later Mk.
 
 ---
 
@@ -173,7 +173,7 @@ Always local regardless:
 
 ## Multi-User (Server mode)
 
-Each user gets their own isolated Jarvis — separate identity, separate memory, separate private data. Shared infrastructure.
+Each user gets their own isolated agent — separate identity, separate memory, separate private data. Shared infrastructure.
 
 Memory scopes:
 - **Personal memory** (`memory_{user_id}`) — fully isolated per user
@@ -223,13 +223,13 @@ bootstrap.sh                  ← live ISO entry point, single URL
               └── post-install/
                     standalone.sh   ← local Ollama + full local agent stack
                     hybrid.sh       ← Tailscale install, mojo-agent config
-                    server.sh       ← Postgres, full JARVIS stack, fleet registry
+                    server.sh       ← Postgres, full Ringmaster stack, fleet registry
               │
            [reboot]  ← hybrid and server only
               │
         post-reboot/
               hybrid.sh       ← Tailscale auth, mojo-agent registration
-              server.sh       ← Tailscale auth, JARVIS verify, fleet registry init
+              server.sh       ← Tailscale auth, Ringmaster verify, fleet registry init
               │
            [system running]
               │
@@ -263,7 +263,7 @@ Bootstrap writes the config file rather than exporting a wall of variables. inst
 
 ### `.mojo_config`
 
-Single source of truth for everything about the machine. Written by bootstrap, extended by later scripts, read by configure.sh and Jarvis.
+Single source of truth for everything about the machine. Written by bootstrap, extended by later scripts, read by configure.sh and mojo-agent.
 
 Fields split into two roles:
 
@@ -273,7 +273,7 @@ Fields split into two roles:
 **Detected state snapshot** — configurators re-detect from live system, write back as a cache. The file is informational here, not authoritative:
 - `GPU`, `CPU`, `LUKS`, `LUKS_UUID`, `DISK`, `DUAL_BOOT`, `HDD`, `HDD_MOUNT`, `PROFILE`
 
-Eventually `.mojo_config` becomes the data source for a settings GUI — Jarvis reads it, presents it visually, user changes values, Jarvis writes back and triggers `mojo-update` automatically.
+Eventually `.mojo_config` becomes the data source for a settings GUI — mojo-agent reads it, presents it visually, user changes values, mojo-agent writes back and triggers `mojo-update` automatically.
 
 **Full schema:**
 ```bash
@@ -405,7 +405,7 @@ Run as regular user after first boot into the desktop. Handles everything every 
 **`post-install/standalone.sh`:**
 - Install Ollama
 - Pull models based on hardware tier
-- Configure local Jarvis agent
+- Configure mojo-agent
 - Install mojo-agent as systemd service (local-only mode)
 - No post-reboot needed — done after reboot
 
@@ -419,7 +419,7 @@ Run as regular user after first boot into the desktop. Handles everything every 
 - Install + initialise Postgres
 - Install ChromaDB
 - Install Ollama + full model stack
-- Install JARVIS services
+- Install Ringmaster services
 - Configure fleet registry schema
 - Stage `post-reboot/server.sh` in home dir
 
@@ -446,7 +446,7 @@ Only exists for `FLEET_PROFILE=server`.
 1. Source `.mojo_config`
 2. `tailscale up` → browser auth flow
 3. Verify Postgres is running, fleet registry schema exists
-4. Start JARVIS services, verify healthy
+4. Start Ringmaster services, verify healthy
 5. Generate initial `FLEET_KEY` (join code for new machines)
 6. Self-delete
 

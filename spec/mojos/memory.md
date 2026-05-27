@@ -1,6 +1,6 @@
 # Memory
 
-Three tiers. Every Jarvis surface understands this model.
+Three tiers. Every mojo surface understands this model.
 
 ---
 
@@ -43,7 +43,7 @@ Pruned by hardware tier:
 - User-designated — marked in conversation, config, or via local flag
 - Stored in encrypted local store
 - Never sent as context to the ringmaster
-- Jarvis knows it; the ringmaster never sees it
+- mojo-agent knows it; the ringmaster never sees it
 
 ---
 
@@ -59,15 +59,15 @@ What syncs: identity config, active tasks, relevant memory slice.
 
 ## Identity Portability
 
-Jarvis identity (name, display name, style, language) lives in `.mojo_config`. See [mojo-config.md](mojo-config.md).
+Agent identity (name, display name, style, language) lives in `.mojo_config`. See [mojo-config.md](mojo-config.md).
 
-- Solo, multi-machine: copy the identity block from `.mojo_config` to each new machine at install. Same Jarvis persona, no sync protocol needed. Memory stays separate per machine.
+- Solo, multi-machine: copy the identity block from `.mojo_config` to each new machine at install. Same agent persona, no sync protocol needed. Memory stays separate per machine.
 - Circus mode: ringmaster holds personality config as source of truth for all surfaces.
 
 ---
 
 ## Data Transparency
 
-Every piece of information Jarvis holds is associated with a location: server / local / private. The user can inspect, move, and lock data.
+Every piece of information the agent holds is associated with a location: server / local / private. The user can inspect, move, and lock data.
 
 Full privacy control layer UX is deferred. See `ideas/`.

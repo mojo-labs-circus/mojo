@@ -2,8 +2,8 @@
 
 ## Short-Term Memory (Conversation History)
 - Owned by FastAPI — not LangGraph
-- Uses the same repository pattern as TASKS: `SQLiteHistoryRepository` in dev, `PostgresHistoryRepository` in production, selected via `JARVIS_DB_BACKEND` env var
-- FastAPI loads the user's most recent conversation history up to `CONTEXT_WINDOW_BUDGET` tokens, dropping oldest exchanges first, and injects it into `JarvisState.messages`. FastAPI then appends `current_input` as the final entry. 16,000 tokens fits safely within all models' context windows while leaving headroom for system prompt, retrieved context, current input, and response. This value is a config key and straightforward to adjust.
+- Uses the same repository pattern as TASKS: `SQLiteHistoryRepository` in dev, `PostgresHistoryRepository` in production, selected via `RINGMASTER_DB_BACKEND` env var
+- FastAPI loads the user's most recent conversation history up to `CONTEXT_WINDOW_BUDGET` tokens, dropping oldest exchanges first, and injects it into `RingmasterState.messages`. FastAPI then appends `current_input` as the final entry. 16,000 tokens fits safely within all models' context windows while leaving headroom for system prompt, retrieved context, current input, and response. This value is a config key and straightforward to adjust.
 - Each dict in `messages` has the shape `{"role": str, "content": str}` — this matches the Ollama chat API format exactly. The repository's `load` method is responsible for returning this stripped format; `HistoryEntry` retains all storage fields internally.
 - At the end of every invocation, FastAPI writes the new exchange back to the repository
 - Each user's conversation history is fully isolated by `user_id`
@@ -52,7 +52,7 @@ def delete_from(self, user_id: str, entry_id: int) -> None:
 - Source of truth: user's personal vault
 - Embedding model: `nomic-embed-text` via Ollama
 
-**Shared family memory** — readable by all users, written by JARVIS via classifier:
+**Shared family memory** — readable by all users, written by the Ringmaster via classifier:
 - ChromaDB collection: `memory_shared`
 - Source of truth: shared family vault
 - Contains: household info, family notes, shared knowledge
@@ -84,7 +84,7 @@ On ChromaDB unavailable: logs the failure and calls `notify_admin("chromadb_unav
 
 **Future work:**
 - **Memory pruning** — a scheduled maintenance pass (added to `maintenance/cleanup.py`) that reviews long-term memory and removes stale or superseded entries.
-- **Dream mode** — a consolidation pass that runs on a schedule (e.g. nightly). Reads raw captures from `capture/`, consolidates them into well-structured human-readable markdown files in the appropriate vault folders (`episodic/`, `semantic/`, `self/`, etc.) with clear headings and sections — organised by topic, not a flat list of facts. Clears the capture folder once consolidated. Then triggers a full re-ingest of the affected ChromaDB collections so the clean structured versions replace the raw captures. The result is a vault you can open in Obsidian and actually read — a living picture of what JARVIS knows about you.
+- **Dream mode** — a consolidation pass that runs on a schedule (e.g. nightly). Reads raw captures from `capture/`, consolidates them into well-structured human-readable markdown files in the appropriate vault folders (`episodic/`, `semantic/`, `self/`, etc.) with clear headings and sections — organised by topic, not a flat list of facts. Clears the capture folder once consolidated. Then triggers a full re-ingest of the affected ChromaDB collections so the clean structured versions replace the raw captures. The result is a vault you can open in Obsidian and actually read — a living picture of what the Ringmaster knows about you.
 
 ## Personal → Shared Classification
 
@@ -106,11 +106,11 @@ The user can always override explicitly: "add this to the family brain" or "keep
 - `tasks.db` — `tasks`
 - `history.db` — `history`
 
-`create_tables()` is called from FastAPI's lifespan context manager on startup, conditional on `DB_BACKEND == "sqlite"`. It is never called at module import time. Using `CREATE TABLE IF NOT EXISTS` means it is safe to call on every startup — it will not alter or overwrite existing tables. When the schema changes during development, delete the relevant `.db` file and let startup recreate it: delete `~/.jarvis/auth.db` for auth tables, `~/.jarvis/tasks.db` for tasks, `~/.jarvis/history.db` for history. Startup will recreate the file and all tables in it. Proper migrations (Alembic) are introduced in Phase 6.
+`create_tables()` is called from FastAPI's lifespan context manager on startup, conditional on `DB_BACKEND == "sqlite"`. It is never called at module import time. Using `CREATE TABLE IF NOT EXISTS` means it is safe to call on every startup — it will not alter or overwrite existing tables. When the schema changes during development, delete the relevant `.db` file and let startup recreate it: delete `~/.ringmaster/auth.db` for auth tables, `~/.ringmaster/tasks.db` for tasks, `~/.ringmaster/history.db` for history. Startup will recreate the file and all tables in it. Proper migrations (Alembic) are introduced in Phase 6.
 
 ## Vault File Watcher
 
-persist.py keeps ChromaDB in sync for writes JARVIS makes. But users may also edit or delete vault files directly in Obsidian — ChromaDB won't know about those changes until something triggers a re-ingest.
+persist.py keeps ChromaDB in sync for writes the Ringmaster makes. But users may also edit or delete vault files directly in Obsidian — ChromaDB won't know about those changes until something triggers a re-ingest.
 
 A background file watcher handles this. Using `watchfiles` (already a dependency via uvicorn), FastAPI starts a watcher on `{vault_base}` at startup that monitors for `.md` file changes. On change or deletion, it triggers a targeted re-ingest of the affected file into the appropriate ChromaDB collection. This runs as an asyncio background task — it does not block the server.
 
@@ -120,9 +120,9 @@ The watcher starts only when a vault path exists — graceful no-op on nomadbake
 
 The vault is organised around cognitive memory types — each folder answers a different question, which eliminates ambiguity about where any given memory unit belongs.
 
-**JARVIS behavior config (assistant name, tone, technicality level) is not in the vault.** It lives in the `users` DB table and is served via `GET /PATCH /profile` endpoints. The vault holds knowledge about the user as a person, not how JARVIS is configured.
+**Ringmaster behavior config (assistant name, tone, technicality level) is not in the vault.** It lives in the `users` DB table and is served via `GET /PATCH /profile` endpoints. The vault holds knowledge about the user as a person, not how the Ringmaster is configured.
 
-Per-user vault (`{memory.vault_base}/{user_id}/` — on pearlybaker this resolves via the `~/jarvis-brain` symlink to `/mnt/hdd/jarvis/<username>/`):
+Per-user vault (`{memory.vault_base}/{user_id}/` — on pearlybaker this resolves via the `~/ringmaster-brain` symlink to `/mnt/hdd/ringmaster/<username>/`):
 ```
 <username>/
 ├── capture/       # Raw staging — captures from persist.py, cleared by dream mode
@@ -137,7 +137,7 @@ Per-user vault (`{memory.vault_base}/{user_id}/` — on pearlybaker this resolve
 
 **Note:** Tasks and calendar are not in the vault — tasks live in the tasks DB, calendar via `tools/calendar.py` (see below). The vault holds unstructured knowledge and memory only.
 
-Shared vault (`{memory.vault_base}/shared/` — on pearlybaker: `/mnt/hdd/jarvis/shared/`):
+Shared vault (`{memory.vault_base}/shared/` — on pearlybaker: `/mnt/hdd/ringmaster/shared/`):
 ```
 shared/
 ├── capture/       # Raw shared captures — cleared by dream mode
@@ -156,7 +156,7 @@ shared/
 
 Calendar is not stored in the vault. It is structured, time-indexed, transactional data — the wrong fit for markdown and ChromaDB vector search. `tools/calendar.py` is the single interface all nodes use to read and write calendar data.
 
-**Backend:** iCloud CalDAV via the `caldav` Python library. iCloud exposes a CalDAV endpoint at `https://caldav.icloud.com`. Apple does not allow third-party apps to use the main Apple ID password — each JARVIS deployment uses an **app-specific password** generated in Apple ID settings.
+**Backend:** iCloud CalDAV via the `caldav` Python library. iCloud exposes a CalDAV endpoint at `https://caldav.icloud.com`. Apple does not allow third-party apps to use the main Apple ID password — each Ringmaster deployment uses an **app-specific password** generated in Apple ID settings.
 
 **Why CalDAV:** it is an open standard. The same `tools/calendar.py` interface could swap its backend for Google CalDAV or any other CalDAV provider without changing any node code.
 
@@ -164,10 +164,10 @@ Calendar is not stored in the vault. It is structured, time-indexed, transaction
 
 | Env var | Contents |
 |---|---|
-| `JARVIS_CALDAV_USER_<user_id>` | Apple ID email for this user |
-| `JARVIS_CALDAV_PASSWORD_<user_id>` | App-specific password for this user |
-| `JARVIS_CALDAV_SHARED_USER` | Apple ID with access to the shared family calendar |
-| `JARVIS_CALDAV_SHARED_PASSWORD` | App-specific password for the shared calendar account |
+| `RINGMASTER_CALDAV_USER_<user_id>` | Apple ID email for this user |
+| `RINGMASTER_CALDAV_PASSWORD_<user_id>` | App-specific password for this user |
+| `RINGMASTER_CALDAV_SHARED_USER` | Apple ID with access to the shared family calendar |
+| `RINGMASTER_CALDAV_SHARED_PASSWORD` | App-specific password for the shared calendar account |
 
 **Config keys:**
 

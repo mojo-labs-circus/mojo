@@ -68,7 +68,7 @@ Dark surfaces are embedded within the warm canvas — like a CRT screen sitting 
 - **Panel-based, not card-based** — panels have defined positions and purposes. Cards float. This doesn't float.
 - **Hard edges** — minimal border-radius. Corners are corners.
 - **Information-dense grids** — lean toward more data visible, not more whitespace. Trust the warm palette to keep it readable.
-- **Spatial consistency** — things live in the same place every time. Jarvis knows where to surface things. The layout reinforces spatial memory.
+- **Spatial consistency** — things live in the same place every time. The agent knows where to surface things. The layout reinforces spatial memory.
 - **Dark panels as focal points** — when something needs attention (a terminal, a data readout, a diagram) it lives in a dark panel. The contrast draws the eye without shouting.
 
 ---

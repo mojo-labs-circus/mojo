@@ -1,4 +1,4 @@
-# JARVIS — Infrastructure Ideas
+# Ringmaster — Infrastructure Ideas
 
 Future work on server infrastructure, networking, and platform-level capabilities.
 
@@ -6,19 +6,19 @@ Future work on server infrastructure, networking, and platform-level capabilitie
 
 ## Life operating layer — service integrations
 
-The long-term goal is for Jarvis to be the operating layer for your entire life. You shouldn't need to open an app to do anything — you just tell Jarvis and it handles it. Example: walking downstairs, say "turn the Masters on in the basement" and it's playing by the time you get there.
+The long-term goal is for the Ringmaster to be the operating layer for your entire life. You shouldn't need to open an app to do anything — you just tell the assistant and it handles it. Example: walking downstairs, say "turn the Masters on in the basement" and it's playing by the time you get there.
 
 This requires two things working together:
-1. **API-based tool wrappers** — one tool per service (Jellyfin, Spotify, Home Assistant, calendar, etc.), all living in `tools/`. Jarvis composes these to fulfil requests.
+1. **API-based tool wrappers** — one tool per service (Jellyfin, Spotify, Home Assistant, calendar, etc.), all living in `tools/`. The Ringmaster composes these to fulfil requests.
 2. **Screen/UI control** — for services that don't have APIs, a cursor/screen-control layer (see `skills.md`). This fills the gaps.
 
-Applies to everyone on the platform, not just admin. A family member should be able to ask Jarvis to do something without knowing what's running under the hood. Build the tool wrapper pattern early so adding new services is just adding a new file — not a re-architecture.
+Applies to everyone on the platform, not just admin. A family member should be able to ask the assistant to do something without knowing what's running under the hood. Build the tool wrapper pattern early so adding new services is just adding a new file — not a re-architecture.
 
 ---
 
 ## Tailscale ACL groups
 
-Three ACL groups (admin / power / standard) map to the three Jarvis user tiers and give network-level enforcement before requests reach FastAPI. Planned uses:
+Three ACL groups (admin / power / standard) map to the three Ringmaster user tiers and give network-level enforcement before requests reach FastAPI. Planned uses:
 - SSH access — admin group only
 - Database port — admin group only, even on Tailscale
 - Maintenance endpoints — Tailscale admin group + app-level admin role as a double gate

@@ -82,4 +82,4 @@ WIFI_PASSWORD=
 
 ## Future
 
-Will become the data source for a settings UI. Jarvis reads it, presents values visually, user edits, Jarvis writes back and triggers `mojo-update`. See `ideas/` for fork/identity fields (`MOJO_USER`, `OS_NAME`, etc.).
+Will become the data source for a settings UI. mojo-agent reads it, presents values visually, user edits, mojo-agent writes back and triggers `mojo-update`. See `ideas/` for fork/identity fields (`MOJO_USER`, `OS_NAME`, etc.).

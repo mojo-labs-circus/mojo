@@ -1,12 +1,12 @@
-# JARVIS Server Specification
+# Ringmaster Server Specification
 
-Planning document for the home server build (summer 2026). Companion to `jarvis-spec.md` — hardware and infrastructure detail lives here, keeping the spec focused on software architecture.
+Planning document for the home server build (summer 2026). Hardware and infrastructure detail lives here, keeping the spec focused on software architecture.
 
 ---
 
 ## Overview
 
-The JARVIS server is the backbone of the platform — a single home server running the full stack (FastAPI, Ollama, Postgres, ChromaDB, Caddy) accessible to all family members over Tailscale. No cloud, no external APIs. All compute, storage, and inference is local.
+The Ringmaster is the backbone of the platform — a single home server running the full stack (FastAPI, Ollama, Postgres, ChromaDB, Caddy) accessible to all family members over Tailscale. No cloud, no external APIs. All compute, storage, and inference is local.
 
 **Goal:** Seamless AI assistant experience for all 6 users simultaneously, across two timezones, with no perceptible degradation when multiple people are active at once.
 
@@ -16,7 +16,7 @@ The JARVIS server is the backbone of the platform — a single home server runni
 
 | User | Tier | Location | Workload | Inference tier |
 |---|---|---|---|---|
-| clarkehines | Admin | UK | Heavy agentic coding, uni work, running daily life through JARVIS | Primary + Secondary |
+| clarkehines | Admin | UK | Heavy agentic coding, uni work, running daily life through the Ringmaster | Primary + Secondary |
 | brother | Power | UK | Fintech analysis, light coding (client tracking systems etc.) | Primary (occasional) + Secondary |
 | sister 1 | Standard | UK | Insurance work, documents, spreadsheets | Secondary only |
 | sister 2 | Standard | UK | PhD research, dissertation writing, long document analysis | Secondary only |
@@ -215,12 +215,12 @@ All services run in Docker containers on an internal bridge network. Only FastAP
 | Ollama (secondary) | Inference — all lightweight nodes | Bound to secondary GPU via `CUDA_VISIBLE_DEVICES=1`, port 11435 |
 | PostgreSQL | User data, tasks, conversation history, auth | |
 | ChromaDB | Per-user and shared vector memory collections | |
-| Caddy | Reverse proxy, TLS termination | Routes `jarvis.home` to FastAPI |
-| JARVIS (FastAPI) | Application server | |
+| Caddy | Reverse proxy, TLS termination | Routes `ringmaster.home` to FastAPI |
+| Ringmaster (FastAPI) | Application server | |
 | ntfy | Push notifications | |
 | Gitea | Self-hosted git | |
 | Prometheus | Metrics collection and storage | Scrapes all exporters |
-| Grafana | Dashboard and visualisation | Accessible at `grafana.jarvis.home` over Tailscale, port 3000 |
+| Grafana | Dashboard and visualisation | Accessible at `grafana.ringmaster.home` over Tailscale, port 3000 |
 | node_exporter | Host metrics | CPU, RAM, disk, network |
 | DCGM Exporter | GPU metrics | Per-GPU VRAM usage, utilisation, temperature, power draw |
 | cAdvisor | Container metrics | Per-container CPU, RAM, network |
@@ -231,7 +231,7 @@ All services run in Docker containers on an internal bridge network. Only FastAP
 
 ## Monitoring
 
-Full observability stack running alongside the main services. All dashboards are accessible over Tailscale at `grafana.jarvis.home` — available from any family device on the network.
+Full observability stack running alongside the main services. All dashboards are accessible over Tailscale at `grafana.ringmaster.home` — available from any family device on the network.
 
 ### What Gets Monitored
 
@@ -248,7 +248,7 @@ Start with community and vendor-provided dashboards:
 - NVIDIA provides a pre-built DCGM dashboard — GPU health at a glance
 - node_exporter and cAdvisor both have well-maintained community dashboards on grafana.com
 
-Custom admin dashboard (lower priority) — will eventually surface key JARVIS-specific views: active users, inference queue depth per GPU, per-node latency, and memory collection sizes. Built on top of the same Prometheus and Loki data sources.
+Custom admin dashboard (lower priority) — will eventually surface key Ringmaster-specific views: active users, inference queue depth per GPU, per-node latency, and memory collection sizes. Built on top of the same Prometheus and Loki data sources.
 
 ---
 
@@ -257,7 +257,7 @@ Custom admin dashboard (lower priority) — will eventually surface key JARVIS-s
 All persistent data on ZFS, auto-snapshotted.
 
 ```
-/tank/docker/jarvis/
+/tank/docker/ringmaster/
 ├── postgres/           # User data, tasks, history, auth tables
 ├── chromadb/           # Per-user and shared memory collections
 ├── vaults/             # Obsidian vaults — per-user + shared family vault
@@ -276,7 +276,7 @@ All persistent data on ZFS, auto-snapshotted.
 ## Network
 
 - **Tailscale** — all client connections. Nothing exposed to the open internet.
-- **Caddy** — reverse proxy, TLS, routes `jarvis.home` to FastAPI and web client
+- **Caddy** — reverse proxy, TLS, routes `ringmaster.home` to FastAPI and web client
 - **Internal Docker network** — FastAPI, Ollama (×2), Postgres, ChromaDB communicate internally. Only FastAPI and Caddy are externally reachable.
 
 ---

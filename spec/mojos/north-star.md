@@ -1,15 +1,15 @@
 # MojOS — North Star
 
-MojOS is a framework for turning a Linux machine into an agentic OS backed by a personal AI assistant (Jarvis). The OS layer and AI layer are designed together, share a single config source, and update together.
+MojOS is a framework for turning a Linux machine into an agentic OS backed by a personal AI assistant. The OS layer and AI layer are designed together, share a single config source, and update together.
 
 ---
 
-## What Jarvis Carries
+## What the Agent Carries
 
 Three things must be consistent across all surfaces:
 
 1. **Identity** — personality, name, preferences
-2. **Memory** — what Jarvis knows
+2. **Memory** — what the agent knows
 3. **Tasks** — active work and open loops
 
 Private memory never leaves the device it lives on.
@@ -24,9 +24,9 @@ Three roles: Solo, Performer, Ringmaster. See [topology.md](topology.md).
 
 ## Design Principles
 
-**Single identity across all surfaces.** Hardware and topology change what Jarvis can do locally — not who Jarvis is.
+**Single identity across all surfaces.** Hardware and topology change what the agent can do locally — not who the agent is.
 
-**CWD is agent context.** Where you are in the filesystem determines how Jarvis behaves. No manual mode switching. See [filesystem.md](filesystem.md).
+**CWD is agent context.** Where you are in the filesystem determines how the agent behaves. No manual mode switching. See [filesystem.md](filesystem.md).
 
 **Intelligence lives where the hardware supports it.** Local inference when hardware allows. Ringmaster handles what local can't. Everything local when offline.
 
