@@ -1,38 +1,56 @@
-# Next Move: Audit and Dev Planning
+# Next Move
 
 ## Where We Are
 
-The repo restructure is done. `mojo-labs-circus` org is live with all repos in place.
+Repo restructure complete. Naming conventions cleaned up across all spec files. Canonical naming reference in place.
 
-| Repo | Status | Notes |
-|---|---|---|
-| `circus` | Live — spec only | This repo. Clean. |
-| `ringmaster` | Live — code + full history | Extracted from `mojos/ringmaster/` |
-| `performer` | Live — empty stub | No code existed yet |
-| `mojos` | Live — empty stub | No code existed yet |
-| `client-tui` | Live — stub files | 2 files pushed as initial commit |
-| `mojo-sdk` | Live — empty | Holding until performer + client-tui both need it |
-| `client-web` | Live — empty | Holding |
-| `dotfiles` | Separate repo — unchanged | |
+| Done | Notes |
+|---|---|
+| `mojo-labs-circus` org live | All repos in place |
+| `circus` repo — spec only | This repo. Clean. |
+| `ringmaster` repo | Real code. Full history from old monorepo. |
+| Stub repos live | `performer`, `mojos`, `client-tui`, `mojo-sdk`, `client-web` |
+| `circus` CLAUDE.md rewritten | Reflects polyrepo structure and spec-only role |
+| Naming convention cleanup | All spec files use correct names throughout |
+| `spec/naming.md` created | Canonical naming reference for all component sessions |
 
 ---
 
 ## Next Actions
 
-1. **Full audit of `ringmaster`** — the only repo with real code. Assess current state: what's working, what's stale, what's missing, what needs rewriting. Open a Claude session from the `ringmaster` repo directory.
+### 1. Code ownership triage — `ringmaster` repo
 
-2. **Full audit of `performer`** — what needs to be built from scratch. What does the performer need to do for Mk1?
+The `ringmaster` repo has real code. Some of it may belong elsewhere now that the architecture is a clean polyrepo:
 
-3. **Full audit of `mojos`** — same treatment. What does the MojOS installer need for Mk1?
+- **What stays in `ringmaster`**: server-side logic, LangGraph graph, FastAPI endpoints, DB, memory
+- **What moves to `mojo-sdk`**: WebSocket frame types, API request/response schemas, any shared contracts that performers and clients need
+- **What moves to `client-tui`**: any TUI/client code that ended up in the ringmaster codebase
 
-4. **Full audit of `client-tui`** — the 2 stub files are basically nothing. What needs building?
+Open a Claude session from `../ringmaster/` and audit for misplaced code. Don't move anything yet — produce a list of what needs to move and where.
 
-5. **Rewrite `CLAUDE.md` for `circus`** — current one reflects the old monorepo layout. Needs to describe the new org structure and spec-only role of this repo.
+### 2. Write `CLAUDE.md` for each component repo
 
-6. **Write a `CLAUDE.md` for each component repo** — each one needs its own dev session context: what the component does, how it fits in, how to work on it.
+Each repo needs its own dev session context before any implementation work starts. Write one per repo, in this order:
 
-7. **Plan development phases** — based on audit findings, decide the concrete build steps toward Mk1. What gets built first, in what order, and what the milestones look like.
+- `../ringmaster/CLAUDE.md` — most urgent, most code
+- `../mojo-sdk/CLAUDE.md`
+- `../performer/CLAUDE.md`
+- `../client-tui/CLAUDE.md`
+- `../mojos/CLAUDE.md`
+- `../client-web/CLAUDE.md`
 
-8. **Create `mojo-sdk`** — once `performer` and `client-tui` both need to call the Ringmaster API, create the shared client lib. Don't wait for duplication to become painful — create it at the start of dev phase planning.
+Each CLAUDE.md should cover: what the component does, how it fits in the circus, the Mk1 scope, and how to work on it day-to-day. Point to `spec/naming.md` for naming conventions.
 
-9. **Set up local dev structure** — clone all repos locally, get the environment ready for active development over summer. Make sure everything is set up on the laptop: repos cloned, dependencies installable, dev tooling in place. Goal: sit down and be able to work on any component immediately.
+### 3. Performer and mojo-agent spec planning session
+
+`performer` is a stub with no spec. Before building anything, spec out what mojo-agent needs to do for Mk1: node structure, routing logic, WebSocket protocol with the Ringmaster, what's in-scope vs deferred. This is a top-level session task (circus repo) — output goes in `spec/mojos/agent.md` and `spec/mojos/topology.md`.
+
+### 4. Plan Mk1 dev phases
+
+Based on the ringmaster audit and the new polyrepo structure, plan the concrete build sequence toward Mk1. What gets built first, in what order. The current `spec/ringmaster/phases.md` has the feature list — what's needed is a sequenced build plan with clear unblocking dependencies.
+
+Key question to answer: does `mojo-sdk` need to exist before performer dev can start, or can performer start with local stubs and sdk extraction happen later?
+
+### 5. Local dev environment
+
+Ensure everything is cloned and ready on both machines before the summer build push. All repos cloned, venvs initialised, dev tooling in place. Goal: sit down on either machine and be able to work on any component without setup friction.
