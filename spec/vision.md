@@ -78,6 +78,8 @@ The same person moves between both seamlessly. Pick up the phone and the thin cl
 
 **Multiple people, one infrastructure** The Ringmaster serves everyone on the network. Each person has their own agent, their own memory, their own private data — isolated from everyone else's. Shared infrastructure does not mean shared privacy. A household gets the efficiency of pooled hardware with the experience of individual, personalised AI.
 
+**Your voice in an AI-mediated world** As AI becomes embedded in every company, the decisions that shape your work are increasingly made by tools owned and configured by the institution — not by you. Your employer's AI works for your employer. A personal agent that belongs to you — that knows your history, your context, your perspective — is a form of individual power in that environment. It is representation. Not just a productivity tool, but something closer to a political framework: each person with their own agent is each person with their own voice, rather than the institution's AI speaking for everyone. This is one answer to the question Dario Amodei is asking — how do individuals retain a say as AI reshapes society at scale.
+
 
 ## The Developer Layer
 
@@ -108,5 +110,7 @@ Most personal AI projects are a chat interface connected to someone else's model
 Nobody is building the integrated, agent-native, OS-level, multi-user, multi-device product. The individual pieces exist. The coherent system does not.
 
 There is a window — not for something that competes with large platforms on their own terms, but for something built on a different set of assumptions. Genuine privacy by design. Intelligence as part of the foundation, not bolted on top. A system that eventually hands the code to the community, so the trust does not depend on anyone's continued good behaviour.
+
+The window is not just technical. It is political. The institutions adopting AI fastest are not building tools for individuals — they are building tools for themselves, with individuals as users. The person who controls the AI controls the narrative, the workflow, the decisions. If individuals do not have their own AI — one that actually belongs to them, knows them, and works for them — then the shift to AI just means a new kind of institutional power over individual life, more efficient than before.
 
 That is the gap. That is what this is.
