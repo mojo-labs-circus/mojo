@@ -73,6 +73,17 @@ determines what the collective can do, how it adapts, and how it fails.
 - How does a new participant learn the collective's shared context quickly enough
   to contribute?
 
+**Human-AI structure**
+
+- Where do human intelligences sit in the graph relative to AI intelligences?
+  Always at the top? Peer nodes? Somewhere else?
+- Is human membership structurally different from AI membership — or is it
+  just a difference in capability profile?
+- What does it mean for a human to be "in" a collective that is largely AI-operated?
+  Are they always present, or do they interact episodically?
+- How does the structure change when the ratio of human to AI participants shifts
+  dramatically in either direction?
+
 **Escalation**
 
 - When an intelligence hits a decision outside its authority, what is the path?

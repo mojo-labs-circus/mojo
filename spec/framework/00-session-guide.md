@@ -141,6 +141,33 @@ and can defend, move on. You can always come back.
 
 ---
 
+## Mathematical Modelling as a Design Tool
+
+Where a design problem can be modelled mathematically, it should be. Intuition is
+a starting point, not an answer. A mathematical model produces a result you can
+defend, test against, and refine — intuition produces a result you can only argue
+about.
+
+The pattern to look for in each session:
+
+- **Is there a quantity to optimise?** If so, define the objective function, identify
+  the costs and benefits, and find the optimum analytically (where the derivative
+  is zero) or prove that a unique optimum exists given the function's shape.
+- **Is there a structural property to prove?** Existence, uniqueness, convergence,
+  stability — these are more trustworthy than "it seems like it should work."
+- **Does an established model already apply?** Information theory, game theory,
+  control theory, queueing theory, and optimisation each have results that map
+  cleanly onto collective intelligence problems. Find the analogue before inventing
+  from scratch.
+
+This does not mean every design decision needs a proof. It means: when the problem
+has mathematical structure, use it. The sessions where this is most likely to apply:
+task decomposition and context optimisation (07), communication load and convergence
+(05), escalation and decision latency (04, 06). Flag candidates as they appear and
+carry them forward.
+
+---
+
 ## Session Order
 
 Sessions must run sequentially. Each one takes the previous as given.

@@ -60,12 +60,38 @@ needs.
   can proceed?
 - What is the protocol when the collective needs a leader decision urgently?
 - How does the collective continue functioning while waiting for a leader decision?
+- What is the minimum information a human leader needs to approve or reject a
+  decision without having to understand the full collective state?
+- Are there decisions that are always gated on human approval regardless of trust
+  level — and if so, what defines that category? (Irreversibility? External impact?
+  Resource commitment above a threshold?)
+
+**Human-AI approval architecture**
+
+This is a first-class design problem, not an implementation detail. The approval
+model determines whether human oversight is usable or a friction tax.
+
+- What is the interaction model when the collective surfaces something for human
+  review? Blocking (collective pauses) vs async (collective continues, human
+  responds when available)?
+- How does the collective prioritise what surfaces to the human leader — and how
+  does it avoid creating notification noise that trains the human to ignore signals?
+- What does a human approval interface look like in practice? The human cannot
+  read every agent's state — what is the minimal, actionable summary?
+- What happens if the human is unavailable? Timeout-and-proceed? Escalate to
+  a fallback? Hard stop?
+- How does the collective distinguish decisions that need human judgment from
+  decisions it has been trusted to make autonomously?
 
 **Trust and delegation**
 
 - As trust in the collective develops, how does the leader's role change?
 - What can be delegated over time — and what can never be delegated?
 - How does the leader know when to tighten control and when to loosen it?
+- How is trust earned operationally — what evidence causes a human to extend
+  more autonomy to the collective?
+- Is trust per-agent, per-sub-group, or per-action-type? Can the collective
+  have high trust in one domain and low trust in another simultaneously?
 
 **The leader as participant**
 
@@ -95,9 +121,13 @@ What these have in common is the real model. What differs is domain-specific.
 1. Leadership role definition — what only the leader can do, and what they must not
 2. Situational awareness model — what the leader sees, how it gets to them
 3. Steering protocol — valid leader inputs and how they enter the collective
-4. Decision gate model — what requires leader sign-off, the protocol for each
-5. Delegation model — what can be delegated, when, and how trust is established
-6. The leader as participant — their contribution beyond decision-making
+4. Decision gate model — what requires leader sign-off, the hard-gated category,
+   the protocol for each gate type
+5. Human-AI approval architecture — interaction model (blocking vs async),
+   unavailability handling, the minimal actionable approval interface
+6. Delegation model — what can be delegated, when, how trust is earned, and
+   whether trust is per-agent, per-domain, or per-action-type
+7. The leader as participant — their contribution beyond decision-making
 
 ---
 

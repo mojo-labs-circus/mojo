@@ -62,6 +62,61 @@ the intelligence layer.
 - How does orchestration represent the state of the collective at any moment?
 - What are the contracts orchestration exposes to the intelligence layer?
 
+**Task decomposition**
+
+Decomposition is an orchestration responsibility, not an intelligence one. The
+orchestration layer should break incoming work into the smallest independently
+executable units before routing to any agent. This is not just a performance
+optimisation — it is a foundational design principle with three motivations:
+
+- **Performance**: agents perform better with focused, narrow tasks. Tunnel vision
+  is a feature. An agent given a large ambiguous task will produce lower-quality
+  output than one given a precise, scoped task.
+- **Security**: the smaller the task, the smaller the context the agent needs —
+  and therefore the smaller the blast radius if that agent is compromised or behaves
+  unexpectedly. Minimal context is a security property, not just an efficiency one.
+- **Accountability**: fine-grained tasks produce fine-grained audit trails. When
+  something goes wrong, the failure is localised to a specific task unit. Blame
+  assignment and root cause analysis become tractable.
+
+Questions to resolve:
+
+- What is the minimum viable task unit — when has a task been decomposed enough?
+- Who is responsible for decomposition — is it always the orchestration layer, or
+  can an intelligence node decompose and re-submit?
+- How does the orchestration layer know that a task has been over-decomposed
+  (coordination overhead exceeds the gain from focus)?
+- How does context scoping work — what does orchestration give each agent, and
+  how is it determined? The principle is: no more than the task requires.
+
+**Mathematical model for optimal context size**
+
+The optimum context size for a task is potentially findable mathematically rather
+than by intuition. Define:
+
+- `B(c)` — benefit as a function of context size `c`. Increases rapidly as the
+  agent receives necessary information, then flattens as context becomes redundant,
+  then turns negative as noise, scope creep, and degradation set in. Shape: concave
+  (sigmoid or log-like).
+- `C(c)` — cost as a function of context size. Token cost is roughly linear.
+  Security surface, injection risk, and error propagation are plausibly superlinear
+  — interactions between context elements compound. Shape: convex and monotonically
+  increasing.
+- `V(c) = B(c) - C(c)` — net value. Has a maximum.
+
+The optimum satisfies `V'(c) = 0`, equivalently `B'(c) = C'(c)`: marginal benefit
+equals marginal cost. This is a standard result given concavity of B and convexity
+of C — existence and uniqueness of the optimum can be proven under mild assumptions,
+even if a closed-form solution requires empirical calibration of the function shapes.
+
+Close analogues already exist: the bias-variance tradeoff in ML (too little context
+= underfitting, too much = overfitting to noise), and Tishby's Information Bottleneck
+(the minimum representation that preserves mutual information with the correct output).
+
+Session 07 should explore whether a rigorous proof of optimum existence can be
+established, and what empirical approach would let a specific collective calibrate
+`B(c)` and `C(c)` for its task types.
+
 **Intelligence layer**
 
 - What belongs exclusively in the intelligence layer?
@@ -96,7 +151,9 @@ the intelligence layer.
 3. Intelligence layer definition — what it owns, its contracts, its limits
 4. Contract specifications — what each layer can request from and expose to others
 5. The decision rule — how to classify any given function into the right layer
-6. Degradation model — what happens when a layer fails
+6. Decomposition model — minimum task unit definition, who decomposes, context
+   scoping per task, and how over-decomposition is detected
+7. Degradation model — what happens when a layer fails
 
 ---
 
