@@ -126,6 +126,35 @@ established, and what empirical approach would let a specific collective calibra
 - How does it hand results back down — and how does it communicate uncertainty
   or blockers?
 
+**Blockchain as a fourth layer — or a substrate?**
+
+If the collective uses a blockchain for state and governance, where does it sit
+in the three-layer model? Two candidates:
+
+- **Tooling layer** — the chain is deterministic infrastructure. It runs
+  automatically, enforces rules without intelligence, and produces authoritative
+  outputs (transaction results, contract state). This fits: tooling is exactly
+  "deterministic, runs automatically, no intelligence involved."
+- **Below all layers** — the chain is not a layer within the collective's
+  operational stack; it is the substrate the collective runs on top of. The
+  constitution contracts define what the layers are allowed to do. This may be
+  the cleaner model.
+
+Questions to resolve:
+
+- Does adding a blockchain layer break the three-layer model, extend it, or sit
+  orthogonally to it?
+- In the hybrid topology (central compute node + on-chain governance), which
+  operations go on-chain and which stay in the normal tooling/orchestration stack?
+  Candidate split: governance, membership, decision records → chain; real-time
+  routing, task execution, context passing → normal stack.
+- Smart contracts are the collective's constitution made executable. Who can call
+  them, and under what conditions? The contracts themselves are the answer — which
+  means the contract design is the governance design.
+- How does the orchestration layer interact with the chain? Does it read chain
+  state to determine what it is authorised to do? Does it write task completion
+  as a transaction?
+
 **Contracts between layers**
 
 - What can each layer see of the others? What is hidden?
@@ -153,7 +182,9 @@ established, and what empirical approach would let a specific collective calibra
 5. The decision rule — how to classify any given function into the right layer
 6. Decomposition model — minimum task unit definition, who decomposes, context
    scoping per task, and how over-decomposition is detected
-7. Degradation model — what happens when a layer fails
+7. Blockchain placement model — whether the chain is tooling, substrate, or
+   orthogonal; the hybrid split between on-chain governance and off-chain execution
+8. Degradation model — what happens when a layer fails
 
 ---
 

@@ -84,12 +84,53 @@ determines what the collective can do, how it adapts, and how it fails.
 - How does the structure change when the ratio of human to AI participants shifts
   dramatically in either direction?
 
+**Collective topologies**
+
+Not all collectives have a central hub. The framework must model at least three
+structural topologies, each with different properties:
+
+```
+Topology A — Hub-and-spoke  : a central node (e.g. Ringmaster) coordinates all
+                              others. Single point of control and failure. High
+                              performance for real-time routing.
+
+Topology B — Peer mesh      : nodes communicate directly. No central authority.
+                              Coordination is harder but no single point of failure.
+
+Topology C — Chain collective: collective state and governance live on a blockchain.
+                              No Ringmaster needed. Consensus is cryptographic and
+                              distributed. Any node can participate. The chain is
+                              the authority — not any individual machine.
+```
+
+Topology C is the most radical and the most interesting. A blockchain-backed
+collective is essentially a DAO (Decentralised Autonomous Organisation) applied
+to intelligences. The DAO model is already well-developed in the Ethereum/Web3
+space — treat it as prior art and study it seriously before designing from scratch.
+
+Key questions for the chain collective topology:
+
+- In a chain collective, the graph still exists — but where does authority live
+  if there is no top node? Does it live in the smart contracts themselves?
+- How does a chain collective handle real-time agent coordination? Blockchain
+  consensus is too slow for sub-second routing — is the chain the governance
+  layer only, with a separate fast path for execution?
+- Best case: a collective has a central server for compute, but all collective
+  state, decisions, and governance are on-chain. The server is a participant,
+  not the authority. How does this hybrid model change the graph structure?
+- What does membership look like on a chain? An agent joining the collective is
+  a transaction. An agent leaving is a transaction. What else is?
+- How does trust work without a trusted central party? Answer: it's cryptographic.
+  What does that change about the trust model from sessions 02 and 04?
+
 **Escalation**
 
 - When an intelligence hits a decision outside its authority, what is the path?
 - Up the graph? Sideways? Directly to the top?
 - What is the protocol when the collective stalls — no one can unblock without
   a decision from above?
+- In a chain collective with no top node: what replaces upward escalation?
+  Governance vote? Quorum of peers? A smart contract threshold condition?
 
 ---
 
@@ -115,6 +156,8 @@ If the structure requires domain-specific exceptions, the abstraction is wrong.
 5. Ownership model — what ownership means, boundary protocol, conflict resolution
 6. Participation model — persistent vs ephemeral, onboarding into shared context
 7. Escalation protocol — full path from blocked participant to resolution
+8. Topology model — hub-and-spoke vs peer mesh vs chain collective; when each is
+   appropriate; how the hybrid (central compute + on-chain governance) works
 
 ---
 

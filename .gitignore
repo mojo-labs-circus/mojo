@@ -14,3 +14,9 @@ __pycache__/
 
 # Private data
 family-docs/
+
+# Generated deliverables — kept locally, not committed
+deliverables/
+
+# Claude Code project-level settings (kept global)
+.claude/

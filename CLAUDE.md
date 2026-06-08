@@ -34,7 +34,7 @@ Key concepts established so far:
 - Every collective has a **constitution** — five founding documents that declare what it is
 - **Domains** specialise a collective into a predefined category (software dev, research, household, etc.)
 
-Framework planning sessions are ready to run in `spec/framework/`. Ten sessions in
+Framework planning sessions are ready to run in `docs/framework/`. Ten sessions in
 total — the original eight plus two new ones for the constitutional contract and domains.
 
 **Planning sessions:**
@@ -52,11 +52,10 @@ total — the original eight plus two new ones for the constitutional contract a
 08-dev-team-instance     ← the framework applied to a software dev team
 ```
 
-Session output accumulates in `spec/framework/framework.md`. Pre-session briefs for
-the two new sessions are in `spec/framework/constitution.md` and `spec/framework/domains.md`.
+Session output accumulates in `docs/framework/framework.md`. Pre-session briefs for
+the two new sessions are in `docs/framework/constitution.md` and `docs/framework/domains.md`.
 
-**The full sequence from here is in `next-move.md`.** Immediate next steps: Obsidian
-vault setup, Claude setup, then the framework sessions.
+**Work tracking is in the Obsidian Kanban board** at `~/projects/mojo-labs/kanban.md`.
 
 ---
 
@@ -66,28 +65,27 @@ Mojo is two things that fit together.
 
 **1. A framework for collective intelligence.** A general model for how any group of intelligences — human and AI — can coordinate toward a shared goal. Defines what a collective is, how it constitutes itself, how it specialises into a domain. General enough to apply to a software dev team, a household, a research group, a company. The framework is the real contribution.
 
-**2. Mojo Circus — the first instance of that framework.** A private, self-hosted AI system where the intelligences are AI agents running on your own hardware, with frontier models (Claude, Codex, Gemini) called as tools — given only what they need, never trusted with the full picture. No data sent to someone else's servers. No usage limits. No one else's design decisions.
+**2. Mojo Circus — the infrastructure layer.** The platform that makes a collective real across hardware. A group of machines forming a coordinated intelligent system over Tailscale. One machine runs as the Ringmaster (AI server + hub). Others run as performers (local AI agent + local compute). Non-MojOS machines connect via thin clients. Frontier models (Claude, Codex, Gemini) are called as tools — given only what they need, never trusted with the full picture.
 
-The Circus is what makes the framework concrete: a group of machines forming a coordinated intelligent system over Tailscale. One machine runs as the Ringmaster (AI server + hub). Others run as performers (local AI agent + local compute). Non-MojOS machines connect via thin clients.
-
-The family system is the proof of concept. The framework is the product.
+Circus is not an instance of the framework — it is what runs framework instances on real hardware.
 
 ## Directory Map
 
-This repo is spec and planning only. Component repos are siblings under `~/projects/`.
+This repo is spec and planning only. Component repos are siblings under `~/projects/mojo-labs/`.
 
 ```
-circus/                         ← this repo — spec and planning only
-├── spec/                       ← all planning and spec docs
-│   ├── vision.md               ← product vision and pitch
-│   ├── framework/              ← Mojo framework planning sessions (01-08)
-│   ├── ringmaster/             ← Ringmaster architecture specs
-│   │   └── ideas/              ← future ideas (skills, ai, clients, memory, infrastructure)
-│   └── mojos/                  ← MojOS OS/agent specs
-│       └── ideas/              ← exploratory ideas (fleet-sync, fork, multi-circus, etc.)
+mojo/                           ← this repo — org-level docs and planning
+├── docs/
+│   ├── vision/                 ← product vision, pain points, aesthetic
+│   ├── framework/              ← framework planning sessions (01-08) + output
+│   ├── architecture/           ← component architecture (moves to component repos post-framework)
+│   ├── decisions/              ← ADRs (MADR format)
+│   ├── collective/             ← collective governance
+│   ├── research/               ← exploratory ideas, competitor analysis
+│   └── reference/              ← naming conventions, coding standards
 └── memory/                     ← persistent session memory for top-level Claude sessions
 
-Sibling repos (all at ~/projects/<name>/):
+Sibling repos (all at ~/projects/mojo-labs/<name>/):
   ringmaster/                   ← AI server backend (FastAPI + LangGraph + Ollama)
   performer/                    ← local mojo-agent for performer machines
   mojos/                        ← MojOS install system (bootstrap, install, configure scripts)
@@ -118,12 +116,13 @@ Sibling repos (all at ~/projects/<name>/):
 
 ## Planning Conventions
 
-- System-level specs (vision, framework, architecture, glossary) live in `spec/` in this repo.
-- Component specs will live inside each component repo once the framework is complete and the spec system is redesigned. Current `spec/ringmaster/` and `spec/mojos/` are temporary.
-- Spec writing rules are in `spec/conventions.md`.
+- Org-level docs (vision, framework, decisions, governance) live in `docs/` in this repo.
+- Component architecture docs will move to their own repos once the framework is complete. `docs/architecture/ringmaster/` and `docs/architecture/mojos/` are temporary.
+- Writing conventions are in `docs/reference/conventions.md`.
+- Architecture decisions are recorded as ADRs in `docs/decisions/` (MADR format).
 - Each component repo has its own `CLAUDE.md` for dev session context.
 - This file is for project-level orientation only — not dev workflow.
-- Open architecture questions belong in the relevant `spec/` file, not in code comments.
+- Open architecture questions belong in the relevant `docs/` file, not in code comments.
 
 ## How We Work (Top-Level Claude)
 
@@ -131,10 +130,10 @@ This session handles big-picture coordination: spec, framework design, cross-com
 decisions, repo structure. Implementation work happens in component sessions opened
 from the component's own directory.
 
-**We are currently in planning sessions.** Read `spec/framework/00-session-guide.md`
+**We are currently in planning sessions.** Read `docs/framework/00-session-guide.md`
 before opening any session brief — it explains how to run each session, including
 finding videos, talks, and papers before forming conclusions. Then open each
-`spec/framework/` brief in order. Run them sequentially. Do not start session N+1
+`docs/framework/` brief in order. Run them sequentially. Do not start session N+1
 until session N has produced its required output.
 
 **Research is part of the work.** Each session starts with finding real learning

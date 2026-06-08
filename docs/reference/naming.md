@@ -42,7 +42,7 @@ Assigned by chassis type at install time. Not manually configured.
 | `client-web` | Web client. |
 | `client-tui` | TUI client. |
 
-All repos live as siblings at `~/projects/<name>/`.
+All repos live as siblings at `~/projects/mojo-labs/<name>/`.
 
 ---
 

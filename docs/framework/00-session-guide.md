@@ -8,6 +8,7 @@
 
 | # | Session | Status |
 |---|---------|--------|
+| 00B | Blockchain Research | pending |
 | 01 | First Principles | pending |
 | 02 | Agent Model | pending |
 | 03 | Frontier Interface | pending |
@@ -173,15 +174,16 @@ carry them forward.
 Sessions must run sequentially. Each one takes the previous as given.
 
 ```
-00  ← this guide (read before every session)
-01  first-principles       ← start here
-02  agent-model
-03  frontier-interface
-04  org-structure
-05  communication-model
-06  leadership-interface
-07  layers-and-contracts
-08  dev-team-instance      ← finish here, then dev resumes
+00   ← this guide (read before every session)
+00B  blockchain-research   ← start here — shapes how the framework is designed
+01   first-principles
+02   agent-model
+03   frontier-interface
+04   org-structure
+05   communication-model
+06   leadership-interface
+07   layers-and-contracts
+08   dev-team-instance     ← finish here, then dev resumes
 ```
 
 Each session follows the same five phases: Orient → Resources → Research → Synthesise → Write → Check.

@@ -20,10 +20,10 @@ Framework design. Dev work is paused until the framework is complete. Planning s
 
 ## Repo Structure
 
-This repo is spec and planning only. Component code lives in sibling repos under `~/projects/`.
+This repo is spec and planning only. Component code lives in sibling repos under `~/projects/mojo-labs/`.
 
 ```
-~/projects/
+~/projects/mojo-labs/
 ├── mojo/           ← this repo — spec, planning, memory
 ├── ringmaster/     ← AI server backend (FastAPI + LangGraph + Ollama)
 ├── performer/      ← local mojo-agent for performer machines

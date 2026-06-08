@@ -1,7 +1,7 @@
 # Project Directory Structure
 
 ```
-~/projects/ringmaster/
+~/projects/mojo-labs/ringmaster/
 ├── config.yaml              # Non-sensitive config — single source of truth
 ├── config.py                # Reads config.yaml + env vars — only file that touches either
 ├── main.py                  # Dev entry point — launches FastAPI via uvicorn (reload=True)
