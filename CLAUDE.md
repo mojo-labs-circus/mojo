@@ -132,23 +132,5 @@ decisions, repo structure. Implementation work happens in component sessions ope
 from the component's own directory.
 
 **We are currently in planning sessions.** Read `docs/framework/00-session-guide.md`
-before opening any session brief — it explains how to run each session, including
-finding videos, talks, and papers before forming conclusions. Then open each
-`docs/framework/` brief in order. Run them sequentially. Do not start session N+1
-until session N has produced its required output.
-
-**Research is part of the work.** Each session starts with finding real learning
-material — YouTube talks, papers, case studies. Passion and depth of exploration
-are valued. The anchor is always the output: research feeds it, not replaces it.
-
-**Explain before writing.** Before producing any file or making structural changes,
-explain the approach and wait for approval.
-
-**Commits happen after meaningful changes** — spec updates, framework decisions,
-architecture decisions, repo migrations. Component-level commits happen within their
-own sessions.
-
-**Never add Claude attribution to commit messages.**
-
-**Git uses SSH remotes and `gh` CLI for GitHub operations** — no HTTPS remotes.
-Use `mcp__github__*` tools for issues, PRs, and comments — not `gh` CLI.
+before opening any session brief. Run sessions sequentially — do not start N+1 until
+N is signed off in the session status table.

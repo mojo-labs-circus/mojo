@@ -22,6 +22,15 @@ Update the status to **in progress** when a session opens, **done** when its sec
 
 ---
 
+## Before Starting a Session
+
+**Choose your model.** These sessions produce permanent output that everything downstream
+builds on. The model choice matters — a faster, cheaper model is fine for most work but
+may not be the right call here. Decide consciously before opening the brief. We have not
+settled on a standing rule yet; treat it as a deliberate decision each time.
+
+---
+
 ## What These Sessions Are
 
 Each session is a focused research and design sprint. You are not just thinking —
