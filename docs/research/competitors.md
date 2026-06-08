@@ -104,6 +104,14 @@ Not competitors but papers that directly constrain or inform the framework desig
 
 ---
 
+## Content Businesses / Workflow Tools
+
+Not infrastructure — these are courses or SaaS tools built on top of existing cloud AI.
+
+**Cortex OS** (agentic.james, Instagram) — Multi-agent Claude Code orchestration, agent-to-agent comms, scheduled tasks, phone-accessible. Packaged as a $97/month Skool course. Fully cloud-dependent, no private compute, no OS layer, no hardware coordination. Mid-tier overlap on orchestration. Not a competitive threat to the core Mojo vision.
+
+---
+
 ## The Genuine Differentiators
 
 In priority order — what Mojo has that nobody else does:

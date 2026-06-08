@@ -83,7 +83,6 @@ mojo/                           ← this repo — org-level docs and planning
 │   ├── collective/             ← collective governance
 │   ├── research/               ← exploratory ideas, competitor analysis
 │   └── reference/              ← naming conventions, coding standards
-└── memory/                     ← persistent session memory for top-level Claude sessions
 
 Sibling repos (all at ~/projects/mojo-labs/<name>/):
   ringmaster/                   ← AI server backend (FastAPI + LangGraph + Ollama)
