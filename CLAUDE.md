@@ -89,6 +89,7 @@ Sibling repos (all at ~/projects/mojo-labs/<name>/):
   ringmaster/                   ← AI server backend (FastAPI + LangGraph + Ollama)
   performer/                    ← local mojo-agent for performer machines
   mojos/                        ← MojOS install system (bootstrap, install, configure scripts)
+  dotfiles/                     ← system dotfiles — deployed by MojOS, drives the aesthetic of MojOS machines
   client-tui/                   ← terminal UI client
   client-web/                   ← web client for non-MojOS users (family on Mac/Windows)
   mojo-sdk/                     ← shared API contracts / client lib for Ringmaster
@@ -103,6 +104,7 @@ Sibling repos (all at ~/projects/mojo-labs/<name>/):
 | Web client | `../client-web/` | any browser | Family on Mac/Windows, Clarke on any machine |
 | TUI client | `../client-tui/` | any terminal | Clarke on MojOS machines |
 | MojOS installer | `../mojos/` | bare metal install | Any machine joining the circus |
+| Dotfiles | `../dotfiles/` | any MojOS machine | All MojOS machines — aesthetic + environment config |
 | SDK | `../mojo-sdk/` | shared library | performer and clients |
 
 ## Key Architecture Decisions (Current Assumptions — Subject to Revision Post-Framework)
