@@ -1,48 +1,28 @@
-# Mojo
+# mojo
 
-> A framework for collective intelligence — and its first instance.
+Planning and documentation for the Mojo framework. No runnable code.
 
-Mojo is two things.
-
-**The framework** — a general model for how any group of intelligences, human and AI, can coordinate toward a shared goal. Defines what a collective is, how it constitutes itself, and how it specialises into a domain (software development, a household, a research group, a company).
-
-**Mojo Circus** — the first instance of that framework. A framework for turning a group of computers into a coordinated, intelligent system. One machine acts as the Ringmaster — the AI hub, shared memory, and coordination centre. The rest run MojOS as performers — each with a local agent, local AI, and a private connection to the Ringmaster. Built for multiple people: shared infrastructure, completely separate identity and memory per user.
-
-The OS and AI layers are designed together from the start. They share a single config source, update together, and understand each other. Not an AI app installed on top of Linux — a platform where intelligence is part of the foundation.
+For the org story, see the [mojo-labs-circus profile](https://github.com/mojo-labs-circus).
 
 ---
 
-## Current Stage
-
-Framework design. Dev work is paused until the framework is complete. Planning sessions are ready to run in `spec/framework/`. See `next-move.md` for the full sequence.
-
----
-
-## Repo Structure
-
-This repo is spec and planning only. Component code lives in sibling repos under `~/projects/mojo-labs/`.
+## What's here
 
 ```
-~/projects/mojo-labs/
-├── mojo/           ← this repo — spec, planning, memory
-├── ringmaster/     ← AI server backend (FastAPI + LangGraph + Ollama)
-├── performer/      ← local mojo-agent for performer machines
-├── mojos/          ← MojOS install system
-├── client-tui/     ← terminal UI client
-├── client-web/     ← web client for non-MojOS users
-└── mojo-sdk/       ← shared API contracts / client lib
+docs/
+├── vision/         ← product vision, pain points, aesthetic
+├── framework/      ← session briefs (01–08) + framework.md output
+├── architecture/   ← component architecture (moves to component repos post-framework)
+├── decisions/      ← ADRs (MADR format)
+├── collective/     ← governance docs
+├── research/       ← exploratory ideas, competitor analysis
+└── reference/      ← naming conventions, coding standards
 ```
 
-## Components
+## Current stage
 
-| Component | Repo | Where it runs | Who uses it |
-|---|---|---|---|
-| Ringmaster | `ringmaster` | ringbaker | Everyone — the AI hub |
-| Performer agent | `performer` | pearlybaker, nomadbaker | Clarke |
-| Web client | `client-web` | any browser | Family on Mac/Windows |
-| TUI client | `client-tui` | any terminal | Clarke on MojOS machines |
-| MojOS installer | `mojos` | bare metal | Any machine joining the circus |
+Framework design. Ten planning sessions produce the framework spec before dev resumes. Session briefs are in `docs/framework/`. Output accumulates in `docs/framework/framework.md`.
 
 ---
 
-*Private. Not open source. See [LICENSE](LICENSE).*
+[CC BY-SA 4.0](LICENSE)
