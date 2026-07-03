@@ -137,10 +137,14 @@ ideas harvest.
 
 **Steps:**
 
-- [ ] Relocate global Claude-tooling material out of the repo to `~/.claude/`
-      (default: `~/.claude/plans/`): `raw/research/claude-code-findings.md`,
-      `claude-code-setup.md`, `raw/plans/claude-code-setup.md`,
-      `global-docs-skill-handoff.md`, `docs-maintenance-automation.md`.
+- [ ] Keep the tooling work visible in the repo (Clarke's call — it's proto-mojo,
+      the opinionated-defaults mission in embryo, and it's next-up work):
+      `raw/research/claude-code-findings.md` + `claude-code-setup.md` (research
+      brief) → `docs/research/`; `raw/plans/global-docs-skill-handoff.md` +
+      `docs-maintenance-automation.md` → new `docs/plans/` (active next-up plans,
+      note in docs/README.md map). `raw/plans/claude-code-setup.md` (personal
+      9-session setup plan, partially done): keep in `docs/plans/` or drop —
+      Clarke's call in-session.
 - [ ] Move `raw/docs/research/competitors.md` → `docs/research/` with a
       last-updated line.
 - [ ] Drop (git history preserves): `org-setup.md`, `kanban.md`, `dev-setup.md`,

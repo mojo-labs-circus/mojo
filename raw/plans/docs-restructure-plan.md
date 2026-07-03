@@ -121,7 +121,8 @@ gets asked, not guessed.
 | decisions/ (old ADR set) | Historical record — superseded set stays only in git history; new ADR sets written fresh where decisions are still true |
 | research/competitors | Hub `docs/research/` (living doc — carries a last-updated line) |
 | research/academic-field | Hub `phase-3/` — it argues the collective-intelligence positioning, which is Phase 3's case, not current work |
-| claude-code-* research/plans, global-docs-skill handoff, docs-maintenance-automation | Not mojo content — relocate to `~/.claude/` (Clarke's global tooling project), out of the repo |
+| claude-code-findings research | Hub `docs/research/` — reference research the tooling work builds on |
+| global-docs-skill-handoff, docs-maintenance-automation | Hub `docs/plans/` — active next-up work, kept visible so it gets built (proto-mojo: prototype of the opinionated-defaults mission). `claude-code-setup.md` (personal 9-session setup plan, partially done) → keep in `docs/plans/` or drop, Clarke's call during the chunk |
 | org-setup, kanban, dev-setup, current.md snapshots, foundation.md, meta-project-setup | Dropped — superseded session-tracking artifacts (git history keeps them) |
 | docs-convention proposal + verification brief | Superseded by hub `conventions.md` — dropped after it exists |
 | deliverables/ html files | Dropped (generated artifacts; .md versions parked in phase-3) |
@@ -146,9 +147,10 @@ consistent, verification last.
    superseding the Ringmaster split; license split; this docs structure; herald
    joins org). Create `phase-2/` and `phase-3/` with READMEs and move all parked
    material in, one parking line each.
-4. **Hub: final raw/ triage.** Relocate the global-tooling material to `~/.claude/`,
-   move research keeps, execute the drops. raw/ itself is deleted at the end of
-   chunk 6, after chunks 5–6 have pulled their files (see TRACKER.md).
+4. **Hub: final raw/ triage.** Move the tooling research to `docs/research/` and
+   the tooling plans to `docs/plans/` (kept in-repo — next-up work), move remaining
+   research keeps, execute the drops. raw/ itself is deleted at the end of chunk 6,
+   after chunks 5–6 have pulled their files (see TRACKER.md).
 5. **mojos.** Docs setup only — NO design work. README rewrite (NixOS story),
    resolve uncommitted state, `roadmap.md` (direction + open questions + "write the
    NixOS technical plan" as the first post-restructure work item), NixOS ADR,
@@ -169,8 +171,10 @@ consistent, verification last.
 ## Part 4 — Defaults I'll apply unless vetoed
 
 - **herald license: AGPL-3.0** (matches the org's code default).
-- **Global Claude-tooling material moves to `~/.claude/`** rather than staying
-  anywhere in the mojo repo.
+- ~~Global Claude-tooling material moves to `~/.claude/`~~ **VETOED by Clarke
+  (2026-07-03):** it stays in the repo — research → `docs/research/`, forward plans
+  → `docs/plans/` — because it's proto-mojo (the opinionated-defaults mission in
+  embryo) and next-up work that must stay visible.
 - **Old ADR sets are not migrated** — new, small, true-today ADR sets are written
   fresh; superseded history lives in git, not in the decisions dirs.
 - **Hub keeps no `architecture/` dir** — "how the pieces fit" lives as a section of
