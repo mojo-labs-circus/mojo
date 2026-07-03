@@ -137,8 +137,10 @@ Every component repo: `README.md` (what/status/backlink) + `AGENTS.md`/`CLAUDE.m
   README/AGENTS tune-up, hub backlink.
 - **herald:** becomes a real repo under the org (git init, push, license). Docs
   already conform; fix dead links pointing at it.
-- **ringmaster:** untouched. Already correctly archived; its thinking is distributed
-  from the copies in `raw/`.
+- **ringmaster:** untouched as a repo (already correctly archived), but used as a
+  read-only harvest source in chunk 6 — Clarke flagged it as idea-rich. Its ideas
+  get a deliberate rethinking pass into the one-agent model (tracker chunk 6 has
+  the candidate list), not mechanical transcription.
 
 ## Part 2 — raw/ disposition map
 

@@ -241,6 +241,23 @@ it's the first post-restructure work item, and the docs say so honestly.
 - [ ] Write `docs/roadmap.md`: what mojo-agent must become in Phase 1 (local
       models, system service, memory/vault, the sensei behaviors from philosophy),
       explicitly single-user, pointer to hub phase-2 for fleet.
+- [ ] **Deliberate ringmaster idea harvest** (Clarke: "a lot of ideas in the
+      ringmaster repo should be kept and rethought in terms of the new model").
+      Sources: the prior-art files above, the remaining ringmaster docs in raw/,
+      AND the archived repo itself read-only (`~/projects/ringmaster` — README,
+      `audit.md`, `jarvis-dev-context.md`, code-level concepts). This is a
+      rethinking pass, not transcription: each surviving idea gets restated in
+      one-agent terms before it's written down. Known candidates from the survey —
+      constitutional check node; dream-mode consolidation + condensation
+      principle; improve.jsonl self-improvement log; tier-aware responses
+      (rethought as context-aware verbosity, no user tiers); confirmation-gate
+      pattern; humaniser/style-DB (writes in the user's voice); self-maintained
+      per-user behavior file (JARVIS.md equivalent); `/btw` interrupt channel;
+      life-operating-layer (home devices via tool wrappers); wrist-client
+      proves-API-is-client-agnostic; external-AI escape hatch (rethink against
+      the first-mate/frontier-crew model — the vision shifted). Agent-capability
+      ideas → mojo-agent `docs/ideas.md`; org-level ones → hub `docs/ideas.md`;
+      all tagged `[ex-ringmaster]`. Borderline or surprising finds → ask Clarke.
 - [ ] `docs/decisions/`: only write ADRs for genuinely decided things (candidates:
       local-models-first, secrets-via-env hard-fail, repository pattern — confirm
       with Clarke these are decisions vs aspirations). `docs/devlog.md`,
