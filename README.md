@@ -1,22 +1,29 @@
 # mojo
 
-Org hub for **mojo-labs**: a personal, sovereign AI system — your own intelligence,
-running on your own hardware, following you across every machine you own.
+The thinking behind **Mojo** — my attempt at a sovereign personal AI: an agent that
+is genuinely yours, with a real memory of you, running on hardware you own, inside an
+operating system built around it. Not a chat tab. A first mate.
 
-This repo holds the vision, roadmap, and org-level decisions. No runnable code.
-Component repos live alongside it:
+This repo holds no code. It's the project's brain: the vision, the philosophy, the
+plan, and every idea worth keeping — written for me and for the AI sessions I build
+with, and public because the thinking is part of the work.
 
-- [mojo-agent](https://github.com/mojo-labs-circus/mojo-agent) — the local AI agent
-- [mojos](https://github.com/mojo-labs-circus/mojos) — Arch/NixOS build with the agent
-  woven in at the system level
-- [dotfiles](https://github.com/mojo-labs-circus/dotfiles) — the look and feel
-- [herald](https://github.com/mojo-labs-circus/herald) — standalone capture/render tool
+| File | What it is |
+|---|---|
+| [vision.md](vision.md) | The future this builds toward |
+| [philosophy.md](philosophy.md) | What I believe and why this exists |
+| [roadmap.md](roadmap.md) | Now / next / horizon |
+| [ideas.md](ideas.md) | The net — every live idea, one line each |
+| [devlog.md](devlog.md) | Dated thinking, newest first |
 
-## Current stage
+**Currently building:** MojOS v0.1 (NixOS-based, built around the agent) and
+mojo-agent v0.1 — dual-booting on my own machine as my daily driver, by September
+2026. The finish line is in [roadmap.md](roadmap.md).
 
-Phase 1: one machine, working as a proper agentic environment. See
-[docs/roadmap.md](docs/roadmap.md) for the full phase plan.
+The proof under construction:
+[mojos](https://github.com/mojo-labs-circus/mojos) ·
+[mojo-agent](https://github.com/mojo-labs-circus/mojo-agent)
 
 ---
 
-[CC BY-SA 4.0](LICENSE)
+Docs: [CC BY-SA 4.0](LICENSE)

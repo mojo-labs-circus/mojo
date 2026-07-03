@@ -1,39 +1,36 @@
-# mojo
+# mojo — the thinking repo
 
-Org hub for the mojo-labs project — vision, roadmap, org-level decisions. No runnable
-code. Component repos (`mojo-agent`, `mojos`, `dotfiles`, `herald`) hold their own docs
-as they develop.
+Clarke's thinking repo for the Mojo project: vision, philosophy, plans, ideas. No
+code lives here. The code repos (`mojos`, `mojo-agent`) reference this repo for
+context — never the reverse.
+
+**Before working on anything Mojo-related, in any repo:** read
+[vision.md](vision.md) and [philosophy.md](philosophy.md) — they are how you
+understand Clarke and this project. [roadmap.md](roadmap.md) has the current focus
+and its finish line.
 
 ## Current stage
 
-Foundation setup. We just finished settling on a docs convention
-(`raw/plans/docs-convention-proposal.md`) and are applying it across every repo in the
-org, migrating scattered thinking out of `raw/` into proper homes as it becomes decided
-and relevant. Framework design (formal collective-intelligence spec) is deprioritized —
-see `docs/roadmap.md` Phase 3. Everything active right now is Phase 1: one machine
-working as a proper agentic environment (mojo-agent + MojOS + dotfiles).
+Build-first reset (July 2026). One goal until September: MojOS v0.1 + mojo-agent
+v0.1, dual-booting as Clarke's daily driver — see [roadmap.md](roadmap.md). Meta-work
+is rationed; building and learning are the priority.
 
-## Where things live
+## The habit
 
-- `docs/roadmap.md` — vision + the three-phase plan. Start here.
-- `docs/decisions/` — ADRs. Small and current on purpose — see note below.
-- `docs/devlog.md` — dated, chronological, append-only. Messy thinking lives here.
-- `docs/ideas.md` — flat someday/maybe list, needs periodic triage.
-- `docs/architecture/` — conceptual explanation of the system (Circus model, why this
-  approach). Background context, not a task list.
-- `docs/phase-2/`, `docs/phase-3/` — holding pens for content relevant to later phases,
-  so it has a home without cluttering Phase 1 work. Not active until that phase starts.
-- `raw/` — the standing inbox for unprocessed thinking, old ADRs, and superseded specs.
-  Being triaged by hand; content only leaves once it has a confirmed correct home
-  elsewhere. Don't treat anything in `raw/` as current — check `docs/` first.
+Any session that produces real thinking captures it here before it ends: a
+[devlog.md](devlog.md) entry, one-liners into [ideas.md](ideas.md), or an edit to
+vision/philosophy/roadmap. Thoughts that only live in a chat log are lost.
 
 ## Conventions
 
-- ADRs in `docs/decisions/` — MADR format, numbered, never deleted, only superseded.
-  This set was deliberately reset this session rather than migrated 1:1 from the old
-  numbering in `raw/docs/decisions/` — several of those no longer reflect reality
-  (framework-first was reversed, some assumed a Ringmaster/performer split that no
-  longer exists as the Phase 1 baseline). The old set stays in `raw/` as historical
-  record.
-- Standard `[text](path.md)` links only, no wikilinks.
-- Prose for reasoning, bullets for genuine enumerations only.
+- Written in Clarke's voice, first person, honest — nothing described as existing
+  unless it exists.
+- Flat structure. A new file only when a topic earns one (three pages of real
+  content, not before). No empty scaffolding.
+- New wants during the current milestone go to [ideas.md](ideas.md), not the roadmap.
+- `roadmap.md` is revised in place; `devlog.md` is append-only, newest first.
+- Standard `[text](path.md)` links only, no wikilinks. Prose for reasoning; bullets
+  for genuine enumerations only.
+- Pre-reset history (the old `raw/` corpus, framework session docs, ringmaster-era
+  design) lives in git history, not in the tree. Dig there before re-deriving old
+  thinking from scratch.

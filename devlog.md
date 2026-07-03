@@ -1,0 +1,32 @@
+# Devlog
+
+*Dated thinking, newest first. Messy is fine — this is where the reasoning trail
+lives.*
+
+---
+
+## 2026-07-03 — The reset
+
+Stepped back and admitted the pattern: months of framework sessions, docs
+restructures, and meta-work arranging thinking — and no runnable code anywhere in the
+org. The vision was never the problem. The sequencing was. A first-year with a
+manifesto is invisible; a first-year with a manifesto *and a machine that actually
+runs it* is a different thing entirely. Proof, not promise — my own rule, finally
+applied to myself.
+
+So: reset to build-first. This repo becomes exactly what it should have been — the
+thinking repo. Seven flat files (vision, philosophy, roadmap, ideas, devlog, README,
+AGENTS), written in my voice, public, kept current. Everything else — the old `raw/`
+corpus, the 9-chunk restructure tracker, the framework session briefs — distilled
+into these files and deleted; git history keeps every byte if we ever need to dig.
+
+The new goal, frozen: by the start of September, my PC dual-boots Windows and MojOS
+(NixOS-based), MojOS is my daily driver, and mojo-agent v0.1 — my first mate — runs
+inside it. Seven testable finish-line points in [roadmap.md](roadmap.md). Month one
+is Nix and the OS in a VM; month two is metal and the agent. The Circus and the
+collectives stay on the horizon, alive in [vision.md](vision.md), untouched until
+the foundation is real.
+
+Also settled today: the essays (craft problem first) come later and get written from
+these files; the dotfiles repo's contents dissolve into the mojos flake when the rice
+gets rebuilt; and the old Hyprland setup is not being ported — it's being replaced.
