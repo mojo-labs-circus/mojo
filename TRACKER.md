@@ -159,28 +159,35 @@ ideas harvest.
 **Note:** raw/ deletion is deferred to end of chunk 6 — chunks 5 and 6 pull their
 source files directly from raw/. Chunk 4 only empties everything hub-bound.
 
-## Chunk 5 — mojos  ⛔ contains design work
+## Chunk 5 — mojos
 
-**Goal:** mojos is stranger-ready and NixOS-true.
+**Goal:** mojos is stranger-ready and NixOS-true. Docs setup only — NO design work.
+The NixOS technical plan (`nixos-plan.md`) does not exist and is NOT written here;
+it's the first post-restructure work item, and the docs say so honestly.
 
 **Steps:**
 
 - [ ] Resolve uncommitted state (deleted old docs, untracked AGENTS/CLAUDE) with a
       baseline commit, as was done for mojo.
-- [ ] **Design session with Clarke — `docs/nixos-plan.md`.** No NixOS plan exists
-      yet; only direction (NixOS + flakes, changes staged as generations before
-      promotion). Work through: flake layout, what replaces `.mojo_config`
-      (single config source concept survives), install story (nixos-anywhere?
-      custom ISO?), how mojo-agent integrates as a module, what of the Arch-era
-      concepts survive (`filesystem.md` .mojo-files idea, hardware tiers →
-      model selection). Inputs: `raw/docs/architecture/mojos/*` (concepts +
-      requirements, NOT the mechanics), mojos `AGENTS.md` hard constraints.
-- [ ] Write `docs/roadmap.md` (component vision paragraph + phased plan consistent
-      with hub Phase 1), `docs/decisions/0001` NixOS over Arch+Ansible+Btrfs (the
-      real reasons from Clarke), `docs/devlog.md`, `docs/ideas.md` (harvest from
-      `architecture/mojos/ideas/` — fork model, multi-distro, etc. — one line each).
+- [ ] Create `docs/prior-art/` (+ README: "Arch-era design — superseded mechanics,
+      surviving concepts feed the NixOS plan when it's written") and move from mojo
+      raw/: `north-star.md` (MojOS design principles), `filesystem.md` +
+      `mojo-system-files.md` (.mojo files / CWD-as-context concept),
+      `mojo-config.md` (single-config-source concept), `agent.md` (hardware tiers →
+      model selection). Drop `install.md`, `configure.md`, `planning.md` — Arch
+      mechanics NixOS replaces wholesale (git history keeps them).
+- [ ] Write `docs/roadmap.md`: component vision paragraph, the decided direction
+      (NixOS + flakes, changes staged as generations before promotion), open
+      questions listed plainly (flake layout, install story, agent-as-module), and
+      "write the NixOS technical plan" as the explicit next work item.
+- [ ] Write `docs/decisions/0001` — NixOS over Arch+Ansible+Btrfs (the decision is
+      already made; recording it IS docs work — capture Clarke's real reasons:
+      declarative config, flakes, generations = staging for free).
+- [ ] `docs/devlog.md`, `docs/ideas.md` (harvest `architecture/mojos/ideas/` —
+      fork model, multi-distro, etc. — one line each).
 - [ ] Rewrite `README.md`: NixOS story (drop "custom Arch install"), status, hub
-      backlink. Reconcile `AGENTS.md` to what now actually exists.
+      backlink. Reconcile `AGENTS.md` to what now actually exists — remove the
+      dead `nixos-plan.md` reference until that file is real.
 - [ ] Commit + push.
 
 ## Chunk 6 — mojo-agent
