@@ -57,6 +57,33 @@ Status: awaiting Clarke's approval. Execute nothing until approved.
     and community health defaults. No `~/projects/mojo-labs/` dir (decided): any
     parent-level CLAUDE.md stays org-agnostic.
 
+### Provenance ledger
+
+Every structural element, honestly sourced. **Verified** = primary source fetched
+during this restructure's research; **ours** = our choice, labeled, with its nearest
+real anchor.
+
+| Element | Provenance |
+|---|---|
+| README pitch/status/pointers | Verified — universal |
+| AGENTS.md + CLAUDE.md `@AGENTS.md` | Verified — agents.md standard; Anthropic's documented pattern |
+| docs/README.md as annotated map | Verified — kubernetes/community, dotnet/runtime, golang/proposal |
+| docs/decisions/ MADR ADRs | Verified — Nygard 2011, MADR 4.x spec |
+| docs/vision.md standalone | Verified — helix (same path), cilium hub VISION.md |
+| docs/roadmap.md | Verified widespread practice — sigstore, dotnet/core; not a GitHub standard |
+| Hub repo + manifest + backlinks + .github-as-plumbing | Verified at foundation scale (k8s/cilium/jupyter/dotnet); no solo precedent — known borrow |
+| Phase-parking primitives (status, "not now" home, why-line) | Verified — KEPs, PEPs, rust-rfcs, TC39, dotnet/designs |
+| No empty scaffolding, few substantial files | Verified — Diátaxis verbatim; Oxide/TigerBeetle archaeology |
+| docs/philosophy.md | Ours — anchor: TigerBeetle TIGER_STYLE.md (minority but battle-tested pattern) |
+| docs/devlog.md | Ours — anchor: Carmack .plan, Zig devlog, small-project DEVLOG.md practice |
+| docs/ideas.md | Ours — anchor: GTD Someday/Maybe, curl docs/TODO.md |
+| phase-2/ phase-3/ dirs | Ours — variant of dotnet/designs directory-as-status |
+| prior-art/ dirs | Ours — anchor: kubernetes/community archive/ (kept but separated) |
+| docs/research/, docs/plans/ | Ours — anchor: dotnet/designs, Oxide RFDs (design thinking in a dedicated space); both hold real content from day one |
+
+`conventions.md` (chunk 2) carries these same markings so the distinction survives
+the restructure.
+
 ### Target structure — mojo (hub)
 
 ```
