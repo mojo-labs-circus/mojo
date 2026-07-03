@@ -83,14 +83,15 @@ docs/
 Every component repo: `README.md` (what/status/backlink) + `AGENTS.md`/`CLAUDE.md` +
 `docs/` with only what's earned. Specifics:
 
-- **mojo-agent:** `docs/roadmap.md`, `docs/decisions/`, `docs/prior-art/` (the
-  still-relevant ringmaster material: north-star ethics, WS frame protocol, auth
-  design, memory/vault model — clearly labeled as inherited reference, not
-  decisions), `devlog.md`, `ideas.md`.
-- **mojos:** `docs/nixos-plan.md` (the missing source-of-truth doc — created from the
-  Arch-era architecture material, re-based on NixOS generations/flakes),
-  `docs/roadmap.md`, `docs/decisions/` (first ADR: NixOS over Arch+Ansible+Btrfs),
-  `devlog.md`, `ideas.md`. Fleet/circus-era content parks in hub `phase-2/`.
+- **mojo-agent:** `docs/roadmap.md`, `docs/decisions/`, `docs/prior-art/` (ringmaster
+  *agent internals only*: node spec, WS frame protocol, local memory/vault model,
+  testing discipline, capability ideas — clearly labeled as inherited reference, not
+  decisions; ringmaster's values, fleet-era, and mojo-language material go to the
+  hub per the disposition map), `devlog.md`, `ideas.md`.
+- **mojos:** `docs/nixos-plan.md` (the missing source-of-truth doc — new design work,
+  see chunk 5), `docs/roadmap.md`, `docs/decisions/` (first ADR: NixOS over
+  Arch+Ansible+Btrfs), `devlog.md`, `ideas.md`. Fleet/circus-era content parks in
+  hub `phase-2/`.
 - **dotfiles:** light touch — already the healthiest repo. Commit pending changes,
   README/AGENTS tune-up, hub backlink.
 - **herald:** becomes a real repo under the org (git init, push, license). Docs
@@ -107,10 +108,15 @@ gets asked, not guessed.
 |---|---|
 | vision/, craft-problem, philosophy-raw, vision-raw, stance | Distilled into hub `vision.md` + `philosophy.md`; raw extracts preserved in hub `docs/research/`; stance/brief/presentation → `phase-3/` (historical) |
 | framework/ (14 files), constitution, domains, KO design, blockchain research | Hub `phase-3/` with parking notes |
-| architecture/ringmaster/ + ideas/ | Still-relevant → mojo-agent `docs/prior-art/`; fleet/server-era → hub `phase-2/`; obsolete (family server builds) → dropped (git history keeps them) |
+| architecture/ringmaster/ north-star values & Code of Ethics | Source material for hub `philosophy.md` (org values, not agent internals) |
+| architecture/ringmaster/ agent internals: ai.md node spec, api.md WS frame protocol, local memory/vault model, testing.md discipline, improvement.md, capability ideas (skills, onboarding, local clients, dream mode) | mojo-agent `docs/prior-art/` |
+| architecture/ringmaster/ multi-user & fleet era: auth.md (JWT/invites/tiers), tier model, server-memory/sync, server.md hardware builds, Tailscale ACLs, thin-client routing | Hub `phase-2/` — becomes relevant again at fleet stage |
+| architecture/ringmaster/ideas/mojo-language.md + coding-team subgraph thinking | Hub `phase-3/` — formal-spec/AI-org thread; mojo-language.md is the historic pivot document |
+| architecture/ringmaster/ structure.md, phases.md, stale machine rosters | Dropped (git history keeps them) |
 | architecture/mojos/ + ideas/ | Concepts that survive NixOS (.mojo files, single-config-source, hardware tiers) → feed `nixos-plan.md`; Arch-specific mechanics → dropped; multi-machine → hub `phase-2/` |
 | decisions/ (old ADR set) | Historical record — superseded set stays only in git history; new ADR sets written fresh where decisions are still true |
-| research/academic-field, competitors | Hub `docs/research/` |
+| research/competitors | Hub `docs/research/` (living doc — carries a last-updated line) |
+| research/academic-field | Hub `phase-3/` — it argues the collective-intelligence positioning, which is Phase 3's case, not current work |
 | claude-code-* research/plans, global-docs-skill handoff, docs-maintenance-automation | Not mojo content — relocate to `~/.claude/` (Clarke's global tooling project), out of the repo |
 | org-setup, kanban, dev-setup, current.md snapshots, foundation.md, meta-project-setup | Dropped — superseded session-tracking artifacts (git history keeps them) |
 | docs-convention proposal + verification brief | Superseded by hub `conventions.md` — dropped after it exists |
@@ -138,10 +144,16 @@ consistent, verification last.
    material in, one parking line each.
 4. **Hub: final raw/ triage.** Relocate the global-tooling material to `~/.claude/`,
    move research keeps, execute the drops, delete `raw/`. Hub is done.
-5. **mojos.** README rewrite (NixOS story), commit AGENTS/CLAUDE, write
-   `nixos-plan.md` + `roadmap.md` + NixOS ADR, devlog/ideas.
+5. **mojos.** README rewrite (NixOS story), resolve uncommitted state, `roadmap.md`
+   - NixOS ADR, devlog/ideas. **Honest flag:** `nixos-plan.md` is new design work,
+   not migration — no NixOS technical plan exists anywhere yet, only the direction
+   (generations staging, flakes). This chunk needs Clarke's input mid-session on the
+   actual NixOS mechanics; the Arch-era material contributes the concepts that
+   survive (.mojo files, single config source, hardware tiers) and the requirements,
+   not the plan itself.
 6. **mojo-agent.** README, commit AGENTS/CLAUDE, `roadmap.md`, first ADRs,
-   `prior-art/` from ringmaster material, devlog/ideas.
+   `prior-art/` from ringmaster agent-internals (per the disposition map — values,
+   fleet-era, and mojo-language material go to the hub instead), devlog/ideas.
 7. **herald + dotfiles.** herald: git init, license, `gh repo create` under org,
    push, link fixes. dotfiles: review + commit pending changes, README/AGENTS
    tune-up, backlink.
