@@ -47,6 +47,15 @@ Status: awaiting Clarke's approval. Execute nothing until approved.
    *(our choice — validated small-project practice, not a big-project convention;
    newest-first because the reader is checking "what's happening lately")*.
 10. **ideas.md: flat list, periodic triage** (GTD Someday/Maybe — verified).
+    Hub `ideas.md` is the org's idea net and deliberately its fullest file: the
+    strict keep bar (see below) is only safe because every dropped document's
+    still-live ideas land here as one-liners first *(our choice — Clarke,
+    2026-07-03)*.
+10b. **Strict keeps, hardened docs.** A file survives only as active doctrine,
+    genuinely-consulted reference, or parked material future-us will actually
+    re-read — "it contains thinking" is not enough (that's the idea harvest's
+    job). Docs state what's decided, what's open, what's next; nothing described
+    as existing unless it exists *(our choice — Clarke, 2026-07-03)*.
 11. **Format rules:** standard markdown links only (wikilinks don't render in repo
     files — verified); no frontmatter outside ADRs (matches rust-lang/rfcs,
     golang/proposal practice); prose for reasoning, bullets for enumerations.
@@ -139,7 +148,7 @@ gets asked, not guessed.
 | raw/ content | Destination |
 |---|---|
 | vision/, craft-problem, philosophy-raw, vision-raw, stance | Distilled into hub `vision.md` + `philosophy.md`; philosophy-raw/vision-raw then DROPPED (AI-session extracts, not Clarke's verbatim words — Clarke 2026-07-03); stance/brief/presentation → `phase-3/` (historical) |
-| framework/ (14 files), constitution, domains, KO design, blockchain research | Hub `phase-3/` with parking notes |
+| framework/, constitution, domains, KO design, blockchain research | Hub `phase-3/` — SELECTIVE (see TRACKER chunk 3): substantial re-readable pieces park; unexecuted session briefs and duplicate renders are idea-harvested then dropped |
 | architecture/ringmaster/ north-star values & Code of Ethics | Source material for hub `philosophy.md` (org values, not agent internals) |
 | architecture/ringmaster/ agent internals: ai.md node spec, api.md WS frame protocol, local memory/vault model, testing.md discipline, improvement.md, capability ideas (skills, onboarding, local clients, dream mode) | mojo-agent `docs/prior-art/` |
 | architecture/ringmaster/ multi-user & fleet era: auth.md (JWT/invites/tiers), tier model, server-memory/sync, server.md hardware builds, Tailscale ACLs, thin-client routing | Hub `phase-2/` — becomes relevant again at fleet stage |

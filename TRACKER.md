@@ -11,6 +11,21 @@ Background: `raw/plans/docs-restructure-handoff.md` (the brief),
 
 This file is temporary — deleted in chunk 9 when the restructure is done.
 
+## Working rules (apply in every chunk)
+
+1. **Strict keep bar.** A file survives only if it's doctrine in active use,
+   reference that will genuinely be consulted, or parked material future-us will
+   actually re-read when its phase starts. "It contains thinking" is not enough —
+   that's what the idea harvest is for. Borderline → ask Clarke in-session; never
+   silently keep or silently drop.
+2. **Idea harvest before any drop.** Before a file dies, any still-live idea in it
+   becomes one line in hub `docs/ideas.md` (tagged with its origin, e.g.
+   `[ex-framework]`). Hub `ideas.md` is deliberately the fullest file in the org:
+   losing documents is fine, losing ideas is not.
+3. **Hardened, actionable docs.** Every doc states what's decided, what's open, and
+   what's next. No aspirational fluff, no describing things that don't exist as if
+   they do — the standard is docs on a proper project.
+
 ## Status
 
 | # | Chunk | Status |
@@ -19,7 +34,7 @@ This file is temporary — deleted in chunk 9 when the restructure is done.
 | 2 | Hub: roadmap, conventions, README, AGENTS | not started |
 | 3 | Hub: ADRs + phase parking | not started |
 | 4 | Hub: final raw/ triage | not started |
-| 5 | mojos (incl. NixOS plan design session) | not started |
+| 5 | mojos | not started |
 | 6 | mojo-agent | not started |
 | 7 | herald + dotfiles | not started |
 | 8 | .github org profile | not started |
@@ -99,13 +114,20 @@ ideas harvest.
       chunk 4 empties it. Keep `CLAUDE.md` = `@AGENTS.md`.
 - [ ] Write `docs/README.md`: annotated one-line-per-entry map of docs/.
 - [ ] Create `docs/devlog.md` (newest-first; first entry: this restructure) and
-      `docs/ideas.md` (harvest surviving ideas from `raw/kanban.md` backlog —
-      most are framework-era, take only still-relevant ones).
+      `docs/ideas.md` — the org's idea net. Seed from `raw/kanban.md` backlog and
+      `raw/docs/research/undeveloped-thoughts.md` (478 lines of tagged idea
+      threads — the single richest harvest source; drops after harvest + chunk 1
+      has used it as a philosophy source). It keeps growing through chunks 3–6 as
+      the harvest-before-drop rule fires; by chunk 9 every live idea in the old
+      corpus has a line here.
 - [ ] Commit.
 
 ## Chunk 3 — Hub: ADRs + phase parking
 
-**Goal:** decision record started fresh; later-phase material has its home.
+**Goal:** decision record started fresh; later-phase material curated — not
+relocated wholesale. Parking bar (working rule 1): park only what future-us will
+actually re-read when the phase starts. Everything else: harvest ideas to
+`ideas.md`, then drop.
 
 **Steps:**
 
@@ -116,19 +138,28 @@ ideas harvest.
       restructure, links plan for rationale) · herald joins the org.
       Plus `_template.md`.
 - [ ] Create `docs/phase-2/README.md` (what fleet phase is, why parked, contents
-      list) and move: ringmaster `auth.md`, `server.md`, tier model material,
-      server-memory/sync parts of `memory.md`, `infrastructure.md` ACL parts,
-      `ideas/thin-client-proxy.md`; mojos-era `topology.md`, `circus.md`,
-      `ideas/multi-circus.md`, `ideas/fleet-sync.md`, `ideas/distributed.md`,
-      `ideas/multi-distro.md`(?), `naming.md` (circus-era vocabulary tables).
-      One parking line per file: what it is, why parked, what phase unparks it.
-- [ ] Create `docs/phase-3/README.md` and move: `framework/` (all 14 files),
-      `constitution.md`, `domains.md`, `ko-design.md`, `00b-blockchain-research.md`,
-      `academic-field.md`, `mojo-language.md` + coding-team thinking,
-      `collective/mojo-framework-dev-team.md`, deliverables `stance.md`/`brief.md`/
-      `presentation.md` (historical, noted as such). Parking note includes the two
-      known unresolved tensions (pair ontology; blockchain walked back) and the
-      Modular-Mojo naming-collision hazard.
+      list). **Park:** ringmaster `auth.md` (tested design), `server.md` (hardware
+      thinking returns at fleet), server-memory/sync parts of `memory.md`, tier
+      model material, mojos-era `topology.md` + `circus.md`. **Harvest → drop:**
+      `infrastructure.md`, `thin-client-proxy.md`, `multi-circus.md`,
+      `fleet-sync.md`, `distributed.md`, `multi-distro.md`, `naming.md` — each is
+      an idea sketch, not a design; one `ideas.md` line each (tagged `[phase-2]`),
+      then gone. One parking line per kept file: what, why, what unparks it.
+- [ ] Create `docs/phase-3/README.md`. **Park (substantial, re-readable):**
+      `framework.md` (the real pre-session notes), `02-agent-model.md`
+      (eight-dimension context-cost argument), `07-layers-and-contracts.md`
+      (three-layer model + context math — the intellectual core),
+      `constitution.md`, `domains.md`, `ko-design.md`,
+      `00b-blockchain-research.md` (the data-sovereignty thread),
+      `research-ai-paradigms.md` (verifiability thesis), `academic-field.md`,
+      `mojo-language.md`, `stance.md` (best consolidated vision artifact,
+      historical). **Harvest → drop:** `00-session-guide.md`, briefs
+      `01/03/04/05/06/08` (unexecuted session prompts — pull embedded ideas like
+      the topology taxonomy into `ideas.md` lines), `collective/…-dev-team.md`
+      (stub), `brief.md`/`presentation.md` (renders of stance — stance is the
+      superset). Parking README notes the two unresolved tensions (pair ontology;
+      blockchain walked back) and the Modular-Mojo naming-collision hazard.
+- [ ] Borderline calls surface to Clarke in-session — never silent.
 - [ ] Update `docs/README.md` map. Commit.
 
 ## Chunk 4 — Hub: final raw/ triage
