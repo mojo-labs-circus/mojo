@@ -131,9 +131,11 @@ Independent re-check of `docs-convention-proposal.md` against primary sources:
   (3) component AGENTS.md never lists siblings (stale-list failure) — one pointer to
   hub; (4) `--add-dir ../mojo` when a component session needs org context. NOTE:
   mojo repos live flat in ~/projects mixed with non-mojo repos (baker, cloudmundi,
-  mojo-fund) — a parent CLAUDE.md at ~/projects would load for everything. Old ADR
-  0007 proposed ~/projects/mojo-labs/ workspace dir; decide in the plan whether to
-  revive that or keep the parent file org-agnostic.
+  mojo-fund) — a parent CLAUDE.md at ~/projects would load for everything.
+  DECIDED (Clarke, 2026-07-03): no mojo-labs workspace dir — repos stay flat in
+  ~/projects, and any parent-level CLAUDE.md stays org-agnostic (generic "here's how
+  my projects dir works" + pointer to mojo as the org hub, nothing mojo-specific
+  beyond that).
 
 ## Research report 3 — vision placement, navigation, devlog — RE-RUNNING
 
