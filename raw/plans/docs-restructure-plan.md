@@ -79,7 +79,8 @@ real anchor.
 | docs/ideas.md | Ours — anchor: GTD Someday/Maybe, curl docs/TODO.md |
 | phase-2/ phase-3/ dirs | Ours — variant of dotnet/designs directory-as-status |
 | prior-art/ dirs | Ours — anchor: kubernetes/community archive/ (kept but separated) |
-| docs/research/, docs/plans/ | Ours — anchor: dotnet/designs, Oxide RFDs (design thinking in a dedicated space); both hold real content from day one |
+| docs/research/ | Ours — anchor: dotnet/designs, Oxide RFDs (analysis in a dedicated space, separate from decided doctrine); holds real content from day one |
+| Transient work briefs at repo ROOT, deleted when done | Ours — the TRACKER.md pattern; replaces any plans/ or inbox dir so no raw/-style dumping ground can re-form |
 
 `conventions.md` (chunk 2) carries these same markings so the distinction survives
 the restructure.
@@ -137,7 +138,7 @@ gets asked, not guessed.
 
 | raw/ content | Destination |
 |---|---|
-| vision/, craft-problem, philosophy-raw, vision-raw, stance | Distilled into hub `vision.md` + `philosophy.md`; raw extracts preserved in hub `docs/research/`; stance/brief/presentation → `phase-3/` (historical) |
+| vision/, craft-problem, philosophy-raw, vision-raw, stance | Distilled into hub `vision.md` + `philosophy.md`; philosophy-raw/vision-raw then DROPPED (AI-session extracts, not Clarke's verbatim words — Clarke 2026-07-03); stance/brief/presentation → `phase-3/` (historical) |
 | framework/ (14 files), constitution, domains, KO design, blockchain research | Hub `phase-3/` with parking notes |
 | architecture/ringmaster/ north-star values & Code of Ethics | Source material for hub `philosophy.md` (org values, not agent internals) |
 | architecture/ringmaster/ agent internals: ai.md node spec, api.md WS frame protocol, local memory/vault model, testing.md discipline, improvement.md, capability ideas (skills, onboarding, local clients, dream mode) | mojo-agent `docs/prior-art/` |
@@ -148,8 +149,8 @@ gets asked, not guessed.
 | decisions/ (old ADR set) | Historical record — superseded set stays only in git history; new ADR sets written fresh where decisions are still true |
 | research/competitors | Hub `docs/research/` (living doc — carries a last-updated line) |
 | research/academic-field | Hub `phase-3/` — it argues the collective-intelligence positioning, which is Phase 3's case, not current work |
-| claude-code-findings research | Hub `docs/research/` — reference research the tooling work builds on |
-| global-docs-skill-handoff, docs-maintenance-automation | Hub `docs/plans/` — active next-up work, kept visible so it gets built (proto-mojo: prototype of the opinionated-defaults mission). `claude-code-setup.md` (personal 9-session setup plan, partially done) → keep in `docs/plans/` or drop, Clarke's call during the chunk |
+| claude-code-findings research | Hub `docs/research/` — reference research future tooling work builds on |
+| global-docs-skill-handoff, docs-maintenance-automation, claude-code-setup plans + research brief | Dropped (Clarke 2026-07-03). Maintenance needs a fresh plan eventually — recorded as an `ideas.md` line, old draft stays in git history. NO `docs/plans/` dir: transient work briefs live at repo ROOT (TRACKER.md pattern) and are deleted when done |
 | org-setup, kanban, dev-setup, current.md snapshots, foundation.md, meta-project-setup | Dropped — superseded session-tracking artifacts (git history keeps them) |
 | docs-convention proposal + verification brief | Superseded by hub `conventions.md` — dropped after it exists |
 | deliverables/ html files | Dropped (generated artifacts; .md versions parked in phase-3) |
@@ -174,10 +175,11 @@ consistent, verification last.
    superseding the Ringmaster split; license split; this docs structure; herald
    joins org). Create `phase-2/` and `phase-3/` with READMEs and move all parked
    material in, one parking line each.
-4. **Hub: final raw/ triage.** Move the tooling research to `docs/research/` and
-   the tooling plans to `docs/plans/` (kept in-repo — next-up work), move remaining
-   research keeps, execute the drops. raw/ itself is deleted at the end of chunk 6,
-   after chunks 5–6 have pulled their files (see TRACKER.md).
+4. **Hub: final raw/ triage.** Move claude-code-findings to `docs/research/`, move
+   remaining research keeps, execute the drops (incl. the tooling plan briefs — an
+   `ideas.md` line records that maintenance needs a fresh plan later). raw/ itself
+   is deleted at the end of chunk 6, after chunks 5–6 have pulled their files (see
+   TRACKER.md).
 5. **mojos.** Docs setup only — NO design work. README rewrite (NixOS story),
    resolve uncommitted state, `roadmap.md` (direction + open questions + "write the
    NixOS technical plan" as the first post-restructure work item), NixOS ADR,
@@ -198,10 +200,13 @@ consistent, verification last.
 ## Part 4 — Defaults I'll apply unless vetoed
 
 - **herald license: AGPL-3.0** (matches the org's code default).
-- ~~Global Claude-tooling material moves to `~/.claude/`~~ **VETOED by Clarke
-  (2026-07-03):** it stays in the repo — research → `docs/research/`, forward plans
-  → `docs/plans/` — because it's proto-mojo (the opinionated-defaults mission in
-  embryo) and next-up work that must stay visible.
+- **Claude-tooling material (settled 2026-07-03 after two rounds):**
+  claude-code-findings → `docs/research/` (reference). The plan briefs
+  (global-docs-skill, docs-maintenance-automation, claude-code-setup) are DELETED —
+  maintenance gets a fresh plan later (ideas.md line). No `docs/plans/` dir exists:
+  transient work briefs live at repo root (TRACKER.md pattern) and are deleted when
+  done. Directory bar: nothing exists unless absolutely necessary and anchored in
+  real practice.
 - **Old ADR sets are not migrated** — new, small, true-today ADR sets are written
   fresh; superseded history lives in git, not in the decisions dirs.
 - **Hub keeps no `architecture/` dir** — "how the pieces fit" lives as a section of

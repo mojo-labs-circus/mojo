@@ -58,14 +58,14 @@ Philosophy = TigerBeetle model (principles that govern real decisions).
       "a proof not a promise" (architecture over policy), symbiotic AI (pushes back,
       it's-YOUR-life constraint), the Code of Ethics principles, open source as
       logical necessity.
-- [ ] Create `docs/research/` and move `philosophy-raw.md`, `vision-raw.md` into it,
-      each with a one-line header: primary-source extract, date, distilled into
-      vision/philosophy.
-- [ ] Remaining vision-dir files — proposed destinations, confirm with Clarke in
-      session: `why-this-works.md` → `docs/research/` (honest objections doc,
-      update solved/unsolved status); `monetisation.md` → `docs/research/`
-      (exploratory); `pain-points.md` → `docs/research/` (enterprise angle);
-      `aesthetic.md` → hold for chunk 5/7 decision (it's product look-and-feel —
+- [ ] `philosophy-raw.md` / `vision-raw.md`: use as distillation sources only, then
+      DROP — they're AI-session extracts, not Clarke's verbatim words (Clarke,
+      2026-07-03). Anything in them that vision/philosophy doesn't absorb and still
+      seems valuable: raise with Clarke in-session, don't silently keep or drop.
+- [ ] Create `docs/research/` for the analysis keeps — confirm each with Clarke in
+      session: `why-this-works.md` (honest objections doc, update solved/unsolved
+      status); `monetisation.md` (exploratory); `pain-points.md` (enterprise
+      angle); `aesthetic.md` → hold for chunk 5/7 decision (product look-and-feel —
       candidates: mojos docs or dotfiles).
 - [ ] Commit. **Stop — Clarke reviews vision.md + philosophy.md before chunk 2.**
 
@@ -137,14 +137,13 @@ ideas harvest.
 
 **Steps:**
 
-- [ ] Keep the tooling work visible in the repo (Clarke's call — it's proto-mojo,
-      the opinionated-defaults mission in embryo, and it's next-up work):
-      `raw/research/claude-code-findings.md` + `claude-code-setup.md` (research
-      brief) → `docs/research/`; `raw/plans/global-docs-skill-handoff.md` +
-      `docs-maintenance-automation.md` → new `docs/plans/` (active next-up plans,
-      note in docs/README.md map). `raw/plans/claude-code-setup.md` (personal
-      9-session setup plan, partially done): keep in `docs/plans/` or drop —
-      Clarke's call in-session.
+- [ ] Move `raw/research/claude-code-findings.md` → `docs/research/` (reference).
+      Drop the tooling plan briefs (Clarke, 2026-07-03): `global-docs-skill-handoff.md`,
+      `docs-maintenance-automation.md`, `raw/plans/claude-code-setup.md`,
+      `raw/research/claude-code-setup.md` (brief superseded by findings). Add one
+      `ideas.md` line: "docs maintenance needs a fresh plan once the restructure
+      has been lived with — old draft thinking in git history." NO `docs/plans/`
+      dir — transient work briefs go at repo root and die when done.
 - [ ] Move `raw/docs/research/competitors.md` → `docs/research/` with a
       last-updated line.
 - [ ] Drop (git history preserves): `org-setup.md`, `kanban.md`, `dev-setup.md`,
