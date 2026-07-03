@@ -55,6 +55,11 @@ intelligence itself.
 
 ## Research Directive
 
+Read `docs/research/academic-field.md` before starting. The Hybrid Intelligence field
+has been converging on this problem since 2019 — Peeters et al., Beckers/Teubner, and
+Eccles have partial answers grounded in evidence and should inform what this session
+discovers, not duplicate it.
+
 Survey collective intelligence across domains — not for productivity lessons,
 but to find the underlying patterns.
 
@@ -104,6 +109,21 @@ Format each principle as:
 - **Implication** — what this means for how we model collective intelligence
 
 These principles are the axioms. Everything else in the framework is derived from them.
+
+---
+
+## Design Values to Establish
+
+After discovering the first principles, this session should also name the design values
+that will govern how the framework is built. These are not discovered through research —
+they are commitments that the session should confirm and formalise as the design stance.
+
+- **Mechanism, not policy** — the standard and mechanism define how; implementations decide what. The framework provides primitives. Collectives and distros set policy.
+- **Do one thing well, then compose** — each component has one job. Emergent power comes from composition, not from complex components.
+- **Minimal standard** — only what is universal and non-negotiable goes in the standard. A thing belongs there only if it genuinely cannot live anywhere else.
+- **Layered correctness** — each layer must be right before building on it. Standard → mechanism → policy. A flaw in the standard propagates forever.
+
+Ground these in Unix design philosophy, which provides 50 years of evidence that this approach produces systems that last and compose.
 
 ---
 

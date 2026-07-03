@@ -1,27 +1,21 @@
 # mojo
 
-Planning and documentation for the Mojo framework. No runnable code.
+Org hub for **mojo-labs**: a personal, sovereign AI system — your own intelligence,
+running on your own hardware, following you across every machine you own.
 
-For the org story, see the [mojo-labs-circus profile](https://github.com/mojo-labs-circus).
+This repo holds the vision, roadmap, and org-level decisions. No runnable code.
+Component repos live alongside it:
 
----
-
-## What's here
-
-```
-docs/
-├── vision/         ← product vision, pain points, aesthetic
-├── framework/      ← session briefs (01–08) + framework.md output
-├── architecture/   ← component architecture (moves to component repos post-framework)
-├── decisions/      ← ADRs (MADR format)
-├── collective/     ← governance docs
-├── research/       ← exploratory ideas, competitor analysis
-└── reference/      ← naming conventions, coding standards
-```
+- [mojo-agent](https://github.com/mojo-labs-circus/mojo-agent) — the local AI agent
+- [mojos](https://github.com/mojo-labs-circus/mojos) — Arch/NixOS build with the agent
+  woven in at the system level
+- [dotfiles](https://github.com/mojo-labs-circus/dotfiles) — the look and feel
+- [herald](https://github.com/mojo-labs-circus/herald) — standalone capture/render tool
 
 ## Current stage
 
-Framework design. Ten planning sessions produce the framework spec before dev resumes. Session briefs are in `docs/framework/`. Output accumulates in `docs/framework/framework.md`.
+Phase 1: one machine, working as a proper agentic environment. See
+[docs/roadmap.md](docs/roadmap.md) for the full phase plan.
 
 ---
 

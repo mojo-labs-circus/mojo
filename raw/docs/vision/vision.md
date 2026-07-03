@@ -4,6 +4,8 @@
 
 Mojo is a framework for collective intelligence. It provides a principled model for how groups of intelligences — human and AI — constitute themselves, coordinate, and work toward shared goals.
 
+**The end goal in one sentence:** Your own personal intelligence running on your own hardware, following you across every device you own — and a protocol that lets any collective add you and your intelligence into their system, on your terms.
+
 The framework is not theory. It produces actionable specifications that any collective can instantiate: a family, a dev team, a company, a research group. Once a collective is constituted under the framework, every member can harness AI within the collective's own structure, directed toward the collective's actual goals.
 
 Any collective that already exists in the real world can remodel itself under Mojo and become significantly more capable — not by changing what it fundamentally is, but by giving every member access to AI that operates within the collective's own structure, toward its own shared goal.
@@ -11,6 +13,20 @@ Any collective that already exists in the real world can remodel itself under Mo
 **Mojo Circus** is the infrastructure layer. It connects the machines of a collective into one system — solving the problem that a collective's hardware is always fragmented across islands.
 
 **mojo-labs** is the first collective constituted under the framework. It builds and maintains the framework itself, and by doing so, dogfoods it.
+
+---
+
+## The Future
+
+Every house has a server in it. Not a novelty — infrastructure. As normal as a router: a square box, sits in a cupboard, you forget it's there. That's where your intelligence lives. Always on, always yours, never leaving your home.
+
+The router analogy is deliberate. A router connects you to the internet — you don't think about it, it just works. The home server connects your intelligence to everything: your devices, your collectives, your life. It will probably be marketed and sold the same way. It comes with the house. It's in the listing. One bed, one bath, a server.
+
+Your personal AI lives on that server and grows with you. It learns how you think, how you work, what you value, how you make decisions. Over years it becomes a genuine extension of you — not a tool you use but a counterpart that knows you. The longer you have it the more valuable it becomes, and it's yours in the same way your memories are yours. No company owns it. You take it everywhere.
+
+From that server you can be part of as many collectives as you want — your family, your company, a community, a side project. Each collective gets the version of you you've consented to share. You scope what your AI does in each collective, what it reveals about you, how much authority it has. Your intelligence is the constant thread running through all of it. When you leave a collective you take it with you, intact.
+
+This is when Mojo becomes infrastructure. Not a product people choose — just the way intelligence works.
 
 ---
 
@@ -35,6 +51,8 @@ For humans, this means a personal AI that works for you specifically: sovereign,
 For AI members, it means a well-specified agent with a clear role, defined scope, and an accountable human owner.
 
 The collective layer does not replace the individual layer. It builds on it. Giving every member a capable, sovereign individual intelligence is the prerequisite — not an afterthought.
+
+What this changes for a person: work becomes stewardship. Your AI handles the ongoing operational work — the grind, the coordination, the routine. You direct it, you own the outcomes, you make the calls it cannot make alone. It surfaces to you when it hits a decision above its threshold — one well-framed message at the right moment, not a queue of notifications. You decide, it goes back to work. You are never bored — everything that reaches you is worth your attention. You are never buried — the things that don't require your judgment never reach you. You own your time back.
 
 ---
 
@@ -66,6 +84,8 @@ A collective must have **at least one human member**. Without a human, there is 
 
 **Sovereignty.** The collective governs itself — its structure, its goals, its decisions. No external authority over how it operates.
 
+**Open source.** The Mojo protocol and runtime are open source and will remain so permanently. This is not a business model choice — it is a logical necessity. An AI that shapes how you think over a lifetime, running on closed source software, offers no sovereignty guarantee worth anything. The only way the claim "this works for you and only you" is credible is if anyone can read, audit, and verify it. Closed source Mojo is a contradiction in terms. mojo-labs captures value through hardware, setup, support, and adjacent markets — never by closing the core.
+
 **Transparency.** Members can see what is happening and why. Actions are traceable. Decisions are legible to the collective.
 
 **Accountability.** Every action traces to a member. AI actions trace to their human owner. The accountability chain is never broken.
@@ -75,6 +95,30 @@ A collective must have **at least one human member**. Without a human, there is 
 **Composability.** Collectives nest. The model is the same at every scale. Small pieces connect cleanly. One thing done well.
 
 **Exit.** Members can leave. Departure is graceful — contributions remain, private context is not exposed, AI members leave with their owner. A position's role definition persists — it defines what the collective expects and what context is transferable to the next holder. The previous holder's personal instance of that role leaves with them. Collectives fill gaps; they do not trap members.
+
+---
+
+## The Architecture
+
+Mojo is designed in three distinct layers. The distinction matters because a flaw at any layer propagates to every layer above it permanently.
+
+**Standard** — the formal specification of what a collective is. Minimal contracts and invariants. What must be true of any Mojo-compatible system. Slow to change by design. This is what the framework sessions produce.
+
+**Mechanism** — the abstract interface layer. Not technology choices — the minimal set of interfaces any implementation must satisfy: how members are identified, how knowledge flows between them, how collective state persists, how governance is enforced. Designed after the standard, before any concrete implementation.
+
+**Policy** — a concrete implementation of the mechanism with specific technology choices. Mojo Circus is the first: specific networking, specific AI models, specific infrastructure. Others can build their own. The standard stays open; policy is where implementations differentiate.
+
+This architecture is rooted in Unix design philosophy — specifically the principle of mechanism, not policy. The framework defines how; implementations decide what. The standard is the contribution. The policy proves it works. The ecosystem that builds its own policies on top is the measure of whether the standard was right.
+
+Three principles from Unix govern every design decision in Mojo:
+
+**Do one thing well, then compose.** Each skill, each member role, each component has one job. The power is in composition — small, clean primitives combining into systems greater than their parts. Complexity emerges from simplicity, not from complicated components.
+
+**Minimal standard.** Only what is universal and non-negotiable belongs in the standard. A thing goes in the standard only if it genuinely cannot live anywhere else. Resist adding — every unnecessary thing in the standard is a constraint on every implementation forever.
+
+**Layered correctness.** Each layer must be right before building on it. This is not a productivity principle — it is a correctness guarantee. A flaw in the standard propagates to every policy ever built on it, permanently. Get it right first.
+
+Applying this model to collective intelligence — systems where the components are intelligences with agency, not deterministic programs — is new territory. There is no prior formal specification for this class of system. The framework sessions are designing one.
 
 ---
 

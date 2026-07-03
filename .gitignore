@@ -20,3 +20,5 @@ deliverables/
 
 # Claude Code project-level settings (kept global)
 .claude/
+.obsidian/
+.playwright-mcp/

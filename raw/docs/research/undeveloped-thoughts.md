@@ -440,6 +440,18 @@ closes this question.
 
 ---
 
+## Growing Up With Your AI (2026-06-15) [→ vision, craft-problem]
+
+A kid growing up today might have their AI from age five. By the time they're an adult it has been with them for fifteen years — through school, through learning, through every stage of development. It knows how they think, what they struggle with, where their edges are. That's not a tool. That's the deepest possible mentorship relationship — a sensei that has watched you your entire life.
+
+Those people will have a completely different relationship with intelligence than any generation before them. The AI isn't something they adopted as adults and had to learn to trust — it's always been there. The boundary between their thinking and their AI's contribution will be genuinely blurry. Like how the language you grow up speaking shapes how you reason — not something you use, something you think with.
+
+This connects directly to the craft problem doc: the personal AI as sensei works best when it has known you long enough to know your specific patterns, avoidances, and growing edges. A counterpart that's been with you since childhood has that at a depth no adult-adopted tool ever could.
+
+The design implication: the personal AI must be built to last a lifetime. Not a product you replace every two years — a counterpart that accumulates and grows. The relationship is the asset, not the model version running underneath it.
+
+---
+
 ## Deployment Safety on Constrained Hardware (2026-06-05) [→ impl]
 
 Blue-green deployment — running two identical environments and flipping a router between them — is the standard answer to zero-downtime deploys and instant rollback. It works well in cloud environments where compute is elastic and cheap. It doesn't translate directly to personal hardware.
@@ -454,3 +466,13 @@ The principles from blue-green worth keeping:
 - Apply the expand/contract pattern to schema and API changes: add new capability → run both old and new → remove old only after all nodes have updated. Retrofitting this is painful; building it in from the start is cheap.
 - Model updates (pulling a new LLM) are a separate layer from code updates. Pull the new model in the background while the old one serves → verify checksum → flip routing config → deprecate old model after a stabilisation period. Ollama supports this natively.
 - Treat Performer machines going offline as a first-class case. An update rolled out while a machine is sleeping must survive the wake-up safely. The Ringmaster tracks update state per node and resumes or retries on reconnect.
+
+---
+
+## Software Development Practice as a General Work Superpower (2026-06-30) [→ future]
+
+Software developers are probably the most efficient knowledge workers in history — decades spent studying and building tooling around how work itself gets organised: development lifecycle models (Agile, Waterfall, Extreme Programming), and the practices and tools that sit inside them (Kanban boards, ADRs, trunk-based development, and the rest). None of that is software-specific in principle. It generalises to any kind of work. The reason it never spread was never that the ideas don't transfer — it's that using them well has always required real knowledge and learning most people never had reason to acquire.
+
+Mojo's angle: agents collapse that barrier. You don't need to have learned Agile or know what an ADR is — the agents carry that expertise and actually run the practice for you, on whatever kind of work you're doing, not just code. This is the same idea as project/collective scaffolding, generalised: it's not "projects" as one thing and "collectives" as another — both are the same primitive at different scale, mainly differing by number of members. A person picks (or is helped to pick) a development lifecycle model for their work, and Mojo makes it real rather than aspirational.
+
+Open question, deliberately unresolved: does this mean agents run the process end to end, or do agents assist while humans still do the judgment work? Just an idea right now — a question for later, not a design decision.

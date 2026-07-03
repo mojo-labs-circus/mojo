@@ -8,7 +8,7 @@
 
 | # | Session | Status |
 |---|---------|--------|
-| 00B | Blockchain Research | pending |
+| 00B | Blockchain Research | in progress |
 | 01 | First Principles | pending |
 | 02 | Agent Model | pending |
 | 03 | Frontier Interface | pending |

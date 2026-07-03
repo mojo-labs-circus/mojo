@@ -47,18 +47,13 @@ revenue and don't compromise the architecture.
 
 ### 3. The AI house — a sibling market
 
-The Roman bath analogy plays out commercially here. SPAN/XFRA is putting compute in
-homes but it's their server, not yours. The gap in the market is: a home with a
-Ringmaster built in — proper rack, power, cooling, ethernet — sold as a feature the
-way fibre connectivity or a home cinema is sold as a feature.
+Compute is moving into the home the same way plumbing did. Bathrooms used to be outside — now they're in every house and in the listing. The home server is on the same trajectory. "One bed, one bath, a server" is not a joke — it's where real estate is heading as personal AI becomes infrastructure people expect to own.
 
-This is a partnership play rather than a direct product: work with homebuilders or
-high-end smart-home integrators to include a Mojo-ready server room as a standard
-option. You provide the spec, the software, the setup. They provide the homes.
-The buyer gets a house with a personal AI system already running.
+SPAN/XFRA is putting compute in homes but it's their server, not yours. The gap is the sovereign version: a home with a Mojo-ready server built in — proper rack, power, cooling, ethernet — sold as a feature the way fibre or a home cinema is sold. The router comparison is exact: a square box in a cupboard you forget is there, except it's running the most important software in your life.
 
-This is further out, but the market is forming. SPAN proved homebuilders will partner
-on this. The difference is selling the sovereign version.
+Partnership play: work with homebuilders or high-end smart-home integrators to include this as a standard option. You provide the spec, the software, the setup. They provide the homes. The buyer gets a house with a personal AI system already running — and the AI follows them from the day they move in.
+
+Further out, but the market is forming. SPAN proved homebuilders will partner on this.
 
 ---
 

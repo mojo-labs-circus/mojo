@@ -18,6 +18,70 @@ No competitor is doing all three. Several are doing one. Knowing which quadrant 
 
 ---
 
+## Protocol Landscape
+
+Last updated: 2026-06-15. The space moved fast — first pass missed most of this.
+
+### What exists
+
+**Google A2A (Agent-to-Agent)** — Released April 2025, now Linux Foundation stewardship. The most mature agent-to-agent protocol. Uses HTTP, SSE, and JSON-RPC 2.0. Agents advertise capabilities via "Agent Cards" (JSON business cards), exchange structured Task objects, discover each other via well-known URIs or registries. 150+ production orgs (Microsoft, AWS, Salesforce, SAP, IBM). 22k GitHub stars. SDKs in 5 languages. Complementary to MCP — MCP is agent-to-tool, A2A is agent-to-agent task delegation. **Not a collective intelligence model** — no membership semantics, no ownership chains, no consent framework, no humans in the mesh.
+
+**ANP (Agent Network Protocol)** — Open source community project positioning itself as "the HTTP of the agentic internet." DID-based identity, dynamic protocol negotiation between agents, layered architecture (identity → meta-protocol → application). Technical white paper on arXiv (2508.00007). More ambitious than A2A in scope but less mature and adopted.
+
+**IBM ACP (Agent Communication Protocol)** — REST-native, minimal, JSON-RPC over HTTP/WebSockets. Launched March 2025. Merged into A2A under Linux Foundation governance September 2025. No longer separate.
+
+**MCP (Anthropic)** — Agent-to-tool protocol. Orthogonal to what Mojo needs — not peer communication.
+
+**FIPA ACL / KQML (1990s)** — Academic, never production-adopted. Message semantics only, no identity or governance.
+
+### Identity layer — converging on DIDs
+
+Multiple protocols are independently landing on W3C Decentralized Identifiers (DIDs) as the identity primitive:
+
+**Aegis Protocol** (Aug 2025) — Non-spoofable identity via DIDs on Bitcoin's Identity Overlay Network, NIST post-quantum cryptography, zero-knowledge proofs for policy compliance. 0% attack success rate across 20k trials. arXiv 2508.19267.
+
+**DIAP** (Nov 2025) — IPFS/IPNS-bound DIDs, ZK proofs for stateless ownership verification. arXiv 2511.11619.
+
+**IATP** (Microsoft) — Cryptographic trust handshakes using Ed25519 DIDs, <200ms validation overhead. 82.4% of models vulnerable without this kind of protection.
+
+**IETF draft** (Oct 2025) — Agent networks framework using W3C DID/VC as foundation. Single trust domain only. Expires April 2026.
+
+DIDs are becoming the standard identity substrate. Worth building on rather than reinventing.
+
+### Governance and orchestration
+
+**Microsoft Agent Governance Toolkit** (Apr 2026) — Seven-package open source system covering OWASP Agentic Top 10. Policy engine, secure agent-to-agent channels, sandboxing, compliance verification. Policy enforcement only — not collective decision-making or membership governance.
+
+**Cloudflare Mesh** (Apr 2026) — Private networking for AI agents across multicloud. Infrastructure layer, not a collective intelligence model.
+
+**Coral Protocol** (Sep 2025) — "Internet of Agents" — decentralised communication, coordination, trust, and payments. Built on MCP. Solana partnership. Worth watching as the closest to a collective infrastructure play, but no membership model, no human-AI pair semantics.
+
+### Standards bodies
+
+**W3C AI Agent Protocol Community Group** — First meeting June 2025. Early stage, specs expected 2026-2027.
+
+**Agentic AI Foundation (Linux Foundation)** — Launched Dec 2025. Founding members: Anthropic, OpenAI, Block. Stewarding MCP, AGENTS.md, goose, Agent Skills. 170+ orgs. The emerging home for agent standards.
+
+**NIST** (Feb 2026) — AI agent identity and authorization framework. Building on OAuth, OpenID Connect, SCIM for non-human identity management.
+
+**OWASP Agentic Top 10** (Dec 2025) — First formal taxonomy of risks specific to autonomous agents. Goal hijacking, tool misuse, identity abuse, memory poisoning, cascading failures. Useful threat model for Mojo's security design.
+
+### The gap — still real
+
+None of the above cover:
+
+- **Human-AI pairs as a persistent unit** — identity protocols handle agents, not human+AI partnerships with shared persistent identity
+- **Collective membership semantics** — how an intelligence joins, participates in, and leaves a collective; what membership means
+- **Consent-based data sharing between collectives** — payment protocols handle transactions, not granular revocable consent for data and context
+- **Authority escalation as a first-class primitive** — delegation research exists (HDP, arXiv 2604.04522) but no protocol for how authority requests propagate and who holds final veto
+- **Ownership chains with meaningful semantics** — blockchain gives audit trails, not ownership inheritance and accountability chains
+
+### Strategic question
+
+A2A and ANP handle transport and task delegation well. DIDs are converging as the identity substrate. Rather than rebuilding these layers, Mojo's protocol work may be better positioned as the **collective intelligence layer on top of** existing infrastructure — using A2A for agent-to-agent transport, DIDs for identity, and adding the layer nobody has: membership, consent, ownership chains, authority escalation. This is worth resolving before the protocol design session.
+
+---
+
 ## Multi-Agent Frameworks
 
 These build AI-to-AI coordination. None treat humans as members of the collective.
@@ -91,6 +155,8 @@ These have thought about constituting AI collectives formally.
 ## Research to Watch
 
 Not competitors but papers that directly constrain or inform the framework design.
+See `academic-field.md` for the full intellectual landscape — the Hybrid Intelligence
+field has been converging on this problem since 2019 without building a system.
 
 **"The Accountability Horizon"** (arXiv 2604.07778, Tibebu & Shemtaga, Apr 2026) — Proves an impossibility theorem: once a human-AI collective's compound autonomy (executive × epistemic) exceeds `1 - 1/|cycle_size|`, no framework can satisfy all four accountability axioms simultaneously. Key implications for Mojo:
 
@@ -101,6 +167,14 @@ Not competitors but papers that directly constrain or inform the framework desig
 - See `spec/framework/constitution.md` for the implications on how the constitution should handle accountability
 
 **"Generative Collective Intelligence"** (arXiv 2505.19167, 2025) — AI as cognitive bridge for human groups. Still positions AI as tool amplifying human collectives, not peer member. Confirms the peer-model framing is novel.
+
+**Dellermann et al. — "Hybrid Intelligence" (2019)** — Foundational definition of the field. 1233 citations. Everything in the academic space references this. Establishes that human+AI combined in ongoing systems outperform either alone. Does not attempt a formal collective model or governance structure.
+
+**Beckers & Teubner — "Three Liability Regimes for Artificial Intelligence" (2023)** — Legal theory introducing the "Hybrids" category: human-algorithm associations that act as quasi-organisations and should be treated as collective entities for accountability. The ontological claim is identical to Mojo's — the collective is a kind of entity. Most important prior art in the academic space. No operational system.
+
+**Eccles — "Hybrid Intelligence Teams (HITs)" (2025)** — Oxford Said Business School. "Persistent groups composed of multiple humans and multiple AI agents working interdependently." Names hybrid-specific failure modes (authority confusion, AI consensus illusions, cross-agent drift) that don't appear in human-only or AI-only team theory. Closest academic formulation to Mojo's collective model. Management science only — no system design.
+
+**Gupta et al. — "COHUMAIN" (2025)** — Topics in Cognitive Science. 118 citations. Proposes COllective HUman-MAchine INtelligence as a framework. Rapidly becoming a reference. AI still positioned as tool amplifying human collectives, not peer member.
 
 ---
 
@@ -116,7 +190,7 @@ Not infrastructure — these are courses or SaaS tools built on top of existing 
 
 In priority order — what Mojo has that nobody else does:
 
-1. **Human + AI as the same ontological type** — peers in the collective, not master/servant. No framework does this. Every existing system has humans outside the collective as supervisors.
+1. **Human + AI as the same ontological type** — peers in the collective, not master/servant. No framework does this. Every existing system has humans outside the collective as supervisors. The academic field (Hybrid Intelligence, HITs, Beckers/Teubner) has been arguing this should exist since 2019. Nobody has built it.
 
 2. **Constitutional collective intelligence framework** — every collective formally declares itself before operating. AgentCity has something constitutional but it's imposed, AI-only, and blockchain-dependent. The constructive answer to the impossibility-theorem problem nobody has built.
 

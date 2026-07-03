@@ -71,6 +71,22 @@ relate. This session defines what flows along those edges and how.
 - How do intelligences from different collectives communicate when they need to?
 - What is the interface between two separate collectives?
 
+**Knowledge Objects**
+
+The most valuable thing intelligences exchange is not instructions or status — it is *understanding*. This session must produce the Knowledge Object (KO): the framework primitive for encoding and transferring what one intelligence knows about a subject.
+
+A KO is a portable, semantically-tagged representation of an intelligence's understanding. It is tagged to the producing member (human or AI). AI members consume KOs natively. Human members receive rendered views (briefs, presentations). KOs are not a document format — they are the seam between Member A's understanding and Member B's.
+
+Baseline design is in `docs/research/ko-design.md`. Review it before the session. The schema and concepts there are provisional — this session finalises them.
+
+- What fields does a KO need? What is essential vs. optional?
+- What semantic roles can a knowledge node play?
+- How do KOs reference other KOs — what does a dependency mean?
+- What does a receiver-side intelligence need to compute the gap between its understanding and a KO?
+- How do KOs evolve as understanding deepens? Versioning model?
+- Storage convention — where do KOs live, how are they named?
+- When is a KO produced vs. updated vs. superseded?
+
 ---
 
 ## Generalisation Test
@@ -92,6 +108,7 @@ The communication model must hold for:
 4. Leader view model — how the top node maintains situational awareness
 5. Communication norms — what every participant must do, enforced how
 6. Cross-collective interface — how separate collectives communicate
+7. Knowledge Object schema — finalised fields, semantic roles, storage convention, versioning model, diff-readiness
 
 ---
 

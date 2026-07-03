@@ -90,6 +90,7 @@ This unlocks four things:
 You are not a client who submits a spec and waits for a product. You are a live participant — the technical lead the whole company is working under.
 
 What that means in practice:
+
 - Agents surface decisions to you rather than making them. You get options and tradeoffs; you make the call.
 - You can check in at any time, at any depth. See what every team is working on right now. Pull someone into a review. Redirect a component mid-build.
 - Nothing ships, merges, or gets marked done without your explicit sign-off.
@@ -113,9 +114,42 @@ The same `.mojo` file runs on any machine in the circus. The runtime resolves `m
 
 This is not a "works on my machine" tool. A spec written for the Ringmaster runs on a performer machine at reduced quality but identical structure.
 
+## The Core Problem This Is Solving
+
+Dijkstra argued that natural language is a fundamentally bad specification language — ambiguous, imprecise, unverifiable. Traditional code solves this through determinism: same input, same output, always. But code requires expertise and is rigid.
+
+AI output is the opposite: flexible and capable, but probabilistic. The same prompt produces different outputs. This makes AI hard to test, audit, or rely on formally.
+
+The .mojo language is an attempt to bridge this. The structure it imposes is Design by Contract applied to AI:
+
+- `goal` → precondition (what we start from, what we want)
+- `done_when` → postconditions (testable success criteria)
+- `must_not` → invariants (things that must never be violated)
+
+The AI does the probabilistic work within those constraints. The constraints themselves are deterministic and testable. The research question: can you add enough formal structure to AI direction that outputs become reliably verifiable — not fully deterministic, but constrained enough that success is checkable against a spec?
+
+This is not solved. It is the direction.
+
+## Heterogeneous AI Interoperability
+
+The Dijkstra problem gets harder in a world where everyone has a personal AI — fine-tuned, specialised, different from everyone else's. In a collective where members use different models, you cannot assume the executor is the same. The `.mojo` spec becomes the interoperability layer: the contract that any model can run against and any model can verify.
+
+This does not require identical outputs. It requires *verifiably equivalent* ones — two different models producing two different implementations that both satisfy the same `done_when` criteria. That is how engineering already works.
+
+The constraint this imposes on the language: verification cannot itself depend on a specific model's judgment. If `done_when` is natural language, different models may interpret it differently, which breaks the guarantee. The verification tier probably needs to be:
+
+- **Machine-checkable** — tests, assertions, measurable invariants (tractable now, but limits expressiveness)
+- **Formally specified** — precise enough that any conforming model interprets it identically (harder, closer to formal methods research)
+
+In practice: machine-verifiable criteria for the common cases, natural language for the rest, with the tradeoff made explicit per criterion.
+
+This is not a problem unique to Mojo — it is the underlying research problem of making AI work auditable across model boundaries. Solving it partially would still be significant.
+
 ## Open Questions
 
-- Can the company structure be customised per-project (e.g. skip reviewer for a fast prototype run)?
+- Can the execution structure be customised per-task (e.g. single-pass for a fast prototype)?
 - What does the syntax look like for inter-component communication or shared state?
-- How does a `.mojo` run map onto LangGraph nodes at the Ringmaster level — does the Architect generate the graph dynamically?
-- How does the live check-in interface surface per-agent state to the developer?
+- How does a `.mojo` run map onto LangGraph nodes at the Ringmaster level?
+- How does the live check-in interface surface per-agent state?
+- Where is the line between machine-verifiable and natural-language criteria, and how is that boundary expressed in the syntax?
+- Does the language need a formal verification sublanguage, or is it enough to enforce that `done_when` criteria produce a boolean?
