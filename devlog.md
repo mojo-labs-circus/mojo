@@ -20,12 +20,15 @@ AGENTS), written in my voice, public, kept current. Everything else — the old 
 corpus, the 9-chunk restructure tracker, the framework session briefs — distilled
 into these files and deleted; git history keeps every byte if we ever need to dig.
 
-The new goal, frozen: by the start of September, my PC dual-boots Windows and MojOS
-(NixOS-based), MojOS is my daily driver, and mojo-agent v0.1 — my first mate — runs
-inside it. Seven testable finish-line points in [roadmap.md](roadmap.md). Month one
-is Nix and the OS in a VM; month two is metal and the agent. The Circus and the
-collectives stay on the horizon, alive in [vision.md](vision.md), untouched until
-the foundation is real.
+The new goal, frozen: by 15 September — back at my PC for second year — the first
+version of an always-on Jarvis exists. MojOS (NixOS-based) as my daily driver on the
+laptop I have with me all summer, mojo-agent v0.1 — my first mate — resident inside
+it, with phone access and voice as the surfaces once the core holds. The day I'm
+back, it all deploys to the PC (dual-boot with Windows), which becomes the true
+always-on host. Finish line in [roadmap.md](roadmap.md): July is Nix and the OS in a
+VM, August is the laptop for real plus the agent core, September is surfaces and
+hardening. The Circus and the collectives stay on the horizon, alive in
+[vision.md](vision.md), untouched until the foundation is real.
 
 Also settled today: the essays (craft problem first) come later and get written from
 these files; the dotfiles repo's contents dissolve into the mojos flake when the rice

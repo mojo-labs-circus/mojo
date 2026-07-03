@@ -5,22 +5,26 @@ this all points at is [vision.md](vision.md).*
 
 ---
 
-## Now — MojOS v0.1 + mojo-agent v0.1 (target: start of September 2026)
+## Now — MojOS v0.1 + mojo-agent v0.1 (target: 15 September 2026)
 
-The project reset to build-first in July 2026 (see [devlog.md](devlog.md)). The goal
-for the next two months is one real thing, used daily, by me:
+The project reset to build-first in July 2026 (see [devlog.md](devlog.md)). I'm away
+from my PC until 15 September — the start of second year — working from the laptop
+all summer. The goal:
 
-**My PC dual-boots Windows and MojOS, and MojOS is my daily driver, with my first
-mate running inside it.**
+**By the day I'm back at my PC, the first version of an always-on Jarvis exists:
+I can work with it, speak to it, and reach it from my phone — running on MojOS,
+which is my daily driver.**
 
-The finish line, as testable statements:
+The finish line, as testable statements. Core — all of these:
 
-1. My machine dual-boots Windows and MojOS; MojOS is my daily driver.
-2. The entire system is declared in the `mojos` flake — apps, Hyprland, dotfiles —
-   rebuilds with one command, and the same config boots as a VM for safe iteration.
+1. My laptop runs MojOS as its daily driver (replacing Arch), built from the
+   `mojos` flake and proven in a VM before it ever touched metal.
+2. The entire system is declared in the flake — apps, Hyprland, dotfiles — and
+   rebuilds with one command.
 3. At least two modes exist and switch cleanly (looks, behaviour, and how much of
    the system shows — e.g. coding mode, normal mode for company).
-4. mojo-agent is part of the OS — installed by the flake, not by hand.
+4. mojo-agent is installed by the flake and runs as a resident service — always on
+   whenever the machine is.
 5. Running `mojo` opens my first mate, which keeps persistent memory about me as
    plain files on my disk.
 6. It can control the computer — run commands, open apps, edit files — behind a
@@ -28,10 +32,21 @@ The finish line, as testable statements:
 7. It can delegate to the crew: hand work to Claude Code or a frontier model and
    bring back the result, keeping my personal context local.
 
-Rough shape: **month one** — learn Nix properly, build the flake, live in the VM,
-build the mode system and a rice worth keeping (the old dotfiles are not coming
-along). **month two** — dual-boot install on metal, daily-drive it, build agent v0.1
-into it, harden the rough edges.
+The Jarvis surfaces — both wanted, built after the core holds, in whatever order
+momentum favours:
+
+- **Phone:** I can reach it from my phone (over Tailscale — same agent, smaller
+  window).
+- **Voice:** I can speak to it and it speaks back (local speech-to-text and
+  text-to-speech).
+
+Rough shape: **July** — learn Nix properly, build the flake, live in the VM, build
+the mode system and a rice worth keeping (the old dotfiles are not coming along).
+**August** — MojOS onto the laptop for real, daily-drive it, build the agent core.
+**September** — the phone and voice surfaces, hardening. **15 September** — back at
+the PC: MojOS goes on it (dual-boot with Windows), the agent deploys there, and the
+PC — left on permanently — becomes the true always-on host. That day is the finish
+line, not the start of the work.
 
 Working rules for this phase:
 
@@ -46,11 +61,11 @@ Working rules for this phase:
 ## Next — living with it (autumn 2026)
 
 Driven by what daily use actually surfaces, not planned in detail yet. Known
-candidates: the agent as a resident system service rather than a summoned CLI; local
-models pulling real weight (the PC's GPU decides how much); the brain growing beyond
-plain files when plain files measurably fall short; voice input; polish on the modes.
-Uni term means smaller sessions — the system has to earn its keep as a study
-environment too.
+candidates: local models pulling real weight (the PC's GPU decides how much); the
+brain growing beyond plain files when plain files measurably fall short; the
+laptop and PC staying coherent as two machines (the first real taste of the
+Circus problem); polish on the modes and the voice. Uni term means smaller
+sessions — the system has to earn its keep as a study environment too.
 
 ## Horizon
 
