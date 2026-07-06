@@ -71,12 +71,57 @@ One system, in pieces that compose.
 in the system rather than sitting in a tab: it knows my machines, my files, my
 workflow, my preferences, and it keeps a brain — real, accumulating memory of me that
 lives on my hardware and nowhere else. It isn't a coding tool. I'm the captain; it's
-the first mate; the frontier models — Claude, Claude Code, GPT, whatever is best in
-the world — are the crew. The first mate puts the crew to work on my behalf: picks the
-right specialist for the job, hands them only what they need, strips my private
-context before anything leaves the machine, and compiles what comes back into
-something that fits my actual work. The frontier capability is borrowed, not trusted.
-The best AI in the world, without handing it my life.
+the first mate — and it works for me, not itself: it defers on anything that matters,
+never substitutes its judgment for mine, and its actual job is making me better at
+being captain, not more dependent on it. The seam between us never fully disappears —
+that's deliberate, it's what keeps "who's accountable here" answerable even once the
+day-to-day feels like one continuous person.
+
+Command of everything I own outright: this machine, and every other machine of mine
+once the Circus exists — ringmaster and performers, still one fleet. Fleet command,
+the memory and the judgment, always lives at home, on the ringmaster (or, before I
+have one, whatever single machine I've got); only the hull doing the actual thinking
+changes. The fleet has classes, the same first mate at the helm of all of them, sized
+to the job — a sloop for something small and local, up through bigger hulls pooled
+from my own machines, up to a chartered frigate or galleon when a job needs more than
+anything I own gives. Every class gets the whole brain, chartered or owned — that's
+what makes it the fleet and not a mercenary: what changes between hulls is how much
+compute is under the hood, never how much it's trusted with. Chartering means renting
+compute for the length of one voyage, sometimes attested so even the dock owner can't
+see what ran, then letting it go — and it's cheap enough today to actually use:
+checked the pricing, confidential rental runs maybe 30–50% over plain for comparable
+hardware, not the order-of-magnitude tax expected, and whatever's rentable only keeps
+growing. What keeps it feeling like the same first mate across every hull rather than
+a different mind at a different size, short term: system prompts carrying voice and
+judgment, injected fresh regardless of hull — cheap, no training required. Long term,
+once prompting alone stops being enough: a personality adapter (a LoRA) per model
+family, same job, more durable. Either way memory itself never lives in the hull — it
+stays in the plain-file brain and gets retrieved fresh every time. Building and
+keeping whichever version current is MojOS's upkeep, same category as staging changes
+safely.
+
+Beyond the fleet, mercenaries — the frontier models, Claude, GPT, whatever is
+sharpest in the world. Never part of the fleet, never trusted with it: hired for one
+mission at a time, handed a fragment of the charter — the minimum context the job
+needs, real values swapped for stand-ins first — and dismissed the moment they report
+back. They keep whatever they're handed regardless of what's asked of them; the only
+real defence is shrinking the fragment, not trusting their side to forget.
+
+The first mate only charters a bigger hull, or hires a mercenary, when it's actually
+worth what it costs — in money, in what has to be revealed — never by default. In
+practice this should skew hard toward the bottom: nearly everything on my own fleet,
+chartering for real but occasional load, mercenaries the rare exception, not a
+default channel. Working out *when* that's worth it well enough to trust
+automatically is still open; deciding it by hand for now, training a router on the
+decision once there's enough real use to learn from. And the ceiling itself is mine
+to set, not just the first mate's to judge — a hard line like "never hire a
+mercenary, full stop" is a real, respected setting, not a suggestion the system talks
+me out of. Whatever tools exist, how much they get used is my call.
+
+The budget is the first mate's to manage, too — not just which hull a job goes to,
+but the standing decisions: which mercenary subscriptions are worth keeping, what
+chartering is costing over time, what the spend actually bought. "What did this cost
+me" gets the same discipline as "what did it see."
 
 **MojOS — the workshop.** The operating system built around the agent, on NixOS. The
 agent isn't a feature bolted on — it's the primary interface, and the OS is designed
@@ -89,7 +134,19 @@ for when mates are in the room. The machine matches the person I am that day.
 **The Circus — later.** Today each machine is an island. The Circus connects them so
 the agent follows you across devices as one coherent intelligence, not a separate
 instance per machine — the PC that becomes the home server, the laptop that joins it,
-the phone that's a window into it.
+the phone that's a window into it. Still entirely the first mate's own fleet: bigger
+ship classes to draw on, not a new tier of trust.
+
+**The Commons — the far horizon.** Chartering today means renting from whatever GPU
+supply already exists, one voyage at a time. The Commons is what that grows into: a
+network of datacentres run on attestation instead of trust — the operator can prove,
+cryptographically, that they never saw what ran on their hardware — that any personal
+AI, mine or anyone else's, can borrow from *and give back to*, not just charter from.
+How much to trust any given provider is the owner's call, not a default baked in —
+attested-but-known, or attested-and-anonymous, by choice. This is what keeps "everyone
+has their own server" from quietly recentralising the moment something needs real
+scale — the sovereignty promise holds even at the edge of what your own hardware can
+do.
 
 **Collectives — the far horizon.** Groups of people, each with their own sovereign
 agent, forming formal collectives: shared goals, explicit structure, AI participating
@@ -122,8 +179,9 @@ The system is right when these hold:
 2. **Ownership is always answerable.** At any point in the system, "who owns this
    data?" has one clear answer, and context leaves your hardware only by explicit
    consent.
-3. **Frontier models see questions, not your life.** The first mate delegates heavy
-   lifting to the best crew available while holding the full picture locally.
+3. **Mercenaries see questions, not your life.** The first mate hires the sharpest
+   frontier model for a single mission at a time, hands it a fragment of the charter
+   — the minimum it needs — and holds the rest locally.
 4. **It makes you more capable, not more dependent.** It pushes back, explains its
    reasoning, and develops its user — measured by what you can do, not just by what
    it can do.

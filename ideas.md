@@ -53,6 +53,19 @@ here honestly. Fuller write-ups of many of these exist in git history (pre-reset
 
 - PC-as-server first: the daily-driver PC becomes the ringmaster before any
   dedicated hardware exists; laptop joins as second machine.
+- MojOS installer, at circus time: explicit create-vs-join branch — first
+  machine creates a circus, every machine after points at an existing one and
+  joins it. Installer-level decision, not just a Ringmaster-side one.
+- No central account system for that join — sovereignty rules it out anyway.
+  Syncthing-style device pairing is the precedent: "create" generates a keypair
+  for that Ringmaster plus a shareable join token/QR code; "join" means having
+  that token and using it to authenticate directly against that Ringmaster's
+  address. The "account" is just possession of the token — same shape as
+  Tailscale auth-keys, no third party involved.
+- That same token should also transparently set up Tailscale under the hood —
+  the user never needs to know Tailscale exists. Mainstream usability means the
+  networking layer disappears; "join circus" is one token/QR code and it just
+  works, not a thing you configure.
 - Resource pooling: route inference to the best GPU in the circus; storage to
   capacity.
 - Thin clients (phone, watch) as direct windows into the server — also proves the
