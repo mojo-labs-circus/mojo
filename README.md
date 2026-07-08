@@ -17,7 +17,7 @@ with, and public because the thinking is part of the work.
 | [ideas.md](ideas.md) | The net — every live idea, one line each |
 | [devlog.md](devlog.md) | Dated thinking, newest first |
 
-**Currently defining:** Mojo's standards document, Mk1 — a first-pass,
+**Currently defining:** the Mojo System Interface, Mk1 — a first-pass,
 complete-coverage answer for every piece of the system, checked against real
 precedent (Unix, seL4, Plan 9, Erlang/OTP). [research-plan.md](research-plan.md)
 is the live tracker; [roadmap.md](roadmap.md) has the full phase breakdown.

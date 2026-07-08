@@ -170,9 +170,22 @@ than silently missing them, not because they need Mojo-side design.
 
 ---
 
+## Naming
+
+The eventual formal spec is called the **Mojo System Interface** — a direct,
+honest echo of POSIX's own full name (Portable Operating System Interface), not
+a claim of literal POSIX compliance. Plain functional register, not themed,
+matching `naming-conventions.md`'s own rule for policy mechanisms. Deliberately
+not "MojOS Standard" — that would collide the abstract policy with MojOS, the
+concrete NixOS product; the two need separate identities the same way Docket
+(the abstract primitive) and mojos (the repo) already do. Chosen 2026-07-08
+under explicit delegation ("do what you think"), not independently re-litigated
+— flag it if it's wrong.
+
 ## Not yet decided, deliberately
 
-- Where the eventual formal spec lives and what it's named (`system-model.md` was
-  floated once in devlog, never confirmed — open).
+- Exactly where the Mojo System Interface document itself lives (own file at
+  root, once it exists — not `research-plan.md`, which stays the tracker, not
+  the spec).
 - What implementation looks like — repos, services, SDKs. Blocked on the system
   actually being defined first, not on this file.

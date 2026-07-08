@@ -17,13 +17,13 @@ system is decided. Most of it says Open on purpose.
 ## Current stage
 
 A real systems-development lifecycle (locked 2026-07-08, see devlog):
-requirements (vision.md/philosophy.md, done) → Mojo's standards document, Mk1
+requirements (vision.md/philosophy.md, done) → the Mojo System Interface, Mk1
 (current phase) → Mk1 system implementation, built against that standard →
 iterate, versioning both the standard and the system as real use teaches what
 Mk1 got wrong.
 
-Current phase is Mk1 of the standards doc: a first-pass, complete-coverage answer
-for every piece in research-plan.md's tracker — good enough to build against.
+Current phase is Mk1 of the Mojo System Interface: a first-pass, complete-coverage
+answer for every piece in research-plan.md's tracker — good enough to build against.
 Depth comes from iterating across versions once something real exists.
 
 Mojo's core architecture is a foundational, cross-cutting layer, so getting the

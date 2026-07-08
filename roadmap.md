@@ -12,11 +12,11 @@ the laptop all summer. That's a fact about the hardware, not a deadline.
 
 The project follows a real systems-development lifecycle (locked 2026-07-08, see
 [devlog.md](devlog.md)): requirements ([vision.md](vision.md),
-[philosophy.md](philosophy.md) — done) → Mojo's standards document, Mk1 → Mk1
+[philosophy.md](philosophy.md) — done) → the Mojo System Interface, Mk1 → Mk1
 system implementation, built against that standard → iterate, versioning both the
 standard and the system as real use teaches what Mk1 got wrong.
 
-**Current phase: Mk1 of the standards document.** A first-pass, complete-coverage
+**Current phase: Mk1 of the Mojo System Interface.** A first-pass, complete-coverage
 answer for every piece of the system — files, identity, process/invocation,
 trust/enforcement, connection, and whatever else turns up — good enough to build
 against, the same way POSIX.1-1988 covered its whole scope thinly rather than
