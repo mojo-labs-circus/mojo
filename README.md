@@ -13,14 +13,16 @@ with, and public because the thinking is part of the work.
 | [vision.md](vision.md) | The future this builds toward |
 | [philosophy.md](philosophy.md) | What I believe and why this exists |
 | [roadmap.md](roadmap.md) | Now / next / horizon |
+| [research-plan.md](research-plan.md) | The current phase's live tracker, piece by piece |
 | [ideas.md](ideas.md) | The net — every live idea, one line each |
 | [devlog.md](devlog.md) | Dated thinking, newest first |
 
-**Currently building:** MojOS v0.1 (NixOS-based, built around the agent) and
-mojo-agent v0.1 — dual-booting on my own machine as my daily driver, by September
-2026. The finish line is in [roadmap.md](roadmap.md).
+**Currently defining:** Mojo's standards document, Mk1 — a first-pass,
+complete-coverage answer for every piece of the system, checked against real
+precedent (Unix, seL4, Plan 9, Erlang/OTP). [research-plan.md](research-plan.md)
+is the live tracker; [roadmap.md](roadmap.md) has the full phase breakdown.
 
-The proof under construction:
+The eventual implementation, built once the standard exists:
 [mojos](https://github.com/mojo-labs-circus/mojos) ·
 [mojo-agent](https://github.com/mojo-labs-circus/mojo-agent)
 

@@ -123,6 +123,14 @@ but the standing decisions: which mercenary subscriptions are worth keeping, wha
 chartering is costing over time, what the spend actually bought. "What did this cost
 me" gets the same discipline as "what did it see."
 
+The fleet described here now has a formal contract behind it, not just this
+narrative: [standing-orders.md](standing-orders.md), a POSIX-style spec — the
+behavioral rules any vessel or fleet must satisfy, independent of which OS or
+implementation actually satisfies them. It's the product of real design work, not a
+restatement of this page: Keel, the permission-ceiling/permission-grant split, a
+generational roster, Fleet and Collective as the same recursive container at
+different depths, vessel homogeneity confirmed rather than needing a type axis.
+
 **MojOS — the workshop.** The operating system built around the agent, on NixOS. The
 agent isn't a feature bolted on — it's the primary interface, and the OS is designed
 for it: the whole system declared in one configuration, changes staged and validated

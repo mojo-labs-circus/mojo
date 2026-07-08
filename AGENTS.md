@@ -4,16 +4,31 @@ Clarke's thinking repo for the Mojo project: vision, philosophy, plans, ideas. N
 code lives here. The code repos (`mojos`, `mojo-agent`) reference this repo for
 context — never the reverse.
 
+Skim the last couple of [devlog.md](devlog.md) entries first — especially any
+HANDOFF one — to pick up where things left off.
+
 **Before working on anything Mojo-related, in any repo:** read
 [vision.md](vision.md) and [philosophy.md](philosophy.md) — they are how you
 understand Clarke and this project. [roadmap.md](roadmap.md) has the current focus
-and its finish line.
+and its finish line. [research-plan.md](research-plan.md) is the live tracker for
+the current phase — check its Status column before assuming any piece of the
+system is decided. Most of it says Open on purpose.
 
 ## Current stage
 
-Build-first reset (July 2026). One goal until September: MojOS v0.1 + mojo-agent
-v0.1, dual-booting as Clarke's daily driver — see [roadmap.md](roadmap.md). Meta-work
-is rationed; building and learning are the priority.
+A real systems-development lifecycle (locked 2026-07-08, see devlog):
+requirements (vision.md/philosophy.md, done) → Mojo's standards document, Mk1
+(current phase) → Mk1 system implementation, built against that standard →
+iterate, versioning both the standard and the system as real use teaches what
+Mk1 got wrong.
+
+Current phase is Mk1 of the standards doc: a first-pass, complete-coverage answer
+for every piece in research-plan.md's tracker — good enough to build against.
+Depth comes from iterating across versions once something real exists.
+
+Mojo's core architecture is a foundational, cross-cutting layer, so getting the
+core abstractions right comes before any code depends on them — the same bet
+real standards bodies and kernel projects make.
 
 ## The habit
 

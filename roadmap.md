@@ -5,70 +5,62 @@ this all points at is [vision.md](vision.md).*
 
 ---
 
-## Now — MojOS, with Hermes as the first Jarvis
+## Now — defining Mojo's standards, Mk1
 
-The project reset to build-first in July 2026 (see [devlog.md](devlog.md)). I'm away
-from my PC until 15 September — the start of second year — working from the laptop
-all summer. That's a fact about the hardware, not a deadline: the laptop is the
-summer machine, the PC becomes the true always-on host once I'm back. No
-feature-complete date attached to it — progress is "is Jarvis running and getting
-used," not a checklist due by a calendar.
+I'm away from my PC until 15 September — the start of second year — working from
+the laptop all summer. That's a fact about the hardware, not a deadline.
 
-**Locked 2026-07-05:** mojo-agent proper isn't being designed yet. The fastest path
-to an actually-working Jarvis is running something that already exists — [Hermes
-Agent](https://github.com/NousResearch/Hermes) (Nous Research, MIT, self-hosted,
-persistent memory, a learning loop that writes and improves its own skills) —
-wholesale, wrappers and all, rather than building an agent loop from scratch. Own
-mojo-agent gets designed once living with Hermes shows what it actually gets wrong.
+The project follows a real systems-development lifecycle (locked 2026-07-08, see
+[devlog.md](devlog.md)): requirements ([vision.md](vision.md),
+[philosophy.md](philosophy.md) — done) → Mojo's standards document, Mk1 → Mk1
+system implementation, built against that standard → iterate, versioning both the
+standard and the system as real use teaches what Mk1 got wrong.
 
-The plan, in sequence — basic OS first, agent in fast, then let the agent help build
-the rest rather than hand-building MojOS before there's any help with it:
+**Current phase: Mk1 of the standards document.** A first-pass, complete-coverage
+answer for every piece of the system — files, identity, process/invocation,
+trust/enforcement, connection, and whatever else turns up — good enough to build
+against, the same way POSIX.1-1988 covered its whole scope thinly rather than
+perfecting one part and leaving the rest blank.
+[research-plan.md](research-plan.md) is the live tracker: walk each piece, check
+it against real precedent (Unix, seL4, Plan 9, Erlang/OTP, others as needed), land
+on Mojo's own answer.
 
-1. Build a minimal MojOS — just enough NixOS flake to boot and run a resident
-   service, proven in a VM (`nixos-rebuild build-vm`) before it ever touches metal.
-   Not the modes, not the rice yet — the smallest thing Hermes can actually run on.
-2. Install Hermes Agent as the first mate on that minimal system, resident and
-   always on whenever the machine is.
-3. Point it at whatever local memory store Hermes defaults to and start using it —
-   don't pre-design the memory architecture; let living with it teach me what
-   "editable brain" needs to mean (plain files, Knowledge-object-style structures,
-   a vector store with a translation layer for viewing/editing — not decided, and
-   doesn't need to be yet).
-4. From there, use Jarvis itself to help build out the rest of MojOS — the modes,
-   the theming, daily-driving it on the laptop — instead of building all of that by
-   hand first and only adding the agent at the end.
-5. Live with it. Whatever Hermes doesn't do natively — a confirmation gate before it
-   touches the system, delegating to a mercenary like Claude Code and folding the
-   result back in — becomes the design brief for mojo-agent proper, built to have
-   that functionality natively instead of as wrappers bolted onto someone else's
-   harness.
+Next milestone: Mk1 system implementation, built against the standards document
+once it covers every tracked piece to first-pass depth. What that implementation
+actually is — repos, services, SDKs — gets decided once the system itself is
+defined.
 
-Phone and voice surfaces (Tailscale access, local speech-to-text/text-to-speech) come
-whenever the core is worth reaching remotely — not gated to a date.
+No running software exists during this phase. Mojo's core architecture is a
+foundational, cross-cutting layer — the kind where getting the core abstractions
+right matters most before real code depends on them, the same bet real standards
+bodies and kernel projects make.
+
+No date attached to any of this. Progress is "does the standards document cover
+every piece in research-plan.md's tracker," not a calendar.
 
 Circus (multi-machine) and chartering/mercenaries (the pirate-ship compute model)
 stay Horizon exactly as before — nothing to wire in until there's a single working
-agent worth routing from.
+system worth routing from.
 
 Working rules for this phase:
 
-- **VM before metal.** Nothing touches the real machine until the config is proven
-  in `nixos-rebuild build-vm`.
-- **Open source first, at every layer.** Stylix, home-manager, existing flake
-  patterns for the OS; Hermes over a hand-built agent loop. Reuse before writing.
-- **New wants go to [ideas.md](ideas.md)**, not into what's actually being built
-  right now.
-- **Learning is the point.** Nix fluency and living with an agent are the
-  deliverables of this phase, not overhead.
+- **research-plan.md's Status column is the actual truth.** Most rows say Open —
+  treat them that way.
+- **Real precedent before invention**, every piece, every time.
+- **New wants go to [ideas.md](ideas.md)**, not folded into the standards document
+  while it's being defined.
+- **VM before metal, open source first** carry forward into the Mk1
+  implementation phase once it starts — nothing to apply them to yet.
 
-## Next — living with it (autumn 2026)
+## Next — living with it, once Mk1 exists
 
-Driven by what daily use actually surfaces, not planned in detail yet. Known
-candidates: local models pulling real weight (the PC's GPU decides how much); the
-brain growing beyond plain files when plain files measurably fall short; the
-laptop and PC staying coherent as two machines (the first real taste of the
-Circus problem); polish on the modes and the voice. Uni term means smaller
-sessions — the system has to earn its keep as a study environment too.
+Driven by what daily use surfaces once the Mk1 system is actually running — not
+planned in detail, no fixed date. Known candidates: local models pulling real
+weight (the PC's GPU decides how much); the brain growing beyond plain files when
+plain files measurably fall short; the laptop and PC staying coherent as two
+machines (the first real taste of the Circus problem); polish on the modes and
+the voice. Uni term means smaller sessions — the system has to earn its keep as a
+study environment too.
 
 ## Horizon
 
