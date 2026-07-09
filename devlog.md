@@ -5,7 +5,149 @@ lives.*
 
 ---
 
-## 2026-07-08 — a from-scratch Unix/SSI conversation, run in a different tool with no knowledge of dockets-research/, converges independently on the same Docket/Vessel/Book/Cargo shape
+## 2026-07-08 — the "walk Unix from scratch" session queued above turns into picking the actual development methodology: seL4 gets checked as a second precedent, Hermes-wrapping gets dropped, the Mojo System Interface gets named, and the whole public-facing org gets rewritten to match
+
+**Started exactly where the previous entry left off** — walking Unix piece by
+piece on purpose to find where the model still needs extending — and got
+redirected almost immediately: before walking more of Unix, build an actual
+inventory of every interface-level piece of the system (files, processes,
+users/permissions, IPC, the syscall/kernel boundary, shell/environment, time),
+filtered to exclude what's explicitly inherited from the real OS underneath
+(memory management, device drivers, the raw networking stack — already settled
+as out of scope in docket-research.md). That inventory became
+[research-plan.md](research-plan.md): a tracker, not a reasoning file, one row
+per piece, scored against however many of Unix/seL4/Plan 9/Erlang-OTP actually
+have something to say about it, status Open/Deciding/Decided.
+
+**seL4 got a real research pass, not just a gesture at "capabilities."** Its
+whole design divides cleanly from Unix on one axis: Unix is ambient authority
+(uid/rwx, checked at open time, no way to revoke an already-open fd); seL4 has
+none — holding a capability *is* the authority, and capabilities are trackable
+in a Capability Derivation Tree with a real `Revoke` that kills a whole derived
+subtree at once. That's a real, working answer to something dockets-research
+had flagged as unsolved more than once (how a fleet actually takes back a
+role/grant it gave out). Also load-bearing: seL4 has no "process" primitive at
+all, only TCB + CSpace + VSpace composed by userspace — independent
+confirmation that treating First mate as process-shaped was already the wrong
+frame, not just a hunch.
+
+**One real correction, caught by Clarke, not invented alone: process-side and
+trust-enforcement are related, not identical.** First pass this session
+conflated them because every invocation has to go through the enforcement
+layer — but the enforcer has to mediate *every* actor (Sync writing Cargo, a
+Vessel joining a Book, a human editing a file directly), not just First mate
+invocations, exactly the same way seL4's kernel enforces capabilities for
+threads, IPC, and memory alike, not just one kind of actor. Invocation is one
+client of the enforcer, not the same primitive as it.
+
+**Second, much bigger correction, again from pushback, not self-generated:
+scrap the Hermes-wrapping plan entirely.** The locked 2026-07-05 plan was
+build-first — wrap Hermes Agent wholesale, learn what it gets wrong, design
+mojo-agent proper later. Argued for keeping it running in parallel with the
+design work for real contact-with-reality signal; lost that argument for a
+good reason — Hermes was always disposable, and wrapping a black-box
+third-party tool teaches you about Hermes's quirks, not about whether your own
+capability/invocation design holds up. Landed on treating this like a real
+systems-development lifecycle instead: requirements (vision/philosophy, done)
+→ the standards document, Mk1 → Mk1 system implementation, built against it →
+iterate, versioning both as real use teaches what Mk1 got wrong — explicitly
+modeled on how POSIX itself got built (POSIX.1-1988 covered its whole scope
+thinly rather than perfecting files and leaving processes blank), corrected
+once more when a depth-first reading of "Mk1" was wrong: Mk1 needs a
+first-pass answer in *every* row of the tracker, not deep rigor on three
+primitives and silence on the rest, since a working system needs some answer
+for every piece to run at all.
+
+**Named the eventual spec: the Mojo System Interface** — a direct, honest echo
+of POSIX's real full name (Portable Operating System Interface), chosen under
+explicit delegation ("do what you think"), deliberately not "MojOS Standard"
+since that would collide the abstract policy with the concrete NixOS product.
+Wired through `research-plan.md`, `roadmap.md`, `AGENTS.md`, and every
+public-facing doc touched this session.
+
+**Rewrote `AGENTS.md`, `roadmap.md`, and `README.md`** to match: Current Stage
+now describes the real lifecycle instead of "build-first, meta-work rationed";
+roadmap's Now section describes Mk1-of-the-Interface as the active phase, with
+no running software during it as an explicit, deliberate tradeoff rather than
+an oversight.
+
+**Went to the GitHub org and found it badly out of date — fixed mojos,
+mojo-agent, and the `.github` org profile.** mojos' README/AGENTS.md/V0.1.md
+were all still describing the dropped Hermes plan as locked and current
+(deleted V0.1.md rather than rewrite a Mk1 brief that's premature before the
+Interface exists); mojo-agent's status line was stale; the org profile had a
+real factual error (said MojOS was "Arch Linux rebuilt around the agent" —
+it's NixOS, has been for a while) plus the same stale Hermes-era phase status.
+Couldn't rename the org (mojo-labs-circus → recommended mojo-labs-armada,
+avoiding "Fleet" since that's already the load-bearing technical term for the
+atomic Captain+First-mate+Vessels unit) — GitHub doesn't expose org-login
+renaming through the API, only through Settings in the web UI; flagged for
+Clarke to do directly, with the follow-up work (local git remote, every
+hardcoded org URL across these docs) noted as a consequence once he does.
+
+**The project definition itself went through several real corrections, each
+one caught by Clarke, not self-generated:**
+
+- "An operating system" (flat) overclaims — docket-research.md already settled
+  that Mojo builds on top of a real OS rather than replacing it; MojOS has no
+  kernel of its own. Landed on "architected like an operating system" instead.
+- "Built around an agent" (architecturally) contradicts something already
+  locked in: the deterministic mechanism is a complete floor with zero AI in
+  it, First mate sits on top and consumes it, isn't baked into the primitives.
+  True at the product level, false at the architecture level — the two got
+  conflated.
+- "Use your computer exactly as normal, agent alongside" was correct in
+  substance but redundant to say at all, since Mojo is explicitly additive to
+  an existing OS — that's already a given, not a claim that needs defending.
+- Landed on: "Mojo is a sovereign personal-AI platform, architected like an
+  operating system. It adds Jarvis — your own first mate, an AI that actually
+  knows you — and lets it work on your machine on your behalf. Scales from one
+  machine, to your fleet, to Collectives of people and AIs working together."
+
+**Collectives got real academic grounding, not just vision-doc language.**
+Clarke supplied a genuinely converging research lineage — Hybrid Intelligence
+(Dellermann et al. 2019), Hybrid Intelligence Teams (Eccles, Oxford 2025),
+COHUMAIN (Gupta et al. 2025), and Beckers/Teubner's legal-theory case (2023)
+for treating human-AI "hybrids" as their own accountable entity — arguing
+independently since 2019 that the collective is the right unit of analysis,
+with no one having built the system that treats it as one. Written to
+[collective-intelligence-research.md](collective-intelligence-research.md) so
+it isn't lost to a chat log, linked from vision.md alongside the concrete pain
+point it's also solving: people already coordinate across separate, personal
+AI tools today, fragmented rather than unified.
+
+**Re-confirmed, not re-litigated: Mk1's primitives have to hold for
+Collectives, structurally, even though Collectives itself stays Horizon.**
+Not a new requirement — Book was already deliberately designed as one
+recursive structure precisely so Fleet and Collective never need separate
+primitives. What's genuinely still deferred is the *policy* on top (governance,
+cross-Fleet trust negotiation, constitutions) — the same split already flagged
+once for the permission-bits work, now applied one level up.
+
+**"The Circus" turned out to be redundant, not a name worth keeping.**
+Questioned directly ("is it still circus??") — it was describing exactly what
+Fleet already is (one Captain, one First mate, many Vessels, one continuous
+intelligence across machines), just under an older, pre-model nickname.
+Dropped as its own concept everywhere; folded into mojo-agent's own
+description instead. Same correction applied to the roadmap's Horizon section
+more broadly: chartering and Collectives aren't separate future projects that
+come after Mojo, they're capabilities of the one system realized through
+iteration — rewrote `roadmap.md`'s Horizon section and the org profile's
+Roadmap to match, and cut a redundant summary sentence restating this a second
+time once flagged.
+
+**Caught twice this session, worth holding onto:** committed language
+("settled," "decided," "confirmed") for things that were only ever discussed,
+including my own prior-turn conclusions, not just old devlog phrasing — and
+explained a current plan by narrating what it replaced ("the earlier Hermes
+plan is dropped because...") instead of just stating the current plan
+directly. Both saved to memory; both should stop needing a correction.
+
+**Status at close:** `research-plan.md` is the live tracker, most rows still
+Open. Four public docs (mojo, mojos, mojo-agent, org profile) rewritten and
+consistent with each other and with roadmap.md. Next session's actual work is
+still ahead — walking the tracker's rows for real, starting with finishing
+file-side (Clarke's call: not done yet) before touching trust/enforcement.
 
 **Context:** a separate conversation (outside this repo, no access to
 dockets-research/) walked Unix's file primitive from first principles toward
