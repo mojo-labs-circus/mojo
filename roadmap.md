@@ -38,9 +38,12 @@ bodies and kernel projects make.
 No date attached to any of this. Progress is "does the standards document cover
 every piece in research-plan.md's tracker," not a calendar.
 
-Circus (multi-machine) and chartering/mercenaries (the pirate-ship compute model)
-stay Horizon exactly as before — nothing to wire in until there's a single working
-system worth routing from.
+The shape from here is three stages, not a list of separate future projects: the
+Mojo System Interface (this phase), Mojo — the Mk1 system built against it, then
+iterate. Multi-machine use, chartering, and Collectives aren't things bolted onto
+Mojo later — they're capabilities of the one system, realized as it matures
+through iteration. Nothing to wire in yet, but nothing separate to wire in later
+either.
 
 Working rules for this phase:
 
@@ -52,50 +55,55 @@ Working rules for this phase:
 - **VM before metal, open source first** carry forward into the Mk1
   implementation phase once it starts — nothing to apply them to yet.
 
-## Next — living with it, once Mk1 exists
+## Next — Mojo, Mk1
 
-Driven by what daily use surfaces once the Mk1 system is actually running — not
-planned in detail, no fixed date. Known candidates: local models pulling real
-weight (the PC's GPU decides how much); the brain growing beyond plain files when
-plain files measurably fall short; the laptop and PC staying coherent as two
-machines (the first real taste of the Circus problem); polish on the modes and
-the voice. Uni term means smaller sessions — the system has to earn its keep as a
-study environment too.
+Build the system against the Mojo System Interface once it covers every tracked
+piece. Lived with immediately once it exists — laptop now, PC from 15 September.
+That's Mojo running across more than one machine, which is just Fleet, already
+part of the system model — not a separate multi-machine phase to design later.
+Known candidates as daily use surfaces them: local models pulling real weight
+(the PC's GPU decides how much); the brain growing beyond plain files when plain
+files measurably fall short; polish on the modes and the voice. Uni term means
+smaller sessions — the system has to earn its keep as a study environment too.
 
-## Horizon
+## Horizon — iterating past Mk1
 
-**The Circus.** The PC that already runs MojOS becomes the home server; the laptop
-joins as the second machine; phones become windows into it. One intelligence across
-all machines. Eventually a dedicated home server. The old fleet-era design thinking
-lives in git history and gets rethought fresh when this becomes real.
+Not separate projects after Mojo — the same system, matured through versioned
+iteration (Mk2, Mk3...) once Mk1 is real to iterate on.
 
 **Chartering, then the Commons.** One first mate, many ship classes — a sloop for
-small local jobs, bigger hulls pooled from the Circus, up to a chartered frigate or
-galleon when a job needs more than anything owned gives. Checked the pricing
-2026-07-04: confidential/attested rental runs ~30–50% over plain rental for
-comparable hardware, not the order-of-magnitude gap expected, so it's buildable now,
-not a someday thing — and only gets more capable as whatever's rentable keeps
-scaling up. Phased as: plain rented GPU plumbing first, to prove the pipeline; swap
-in an attested/confidential instance once that works, which is the point "nobody can
-see this" becomes true rather than aspirational; anonymity explicitly out of scope —
-a provider knowing who rented the box is fine, the workload itself is the only thing
-that has to stay unseen (a Tor-style layer is a real idea, just not this project's).
-Two things still open: keeping it feeling like the same first mate across hulls
-(system prompts carrying voice and judgment for now — cheap, no training needed; a
-personality LoRA per model family later, once prompting alone isn't enough — MojOS's
-job either way, training one being itself a chartering-sized job), and the escalation
-policy — deciding when a job is actually worth chartering up, or handing to a
-mercenary, at all, within whatever hard limits get set (e.g. "no mercenaries, ever" is
-a real setting, not a suggestion). Doing the escalation call by hand for now; worth
-training a router on it once there's enough real use to learn from. The Commons is the
-far-horizon version: a whole reciprocal network of attested compute, not just a
-one-voyage charter.
+small local jobs, bigger hulls pooled from your own fleet, up to a chartered
+frigate or galleon when a job needs more than anything owned gives. Checked the
+pricing 2026-07-04: confidential/attested rental runs ~30–50% over plain rental
+for comparable hardware, not the order-of-magnitude gap expected, so it's
+buildable once there's a system to build it into, not a someday thing — and only
+gets more capable as whatever's rentable keeps scaling up. Phased as: plain
+rented GPU plumbing first, to prove the pipeline; swap in an attested/
+confidential instance once that works, which is the point "nobody can see this"
+becomes true rather than aspirational; anonymity explicitly out of scope — a
+provider knowing who rented the box is fine, the workload itself is the only
+thing that has to stay unseen (a Tor-style layer is a real idea, just not this
+project's). Two things still open: keeping it feeling like the same first mate
+across hulls (system prompts carrying voice and judgment for now — cheap, no
+training needed; a personality LoRA per model family later, once prompting alone
+isn't enough — MojOS's job either way, training one being itself a
+chartering-sized job), and the escalation policy — deciding when a job is
+actually worth chartering up, or handing to a mercenary, at all, within whatever
+hard limits get set (e.g. "no mercenaries, ever" is a real setting, not a
+suggestion). Doing the escalation call by hand for now; worth training a router
+on it once there's enough real use to learn from. The Commons is the far-horizon
+version: a whole reciprocal network of attested compute, not just a one-voyage
+charter.
 
 **Collectives.** The formal model — groups with sovereign members, constitutions,
-accountable AI participation. The deepest part of the vision and deliberately last:
-it needs the individual layer to exist first.
+accountable AI participation. The primitives already have to hold for this (see
+[research-plan.md](research-plan.md)) — what's deliberately last is the deeper
+governance policy on top, since it needs the individual layer real first.
 
-**The essays.** The thinking in this repo written up properly and put in front of
-people — professors, forums, the internet. Craft problem first; sovereignty and
-collectives after. Feedback and collaborators are the goal, and the essays get
-dramatically heavier once there's a working system behind them.
+## The essays
+
+A genuinely separate thread from the system itself: the thinking in this repo
+written up properly and put in front of people — professors, forums, the
+internet. Craft problem first; sovereignty and collectives after. Feedback and
+collaborators are the goal, and the essays get dramatically heavier once there's
+a working system behind them.
