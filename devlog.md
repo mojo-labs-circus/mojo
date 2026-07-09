@@ -6,6 +6,195 @@ where the reasoning trail lives.*
 
 ---
 
+## 2026-07-09 (later) — MVP scope confirmed small by design; real competitive check finds close-but-incomplete precedent on both halves, sovereignty argument confirmed genuinely rare paired with a system
+
+Second session same day, following straight on from the identity-landing
+session below. Two threads: sizing the actual first build, then testing that
+whole session's core claim ("nobody's building this") against real search
+instead of assumption.
+
+**MVP is small on purpose, and that's a feature of the design, not a
+coincidence.** Talked through why "this is a big idea" and "the first working
+version is small" are both true at once: the standard is what's big, and it's
+written down, not built. The actual first system only needs two genuinely new
+pieces of software — a thin capability kernel and a memory shape with
+permissions attached — sitting in front of adopted everything-else (model API,
+MCP, SKILL.md, an existing harness). Landed the honest MVP bar: not "does it
+feel like a product," but "does it pass the four vision.md tests using parts I
+didn't build." Also named the standing payoff explicitly: every time a better
+third-party kernel or memory implementation gets swapped in later, that's
+vision.md's test 3 re-firing on Mojo's own architecture, in production,
+indefinitely — a dependency swap as a feature to root for rather than a risk
+to dread. And the real gate on "other people start building better pieces"
+isn't enthusiasm, it's whether research-plan.md's tracker rows are written
+well enough that a stranger could build a compliant piece without ever talking
+to Clarke — the actual bar for calling a tracker row done.
+
+**Real competitive check, two forked searches, not a recall of the 2026-07-09
+(earlier) landscape check.** First fork: is anyone building the *integrated*
+thing — capability kernel + portable identity shape + everything else
+swappable, aimed at a Jarvis-class persistent identity? Verdict: every
+individual piece now has real prior art, the integration still doesn't.
+Closest kernel-side match found: `kernel.chat`'s `agent-os` package
+(`isaacsight/kernel`, GitHub, Apache 2.0, real object-capability tokens, not
+RBAC-wearing-capability-language the way OpenFang's docs read) — literally
+markets itself "POSIX for AI agents," architecturally sits right where Mojo's
+kernel does, but it's enterprise orchestration/audit-trail scoped, with no
+portable personal-identity concept attached at all. Closest memory-side
+match: "Portable Agent Memory" (arXiv 2605.11032, May 2026, single author,
+real SDK, cross-model demo) — stronger and more concrete sibling to Engram,
+same single-author-preprint stage, no kernel attached. Also surfaced: Linux
+Foundation's Agent Name Service (identity as DNS-style discovery, not
+memory) and an OpenAI forum thread literally titled "Portable Personal AI
+Identity" with zero implementation — noted as a signal the idea is now
+surfacing at casual-forum-post level, independent of this project.
+
+Second fork, run separately on purpose because it's a different question:
+is anyone making the *sovereignty* argument itself, not just the technical
+portability one? More populated than expected, still never paired with a
+system. Real finds: iury souza's essay "Memory Portability: Owning what
+matters" (Dec 2025, argues AI memory lock-in as a liability, unbuilt); Chris
+Riley's Tech Policy Press piece (Aug 2025, portability-as-a-right at the
+policy level, stays regulatory-abstract); VERTU's "Personal AI Sovereignty
+Manifesto" (genuinely individual-scoped ideological framing, but a commercial
+product pitch); GitHub's `sovereign-ai` topic (464 repos, confirmed the
+already-known naming collision — "sovereign" there means "runs on my
+hardware," not "survives switching products"); Kinic (pitches the exact pain,
+"your AI has amnesia," as a blockchain-bridge feature, no rights argument
+attached). DMA Article 6(7) is now being applied to AI assistants (Google
+proceedings, Jan 2026) but as third-party access (Carterfone-shaped), not
+memory portability — no WhatsApp-DMA equivalent exists yet for chat memory.
+
+**Net position, both forks combined.** Every piece Mojo would adopt or build
+now has a real, live counterpart somewhere, closer than the earlier
+2026-07-09 check found — `kernel.chat` and Portable Agent Memory are both
+meaningfully closer precedent than OpenFang/Engram were. The sovereignty
+argument is being made piecemeal by several independent, unconnected voices.
+What still hasn't happened, anywhere found: pairing the argument with the
+system — a capability kernel and a portable identity shape under one
+sovereignty-first, Jarvis-scoped standard. The gap is real and still open,
+and also visibly narrowing faster than a week's difference would suggest —
+named as a live fact, not a reason to change pace. Both new findings folded
+into interoperability.md's landscape section alongside OpenFang and Engram,
+same discipline (real research, explicit unverified flags, no invented
+detail).
+
+**Docs touched this session:** interoperability.md (two new landscape
+paragraphs — kernel.chat/Portable Agent Memory, and the sovereignty-argument
+survey); README.md (full rewrite, mirroring vision.md's MSI-first framing,
+added the missing interoperability.md row to the file table); four project
+memories rewritten to match the landed identity
+(`project-build-first-reset`, `project-arch-model`, `project-phase-
+priorities`, light touch on `project-docs-convention-scope`) plus the memory
+index.
+
+---
+
+## 2026-07-09 — the project's identity lands: the MSI is the mission, the system is the proof; vision.md rewritten, tracker restructured, org README rewritten
+
+Started as a handoff to fold the previous session's interoperability findings
+into three files, and turned into the bigger thing that handoff was circling:
+this is the first time enough is down to say what the project actually *is*,
+so the files got rewritten around it rather than patched. Talked it through
+before writing anything; the landing, in one breath: **Mojo is a standard —
+the Mojo System Interface — for a complete Jarvis-class system, not just an
+agent's seams; a POSIX-shaped standard (primitives → schemas → contracts);
+Mojo's own system is a distro of it, stitched from existing compliant parts,
+existing to prove the standard and to be lived in; every piece Mojo builds is
+designed to be outcompeted through the contracts it publishes; built in the
+open by one student, honestly, because nobody with resources has the
+incentive.**
+
+Decisions made in the talking-through, each one explicit:
+
+- **The standard is the front door, not the system.** Success is the idea
+  winning, not the implementation winning — but Mojo still builds its own
+  full system (like a distro) because we need to use it ourselves.
+- **"Singular kernel" disambiguated: singular per Fleet, as an instance.**
+  One gate holds authority inside a Fleet, but the enforcement contract goes
+  in the standard and better kernels replacing Mojo's reference is the
+  standard working. Anything else would be "everything is swappable except
+  the piece we control" — the exact shape of claim the project attacks.
+- **Mojo's own implementations are owed no loyalty either.** The two-way
+  equivalence split (identity owed literal data equivalence; mind/loop/
+  faculties ephemeral, no equivalence, feature not gap) applies to Mojo's own
+  kernel and memory too. Committed to in vision.md as the fifth "when it's
+  right" test: it survives Mojo, and that counts as winning. No moat, ever,
+  including a benevolent one.
+- **The memory gap is smaller than it sounded, and that's good.** The
+  substrate has prior art everywhere — agents already keep memory in plain
+  files, which is why a stitched first system is possible at all. What has no
+  prior art is thin: permissions travelling with the data, provenance,
+  write-back. Standardizing what the field already does, not asking anyone to
+  migrate.
+- **Jarvis-class scope, not agent scope.** The field is visibly moving to
+  persistent systems (every product surveyed pitches persistence as the
+  product now), and a whole-system standard is what justifies Hail, time,
+  fleet coherence, and routing being in the MSI at all. Collectives stays
+  aimed-second: an extension of the primitives if they're right.
+- **The builder honesty is load-bearing, and it attaches to the right claim:**
+  can't deliver the *ecosystem* alone (true by definition), can deliver the
+  *seed* alone (Mk1 spec, first kernel, first memory, first stitched system —
+  the adopt-everything posture keeps it solo-sized). Linus register:
+  discipline, not destiny.
+
+What actually changed, all left uncommitted for Clarke's fix-up pass (except
+the org README, which had to be a commit —
+`mojo-labs-circus/.github@19b0651`; checkpoint of everything prior pushed
+first as `8e3314f`):
+
+- **vision.md** — full rewrite to the approved spine. Human opening kept;
+  sovereignty gap now carries the portability half ("ownership plus
+  portability; either alone is branding"); "What Mojo is" rebuilt around the
+  corrected lineage (Unix → PC clones → Carterfone → the web → harness/model
+  decoupling → Mojo decoupling identity), the MSI defined with the three-layer
+  structure and adopt/design/leave-open, the two built pieces, the
+  distro-as-test-suite; "Who's building this, and who it's for" merged
+  user-and-builder honesty into one section; fifth test added.
+- **interoperability.md** — kernel paragraph made precise (per-Fleet instance,
+  contract in the standard, kernel guards the identity the way a kernel
+  guards a filesystem); new "anatomy of a system" section (five-part cut
+  reconciled into Mojo nouns — the session's Mind/Loop/Faculties/Identity/
+  Ground scaffolding didn't survive as a second vocabulary, deliberately);
+  the three-way seam classification; the two-way equivalence property;
+  OpenFang verified and written up honestly (real, ~18k stars, converging on
+  the same adopt-list, memory proprietary + one-way migrate importer = live
+  shape-without-seam failure; RBAC-vs-ocap and memory-coupling flags kept
+  explicitly unverified; leading fork candidate, not a decision, gated behind
+  Mk1); the "smaller than it sounds" memory-gap framing; closing section
+  updated now the vision rewrite exists.
+- **research-plan.md** — the three-layer spec structure written into The
+  plan; every section tagged with its layer; new First mate (schema) section
+  (memory schema, retrieval, persona, policy language, budgets, skill format,
+  signing/provenance, write-back) — File-side is the primitive, First mate is
+  the filesystem-standard built on it; four new Process/invocation rows
+  (planning, context management, error/retry, harness/shell boundary); Hail
+  promoted from one buried File-side row to its own Connection section
+  (addressing, transport, capability handoff over the wire, fleet coherence);
+  new Routing/dispatch section with the explicit contract (task + roster +
+  constraints in, selection out), lifted out of roadmap.md's Horizon aside;
+  sequencing extended to seven steps. Nothing new marked Decided; skill
+  format is the only Deciding (candidate: adopt SKILL.md, walk it once
+  first).
+- **roadmap.md** — Now/Next updated to the stitch-together framing and the
+  standard-is-the-project line; Horizon's escalation aside now points at the
+  routing tracker row.
+- **org README** (`mojo-labs-circus/.github`) — rewritten: distilled mission
+  statement up top as the screenshot-able block (the full statement got woven
+  through vision.md instead of pasted whole), new "What Mojo actually is"
+  section, sovereignty problem carries the portability half, honest "Who's
+  building this," mojo-agent's row reworded to match the adopt-posture, and
+  the closer: *the world can get its mojo back.*
+
+Open threads left deliberately: whether the mission statement's wording is
+final (Clarke flagged it's not necessarily the final draft — it's now prose
+in two places, easy to revise); the build repos (mojo-agent, mojos) may not
+survive in their current form once implementation shape is real — nothing
+renamed or archived yet; OpenFang's two unverified flags need a source-level
+check before any fork decision.
+
+---
+
 ## 2026-07-09 — interoperability confirmed as the actual mission; full agent anatomy worked out; kernel/userspace split named; OpenFang and Engram checked as real precedent
 
 Long conversational session, starting from Clarke's own framing: Mojo as "Unix for

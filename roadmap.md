@@ -16,19 +16,27 @@ The project follows a real systems-development lifecycle (locked 2026-07-08, see
 system implementation, built against that standard → iterate, versioning both the
 standard and the system as real use teaches what Mk1 got wrong.
 
-**Current phase: Mk1 of the Mojo System Interface.** A first-pass, complete-coverage
-answer for every piece of the system — files, identity, process/invocation,
-trust/enforcement, connection, and whatever else turns up — good enough to build
-against, the same way POSIX.1-1988 covered its whole scope thinly rather than
-perfecting one part and leaving the rest blank.
-[research-plan.md](research-plan.md) is the live tracker: walk each piece, check
-it against real precedent (Unix, seL4, Plan 9, Erlang/OTP, others as needed), land
-on Mojo's own answer.
+**Current phase: Mk1 of the Mojo System Interface.** The standard is the project
+(landed 2026-07-09, see [vision.md](vision.md) and
+[interoperability.md](interoperability.md)), structured the POSIX way —
+primitives, schemas built on them, contracts at the seams — and Mk1 is a
+first-pass, complete-coverage answer for every piece of the system: files, the
+first-mate schema, process/invocation, trust/enforcement, connection, routing,
+and whatever else turns up. Good enough to build against, the same way
+POSIX.1-1988 covered its whole scope thinly rather than perfecting one part and
+leaving the rest blank. [research-plan.md](research-plan.md) is the live
+tracker: walk each piece, check it against real precedent (Unix, seL4, Plan 9,
+Erlang/OTP, others as needed), land on Mojo's own answer — including where the
+answer is "adopt what exists" or "deliberately leave open."
 
-Next milestone: Mk1 system implementation, built against the standards document
-once it covers every tracked piece to first-pass depth. What that implementation
-actually is — repos, services, SDKs — gets decided once the system itself is
-defined.
+Next milestone: the first Mojo system, built against the standards document once
+it covers every tracked piece to first-pass depth. That system is a distro in
+the honest sense — stitched from as many existing compliant parts as can be
+found (a harness someone else built, models someone else trained, MCP tools,
+SKILL.md skills) around the two pieces Mojo builds itself, the kernel and the
+memory — and it doubles as the standard's test suite: every seam is proven by
+something real actually plugging into it. What the build actually is — repos,
+services, SDKs — gets decided once the system itself is defined.
 
 No running software exists during this phase. Mojo's core architecture is a
 foundational, cross-cutting layer — the kind where getting the core abstractions
@@ -50,8 +58,10 @@ Working rules for this phase:
 
 ## Next — Mojo, Mk1
 
-Build the system against the Mojo System Interface once it covers every tracked
-piece. Lived with immediately once it exists — laptop now, PC from 15 September.
+Assemble the system against the Mojo System Interface once it covers every
+tracked piece — stitched from existing parts wherever a compliant one exists,
+built only where nothing does (the kernel, the memory).
+Lived with immediately once it exists — laptop now, PC from 15 September.
 That's Mojo running across more than one machine, which is just Fleet, already
 part of the system model — not a separate multi-machine phase to design later.
 Known candidates as daily use surfaces them: local models pulling real weight
@@ -84,7 +94,9 @@ chartering-sized job), and the escalation policy — deciding when a job is
 actually worth chartering up, or handing to a mercenary, at all, within whatever
 hard limits get set (e.g. "no mercenaries, ever" is a real setting, not a
 suggestion). Doing the escalation call by hand for now; worth training a router
-on it once there's enough real use to learn from. The Commons is the far-horizon
+on it once there's enough real use to learn from — the routing contract itself
+is now a tracked row in [research-plan.md](research-plan.md), not just this
+aside. The Commons is the far-horizon
 version: a whole reciprocal network of attested compute, not just a one-voyage
 charter.
 

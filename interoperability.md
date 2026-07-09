@@ -1,13 +1,13 @@
 # Interoperability
 
-*The rough draft of the biggest idea in the project so far: that AI shouldn't be
-built as monolithic products, and that Mojo's actual job is to formalize the seams
-between the pieces so none of them ever have to be welded together again. This
-precedes and will drive both the eventual Mojo System Interface spec
-([research-plan.md](research-plan.md)) and a rewrite of [vision.md](vision.md).
-First pass, most of this will be wrong somewhere, good enough to build my first
-real Mojo system against — not final. Depth comes from actually building it and
-finding out.*
+*The biggest idea in the project: that AI shouldn't be built as monolithic
+products, and that Mojo's actual job is to formalize the seams between the pieces
+so none of them ever have to be welded together again. This argument now carries
+the mission — [vision.md](vision.md) states it; this file holds the full case
+behind it and feeds the eventual Mojo System Interface spec
+([research-plan.md](research-plan.md)). Still a working draft, wrong somewhere,
+good enough to build the first real Mojo system against — not final. Depth comes
+from actually building it and finding out.*
 
 ---
 
@@ -79,9 +79,19 @@ backwards:
 
 The split that actually works: the capability-enforcement boundary — what any
 plugged-in harness, tool, or skill is actually allowed to touch — has to be
-singular and hardened, the kernel. Real, already-shipping precedent for exactly
-this shape of problem exists and doesn't need to be invented: seL4's capability
-model, Capsicum's capability mode on a real POSIX system, WASI's no-ambient-access
+singular and hardened, the kernel. Singular means one *instance* per Fleet: one
+gate holding authority over everything that plugs in. It does not mean one
+implementation in the world — the enforcement contract itself belongs in the
+standard, Mojo's kernel is only the first reference, and a better kernel speaking
+the same contract replacing it is the standard working, not a breach. What the
+kernel actually does: mediates every consequential access, issues and derives and
+revokes capabilities, and enforces that anything written back conforms to the
+identity's agreed shape. The identity is the protected resource, not the kernel
+itself — the same relationship a real kernel has to the filesystem it guards
+access to. Real, already-shipping precedent for exactly this shape of problem
+exists and doesn't need to be invented: seL4's capability model, Capsicum's
+capability mode on a real POSIX system (the leading candidate per
+[research-plan.md](research-plan.md), not decided), WASI's no-ambient-access
 sandboxing. Everything else — which harness, which model, where the memory
 physically lives, how fleet routing decides what runs where, how you get
 reached — is userspace: real diversity is a feature there, because a bad
@@ -159,6 +169,75 @@ mission, but because there's nothing to consume. Everything else on this list,
 Mojo mostly just needs to define the seam and let other people's pieces plug in.
 Memory is the one place it has to also build the piece, to prove the seam is
 real.
+
+Worth being precise about how big that gap actually is, because it's smaller
+than it sounds. The *substrate* has prior art everywhere — most agents today
+already keep their memory in plain files and folders, which is exactly why a
+first Mojo system can be stitched from existing parts at all, and why the shape
+can start as boring as "files, plus structure." What has no prior art is the
+thin layer that turns a convention into a standard: the permissions travelling
+*with* the data, provenance, and the write-back rule. The easy 80% is already
+how the field works; the portable-authority 20% is the part nobody's done, and
+it's the whole reason this project exists.
+
+## The anatomy of a system, and what each seam gets
+
+Worked out 2026-07-09: decompose "what is an AI agent actually made of" from
+scratch and you get five parts — the mind doing the thinking, the loop driving
+it, the faculties it can reach, the identity that persists, the ground it runs
+on — organized by lifetime and ownership rather than by function. Reconciled
+against this document's own earlier framework and Mojo's existing vocabulary,
+it's the same picture with sharper edges, so the Mojo nouns are the ones that
+survive here:
+
+- **The identity is the First mate** — the only part of the whole system that
+  outlives a session, and the only part owed literal data equivalence across a
+  swap. Its internals are the design work: memory schema, retrieval engine,
+  persona format, policy language, budget representation, skill format,
+  signing/provenance, and the write-back path everything else feeds. It now has
+  its own section of tracker rows in [research-plan.md](research-plan.md),
+  which it never did before — File-side defines the primitive; the First mate
+  section is the schema built on top of it, the way a filesystem standard is
+  built on top of the file.
+- **The ground is the Vessel plus the kernel** — the hardware something runs
+  on, and the enforcement boundary described above. Its rows were already
+  scattered across the tracker's Trust/enforcement and Process/invocation
+  sections; Hail belongs here too, and carries far more weight than its old
+  buried spot under File-side reflected, now that Fleet coherence — one
+  identity behaving as one across every machine — depends on it.
+- **The loop is the harness** — the tracker's Process/invocation section. Mojo
+  designs the wrapper (trust, supervision, the harness/shell boundary, the
+  write-back obligation) and deliberately not the inside.
+- **The faculties are tools and skills** — adopted outright (MCP, SKILL.md,
+  A2A). Thin treatment here is intentional; there's nothing to design.
+- **The mind is the model** — deliberately left without a Mojo noun, because
+  Mojo has no design stake in it at all. Pure adoption of the most competitive
+  layer that already exists.
+
+Every seam in that anatomy gets exactly one of three treatments, and naming the
+three resolves a tension earlier drafts of this document left hanging — whether
+the agent runtime is a black box or something Mojo has to specify:
+
+- **Adopt** — a real, working industry answer already exists: models, MCP,
+  SKILL.md, A2A. Consuming these is the whole point of the lazy-correct posture
+  above.
+- **Design** — nothing exists and it's load-bearing: the First mate's internals
+  listed above, the Identity↔Loop write-back path, Hail's addressing and
+  consistency, the enforcement contract.
+- **Deliberately leave open** — Mojo has no business standardizing it: the
+  loop's internals — planning strategy, critic architecture, context-management
+  algorithm — are the market's problem on purpose, the same way POSIX never
+  standardized a scheduler's internals, only what a process must expose. The
+  runtime *is* a black box, exactly where being a black box is the point.
+
+One property falls out of this that's worth stating as a two-way split, not
+something finer: the First mate is the *one* place literal equivalence is owed
+across a swap — same memory, same permissions, same relationship, bit for bit.
+Mind, loop, and faculties are all ephemeral and swappable with no equivalence
+guaranteed at all, and that's a feature, not a gap: a different model thinks
+differently, a different harness plans differently, and choosing between
+genuinely different tools is the entire reason the seams exist. Nothing in the
+system is owed identical *output* — only the identity is owed identical *data*.
 
 ## Why this is worth building
 
@@ -297,9 +376,92 @@ and assuming someone else does the integration, not attempting it. Nobody
 found is doing the POSIX-shaped thing — walk every piece against real
 precedent, land one coherent interface that ties memory, harness supervision,
 enforcement, and routing together rather than five uncoordinated protocols.
-One unverified exception worth checking properly next: OpenFang, an
-open-source "Agent Operating System" (137k lines of Rust, security-layer
-focused) — unclear yet whether it's a product, a spec, or both.
+
+**OpenFang, checked properly 2026-07-09 — real, serious, and the closest thing
+to prior art for the integrated system itself.** RightNow-AI's open-source
+"Agent Operating System": MIT-licensed, ~18k GitHub stars, Rust, 14 crates.
+Verified as actually shipping: capability gates on tool access, WASM
+sandboxing, Ed25519-signed agent manifests, and MCP/A2A/SKILL.md support built
+in — someone else independently converging on most of the same adopt-list.
+But its memory is proprietary (SQLite plus vector embeddings), and it ships a
+bespoke, one-directional `openfang migrate --from openclaw` importer — a
+live, concrete instance of the exact shape-without-seam failure this document
+diagnoses, not a hypothetical anymore: real engineering spent building a
+migration tool that a shared shape would have made unnecessary. Two things
+stay explicitly unverified: whether its "capability gates" are true
+object-capability security or RBAC wearing capability language — its own docs
+say "role based access control," which is not the same thing, and this needs a
+source-level check before trusting it as anything — and how deeply its memory
+system is wired into its scheduler and checkpointing, i.e. whether it strips
+out cleanly at all. Named honestly as the leading fork candidate for whenever
+implementation starts — not a decision made, and implementation stays gated
+behind Mk1's coverage being real first.
+
+**Re-checked later the same day (2026-07-09), kernel side and memory side separately, real search
+both times.** Two closer matches than anything found before, and one
+confirmation the sovereignty framing itself is still rare.
+
+`kernel.chat`'s `agent-os` package (`isaacsight/kernel` on GitHub, Apache 2.0,
+npm-published, actively committed) is closer competitive proximity than
+OpenFang on the enforcement side specifically: it literally brands itself
+"POSIX for AI agents," sits architecturally right where Mojo's kernel does —
+above sandboxes, below MCP/A2A — and its capability primitives are real
+object-capability language (signed tokens), not RBAC wearing capability
+words the way OpenFang's docs read. But it's an enterprise
+orchestration/audit-trail kernel (a sister package pitches itself as
+"audit-grade infrastructure for capital markets"), sitting inside one
+person's much broader personal monorepo, with no portable personal-identity
+concept attached at all — no Jarvis, no omnipresence claim, no "swap the
+harness and nothing moves" test. Same shape of gap as OpenFang, closer
+precedent, not a scarier one.
+
+"Portable Agent Memory" (arXiv 2605.11032, May 2026, single author, Apache
+2.0, real Python SDK, 54 tests, actual cross-model demo across
+GPT-4/Claude/Gemini/Llama) is a stronger, more concrete sibling to Engram on
+the memory side: structured memory model, Merkle-DAG provenance,
+capability-scoped disclosure, injection-resistant rehydration. Same stage as
+Engram though — single-author preprint, no kernel or enforcement layer
+attached, no identity/Jarvis framing.
+
+Checked separately, same day, whether anyone's making the *sovereignty*
+argument itself — not the technical portability argument, the "your AI
+relationship belongs to you and should survive switching products" argument
+this document and vision.md both make. This turned out more populated than
+the kernel/memory side, just never paired with a system: iury souza's essay
+"Memory Portability: Owning what matters" (Dec 2025) argues AI memory
+lock-in directly as a liability, pointing at the current MCP Memory Service
+(local) vs. Letta/MemSync (hosted) spectrum — real, unbuilt, closest match
+found for the argument alone. Chris Riley's Tech Policy Press piece (Aug
+2025) makes portability-as-a-right at the policy level, arguing for
+data-transfer rights specifically to prevent AI lock-in, but stays
+regulatory-abstract, not attached to any build. VERTU's "Personal AI
+Sovereignty Manifesto" uses genuinely individual-scoped ideological framing
+— but it's a commercial product pitch, not a standard. GitHub's
+`sovereign-ai` topic (464 repos) confirmed the naming collision already
+flagged: it skews local-inference/self-hosted, "sovereign" there means "runs
+on my hardware," not "survives switching products" — a different claim from
+this project's. Kinic pitches the exact pain ("your data is hostage, your AI
+has amnesia") but as a blockchain-bridge product feature, no rights argument
+attached, no agent/harness swapping. An OpenAI community forum thread
+literally titled "Portable Personal AI Identity" has zero implementation but
+is a real signal the idea now surfaces at casual forum-post level,
+independent of this project. On the regulatory front, DMA Article 6(7) is
+now being applied to AI assistants (Google proceedings opened Jan 2026) — but
+that fight is third-party *access* to phone assistants, Carterfone-shaped,
+not memory portability; no WhatsApp-DMA equivalent exists yet for chat
+memory specifically.
+
+Net position after both checks: every individual piece Mojo would adopt or
+reference now has a live, real-code counterpart somewhere, the kernel half
+in particular is being solved faster by adjacent enterprise projects than
+expected a week ago, and the sovereignty argument is being made piecemeal by
+several independent voices — a blogger, a policy writer, a marketing
+manifesto, an unrelated product's tagline. What's still true, and still the
+actual gap: nobody has paired the argument with the system — stitched a
+capability kernel and a portable identity shape together under one
+sovereignty-first, Jarvis-scoped standard, backed by the argument for why it
+has to be that shape. Neither half stays uncontested indefinitely on its own
+trajectory; the integration is the part that hasn't been raced for yet.
 
 ## The rough shape
 
@@ -388,7 +550,8 @@ is what comes before it: the case for why that spec needs to exist at all, and a
 rough enough sketch of its shape to start building the first real Mojo system
 against while the rigorous version keeps getting worked out underneath it.
 
-It's also what the next [vision.md](vision.md) rewrite gets built from — folding
-the interoperability argument in alongside the personal-sovereignty one already
-there, not replacing it. Not done yet. This is the draft that makes that rewrite
-possible, not the rewrite itself.
+The [vision.md](vision.md) rewrite this document existed to make possible has
+now happened (2026-07-09): the interoperability argument sits inside the
+sovereignty one there — ownership plus portability, either alone is branding —
+and the mission is stated as the standard, with Mojo's own system as the
+distro-shaped proof. This file stays the full argument behind that statement.
