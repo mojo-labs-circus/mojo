@@ -43,7 +43,10 @@ vision/philosophy/roadmap. Thoughts that only live in a chat log are lost.
 - Flat structure. A new file only when a topic earns one (three pages of real
   content, not before). No empty scaffolding.
 - New wants during the current milestone go to [ideas.md](ideas.md), not the roadmap.
-- `roadmap.md` is revised in place; `devlog.md` is append-only, newest first.
+- `roadmap.md` is revised in place; `devlog.md` is append-only, newest first, one
+  entry per session — not per day. A single date can carry more than one entry if
+  more than one session happened on it; don't merge a new session's thinking into
+  an existing same-day entry.
 - Standard `[text](path.md)` links only, no wikilinks. Prose for reasoning; bullets
   for genuine enumerations only.
 - Pre-reset history (the old `raw/` corpus, framework session docs, ringmaster-era

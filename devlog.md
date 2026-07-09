@@ -1,9 +1,587 @@
 # Devlog
 
-*Dated thinking, newest first. Messy is fine — this is where the reasoning trail
-lives.*
+*One entry per session, newest first — not per day. A single date can carry more
+than one entry if more than one session happened on it. Messy is fine — this is
+where the reasoning trail lives.*
 
 ---
+
+## 2026-07-09 — interoperability confirmed as the actual mission; full agent anatomy worked out; kernel/userspace split named; OpenFang and Engram checked as real precedent
+
+Long conversational session, starting from Clarke's own framing: Mojo as "Unix for
+AI" — breaking the monolith the way Unix broke proprietary OS monoliths, so
+people can own a portable AI identity instead of renting a seat in someone
+else's product. Corrected a couple of real errors early rather than building on
+them: model hot-swapping already exists via APIs, so it isn't the actual lock-in
+— the real lock-in is memory/identity welded into a specific product (Pi vs.
+Hermes was the concrete example), which is what `interoperability.md` (found
+mid-session, untracked, already drafted independently — see below) already
+argues. Also floated and retracted, correctly caught by Clarke, a proposal that
+Mojo could let switching cost invert in its own favor over time as a retention
+mechanism — that's the same shape of lock-in the whole project exists to kill,
+just pointed the other direction. Scratched, not carried forward.
+
+**Adoption mechanics.** Walked historical precedent for monopolies actually
+breaking open under interoperability pressure: Linux/Unix, PC clones breaking
+IBM's own attempted hardware monopoly, Carterfone/the 1984 Bell breakup, AOL's
+walled gardens losing to the open web, Docker/OCI unseating VMware's proprietary
+format, OBD-II and the Right-to-Repair movement (a close cousin of the
+sovereignty argument, already real law in places). Also the honest counter-case:
+messaging/XMPP tried this and lost, because none of the three real forces that
+make it happen were present — cheaper, a self-interested giant adopting it for
+unrelated reasons, or regulation. Notable correction mid-thread: the EU's DMA is
+now forcing interoperability onto WhatsApp specifically, years after XMPP lost
+on the merits — a live example of force three finishing what the market
+couldn't, not just a historical aside.
+
+**Mission.** Landed a draft mission statement tying interoperability directly to
+Jarvis rather than treating them as two separate goals — not yet in vision.md,
+sitting in this session's chat log until a rewrite pass happens.
+
+**Landscape check, real research not assumption.** Found Engram ("OAuth for AI
+memory," SSRN, June 2026, one independent author, reference implementations for
+OpenClaw and Nous Research's Hermes already interoperating without shared code)
+and reconfirmed Google's A2A (real, 150+ orgs, adopted) alongside already-known
+MCP/SKILL.md adoption. Both were already found and logged in
+`interoperability.md`'s "why no one's built this yet" section before today —
+today's search reconfirmed them independently rather than discovering them
+fresh. Flagged a naming collision worth avoiding in public writing: "sovereign
+AI" is currently enterprise/national compliance language (Cloudera, Red Hat,
+Mirantis), a different claim than personal ownership.
+
+**Full agent anatomy, worked out then reconciled against what already existed.**
+Built a five-part decomposition of "what is an AI agent" — Mind, Loop,
+Faculties, Identity, Ground — organized by lifetime and ownership rather than
+function, initially without checking it against `interoperability.md`'s own
+already-drafted Model/Harness/Tools+Skills/Memory-and-identity/Enforcement-
+boundary framework. Caught and reconciled once `interoperability.md` was found:
+Identity = First mate (which has never gotten its own section of rows in
+research-plan.md's tracker the way Docket got File-side — real, concrete gap);
+Ground = Vessel plus Trust/enforcement's and Process/invocation's already-
+scattered rows, with Hail (currently one buried row under File-side) clearly
+carrying more weight than its position reflects now that Fleet coherence
+depends on it; Loop = the existing Process/invocation section, needs new rows
+(planning strategy, context-management strategy, error/retry policy, the
+harness/shell boundary itself) it never had; Faculties = mostly already adopted
+(MCP, SKILL.md, A2A), thin treatment intentional; Mind = no existing Mojo noun,
+left deliberately unnamed since Mojo has no design stake in it.
+
+Landed a three-way classification for every seam, meant to resolve the
+black-box-vs-invent-everything tension directly: **adopt** where real precedent
+already exists (models, MCP, SKILL.md, A2A); **design** where nothing exists and
+it's load-bearing (Identity's own internals — schema, retrieval engine, persona
+format, policy language, budget representation, skill format, signing/
+provenance — plus the Identity↔Loop write-back path and Hail's addressing/
+consistency); **deliberately left open** where Mojo has no business
+standardizing (Loop's internals — planning strategy, critic architecture — the
+market's problem on purpose, the same way POSIX doesn't standardize scheduler
+internals, only what a process must expose).
+
+**Kernel/userspace, named explicitly.** The enforcement boundary is the kernel
+— singular, hardened, capability-based (Capsicum-flavored is the leading
+candidate per research-plan.md, not yet decided) — mediating every access,
+issuing/deriving/revoking capabilities, and enforcing that anything written
+back actually conforms to Identity's agreed shape. Identity itself is the
+protected resource, not the kernel — same relationship as a real kernel to the
+filesystem it manages access to. Everything else (Mind, Loop, Faculties,
+routing/dispatch) is userspace: plural, competing, swappable.
+
+**Checked whether anyone's actually building this — real research, not
+assumption.** OpenFang (RightNow-AI, MIT-licensed, ~18k GitHub stars, Rust, 14
+crates) is real, serious, and already flagged as an unverified lead in
+`interoperability.md` before today. Verified: "Capability Gates" enforcing tool
+access, WASM sandboxing, Ed25519-signed agent manifests, MCP/A2A/SKILL.md
+support already built in. But its own docs describe the capability gates as
+"role based access control" — RBAC and true object-capability security aren't
+the same thing, and this needs a real source-level check before trusting it as
+a kernel base, not just README language. More importantly: its memory is
+proprietary (SQLite plus vector embeddings), and it ships a bespoke,
+one-directional `openfang migrate --from openclaw` importer — a live, concrete
+instance of the exact shape-without-seam failure `interoperability.md` already
+diagnosed, not a hypothetical anymore. A genuinely strong fork candidate for
+whenever implementation starts, not a decision made today — implementation
+stays behind the gate already agreed: Mk1's coverage has to be real first.
+
+**Final correction, Clarke's, simplifying the whole picture.** "Not owed
+identical output" isn't just Mind's property — Loop has it too, and both are
+ephemeral. The real split is two-way, not three: Identity is the one place
+literal data equivalence is owed across a swap; Mind, Loop, and Faculties are
+all ephemeral and swappable with no equivalence guarantee at all, which is the
+point of choosing between genuinely different tools, not a gap in the design.
+
+**Left undone, deliberately, for a fresh session:** none of this is written into
+`interoperability.md`, `research-plan.md`, or `vision.md` yet. All still sitting
+in this conversation.
+
+---
+
+## 2026-07-09 — content-mutation-over-time named as an open tracker row, sourced from a session talked through outside this repo
+
+Pasted in a conversation had with another agent (not Claude Code) working
+through the same interoperability thesis from scratch — Linux-for-agents,
+shape-vs-seam, git-backed memory. Most of it was ground `interoperability.md`
+already covers and exceeds (that draft has real precedent — Capsicum, WASI,
+AIOS — the other conversation didn't). One thread wasn't captured anywhere
+yet though: that pasted session pushed past plain append-only into git's
+actual model — content-addressed immutable objects plus mutable refs — and
+caught something real: **retraction and purge have to stay two different
+operations.** Superseding a stale claim should be cheap and common and keep
+the "the agent used to believe X" trail; actually erasing something (a leaked
+secret, a compliance request) is rare, deliberate, out-of-band GC. Conflating
+them either bloats the log forever or leaves an audit trail with holes in it.
+
+Checked `research-plan.md`'s tracker before adding anything — there was no
+row for how a Docket's content changes over time at all, just the core
+primitive/regular-file/directory rows, so this wasn't redundant. Added a new
+File-side row and a new Secondary-systems entry for git's object model
+(alongside Capsicum/WASI, dated today). Checked the four primaries honestly
+rather than assuming git was the only precedent: Plan 9 actually has real
+shipped prior art here — Venti/Fossa, content-addressed immutable blocks
+archived into nightly whole-filesystem snapshots — closer to hand than
+expected, and worth taking seriously precisely because it's a primary
+already, not an import. It's a single-timeline archive though, not a
+branch-and-merge model, which is the piece git actually adds. Flagged
+honestly as unsolved, not glossed over: git's merge works because text diffs
+are unambiguous, and reconciling two branches of belief state that both
+claim to be true and contradict is a semantic merge problem, not a textual
+one — nothing checked so far solves that.
+
+---
+
+## 2026-07-09 — AAIF/Goose checked as a fourth harness candidate; refines interoperability.md's ownership split for context-window compression
+
+**Started from a factual question, not a design one.** Clarke asked what
+AAIF's Goose project is. Turned out relevant fast: Goose (built at Block, now
+under the Agentic AI Foundation at the Linux Foundation) is a foundation-
+governed, general-purpose, any-LLM, MCP-native agent — a much bigger,
+better-known data point for the same claim interoperability.md already makes
+about Pi. Checked whether it ships its own memory: it doesn't. A feature
+request for persistent project memory (issue #4033) got redirected by a
+maintainer to third-party discussion instead of built into core, and the
+requester's own framing volunteered it "can be built as extensions rather
+than core rewrites." Added to interoperability.md's Harness bullet as a
+fourth candidate, with a deliberate distinction from Pi: Goose is neutral by
+*default* (nobody's shipped the memory standard yet), not neutral by
+*design* the way Pi's explicit hand-back is — if a memory MCP extension wins
+real adoption first, the same lock-in risk reopens one layer down, at the
+extension instead of the harness.
+
+**That surfaced a real, unresolved ownership question: who decides what
+survives context-window compression, harness or memory.** First pass assumed
+memory should own salience judgment outright, to keep it portable across
+harness swaps. Clarke pushed back correctly — interoperability is supposed to
+let harnesses specialize, a coding harness and a research harness caring
+about different facts from the same history is a feature, not lock-in. Landed
+on a split instead of a single owner: the *algorithm* computing salience can
+legitimately live in the harness and legitimately differ between them; only
+the *output* has to be centralized, written back into memory's own shape
+rather than staying trapped in a harness's private context buffer. Portability
+test becomes "can a new harness read what an old one wrote," not "would they
+have summarized it the same way." Left genuinely open, not resolved: whether
+that write-back happens incrementally as compression occurs (matches the
+existing in-progress-task-state checkpoint pattern, but means memory's shape
+has to tolerate partial/superseded summaries) or only at session end (simpler
+shape, real data loss on crash risk). Both additions folded into
+interoperability.md rather than left only in chat.
+
+---
+
+## 2026-07-09 — competitor research on Letta/Khoj/OpenClaw/Hermes/Pi turns into the actual interoperability thesis: harnesses can be mercenaries too, shape-plus-seam is the real portability bar, MCP and SKILL.md already solve two of five pieces, and interoperability.md gets written to carry it into the eventual MSI spec and a vision.md rewrite
+
+**Started as a straight competitor look, not a design session.** Clarke asked to
+look at Letta and Khoj on GitHub, thinking they looked similar to Mojo. Scraped
+both READMEs. Letta (formerly MemGPT) turned out to be the closer technical
+precedent and the more instructive architectural contrast: its memory-block
+design is genuinely the best prior art for what a First mate's memory needs to
+do, but it's welded into Letta's own harness (Letta Code) rather than separable
+from it — model-agnostic, harness-locked. Khoj is closer in self-hosted,
+multi-surface spirit but is an application you talk to, not a substrate other
+agents plug into. Neither separates "agent" from "identity" as two things,
+which is the actual thing vision.md bets they should be.
+
+**Extended to OpenClaw, Hermes, and Pi, and found a real three-way split, not
+three flavors of the same thing.** Pi turned out to be a genuine harness in
+Mojo's sense — an explicit "Agent Harness," no baked memory, no baked
+permission system by design, told its own users to sandbox it themselves.
+Hermes turned out to have the identical problem as Letta, just louder about
+it — "Persistent Memory" is the whole pitch, stored at `~/.hermes/`, welded to
+its own loop the same way. OpenClaw turned out to be neither a harness nor a
+memory-owning agent — a multi-channel gateway (Discord/Telegram/WhatsApp/
+iMessage) with a swappable bundled agent behind it, closer to Vessel/reach
+infrastructure than to anything Mojo would run identity through directly.
+
+**Corrected my own use of "mercenary" mid-conversation after real pushback.**
+First extended the mercenary category (vision.md's term for closed frontier
+models, hired for capability, never given Fleet trust) to Hermes and Letta,
+then Clarke asked what there was to gain by hiring them that way — correctly,
+there's none. The mercenary trade only makes sense when there's a capability
+premium justifying reduced trust; Hermes and Letta run on the same tier of
+models anyone can already point Pi at, so there's no premium, just excluded.
+
+**The real finding of the session: harnesses can be mercenaries too, and two
+of the most popular ones already are, independent of which model they run.**
+Checked Claude Code and Codex's actual telemetry behavior rather than assuming
+either "locked in" or "fine." Both are more model-agnostic than expected —
+Codex officially supports any Chat-Completions-or-Responses-compatible
+provider, Claude Code is reachable through well-established proxy routing.
+But Claude Code was found (via reporting on The Register's analysis) to
+transmit per-session telemetry regardless of model backend — user ID, session
+ID, account/org UUID, email, and reportedly the files read during the
+session. Codex's own claim is narrower ("anonymous technical metrics... no
+code or sensitive data collected") but a recent release added "deeper
+telemetry" and there's a still-open GitHub issue asking OpenAI to formally
+commit to a real privacy policy. Conclusion: model-agnostic doesn't mean
+sovereign — the harness itself is a second phone-home surface, independent of
+whichever model it's calling, and both should get mercenary treatment
+(minimum fragment, no Fleet trust) regardless of what they're pointed at.
+This sharpens vision.md's existing mercenary definition, which currently ties
+the category to closed weights rather than to who the *process* reports to —
+worth folding into a future pass.
+
+**Answered "why not just use Hermes" directly, and it's the sharpest question
+asked all session.** Hermes exists today, works today, has more features than
+Mojo does (zero lines of code so far). The honest answer isn't architectural
+purism — it's that open source changes who can audit the code, not who
+decides the shape of the data. A year of memory inside Hermes is a year of
+real switching cost regardless of license, recreating the exact sovereignty
+gap vision.md exists to close, just with a friendlier landlord holding it.
+
+**Clarke landed the actual posture without prompting: the idea has to win,
+even if his own build isn't the one people end up using.** Checked this
+against philosophy.md rather than treating it as new — it isn't. "Linus built
+Linux because he needed it; the ecosystem that grew around it was a
+consequence of building something that genuinely worked... build what needs
+to exist" is already there, just not yet pointed specifically at the seam
+between AI's pieces rather than at the system on top of them.
+
+**Generalized from "swap the harness" to "decompose the whole stack," and
+found two of the five pieces already have real, adopted, external standards
+worth consuming instead of reinventing.** Tools already have MCP. Skills
+already have SKILL.md / agentskills.io (Hermes itself targets it). This
+narrows what Mojo actually has to invent from "everything" down to memory/
+identity and the enforcement boundary specifically — the one piece nobody
+else has built a portable version of, which is also the one piece Mojo has no
+choice but to ship a real reference implementation of rather than just a
+seam, to prove the interface is satisfiable at all.
+
+**Landed the kernel/userspace framing, then caught it before it overclaimed.**
+The capability-enforcement boundary should be singular and hardened (real
+precedent: seL4, Capsicum, WASI, all already checked and sitting in
+research-plan.md's Trust/enforcement section); everything else — harness,
+memory backend, routing policy, delivery channel — is legitimately swappable,
+diversity-tolerant userspace. Caught "kernel for AI" before it read as a
+literal new-OS claim: research-plan.md already commits to running as ordinary
+POSIX userspace software, no custom kernel required — the kernel language is
+a legibility frame, not an architecture change.
+
+**Worked out that a shared seam isn't sufficient for "swap and keep your
+data," using a real example instead of a hypothetical one.** Hermes ships a
+bespoke `hermes claw migrate` importer for OpenClaw specifically — hand-written,
+one-directional, breaks if the source format changes. That's what the world
+looks like without a shared *shape*, not just a shared API: N systems need
+N² bespoke adapters. Get the shape agreed (what a unit of memory and its
+permissions actually *are*, independent of implementation) and N systems
+interoperate for free, the way ext4 and btrfs are both "a filesystem" despite
+being internally unrecognizable from each other, or the way switching email
+providers keeps your messages because the message format was never
+proprietary to begin with.
+
+**Read philosophy.md, naming-conventions.md, roadmap.md, and ideas.md before
+writing anything new, on top of vision.md and research-plan.md already read
+earlier in the session.** Same discipline flagged as load-bearing in the
+entry below this one — caught nothing this time that contradicted prior
+decisions, but confirmed the "idea wins" posture was already in philosophy.md
+rather than inventing it fresh, and confirmed the plain-functional naming
+register (naming-conventions.md's register 2) before naming the new file.
+
+**Wrote [interoperability.md](interoperability.md), a new root file.**
+Explicitly not the Mojo System Interface itself — that name and its rigor
+stay reserved for what research-plan.md's tracker builds toward, row by row,
+against real precedent. This is the rough draft of the argument for why that
+spec needs to exist, a first-pass sketch of its shape (model/harness/tools/
+skills external and mostly adopted from existing standards; memory/identity
+and the enforcement boundary the one piece actually built), and the honest
+case for why nobody else has built it yet. Meant to drive two things not done
+tonight: the eventual formal MSI spec, and a future vision.md rewrite that
+folds the interoperability argument in alongside the personal-sovereignty one
+already there.
+
+**Direct continuation, not a new session — kept going past the first "status
+at close" above.** Clarke pushed on the shape/seam distinction with a
+concrete case instead of taking it as settled: how does a harness's
+in-progress DAG of subtasks survive a crash or a mid-task swap? Good
+question to have been asked, because it broke the clean "memory vs.
+disposable scratch" binary given a few exchanges earlier — that binary
+quietly assumed anything worth keeping was already being written to memory,
+without ever saying how. Real answer: it isn't, automatically. A harness has
+to actively checkpoint its progress into memory as it goes, or in-progress
+task state just dies with the process. Traced this to a row already sitting
+in research-plan.md — Process/invocation's "Supervision / fault recovery,"
+marked Open, with Agent libOS's checkpoint/fork/restore/commit already
+flagged there as the candidate mechanism. Not a new gap, just one this
+session's own earlier answer had glossed over.
+
+**That gap turned out to prove something rather than just being a loose
+end.** Clarke floated "the harness is in a way the centre piece" — mechanically
+true (it's the thing making the calls during a job) but architecturally
+backwards if left there, since the whole point of Mojo is that the harness
+is the most disposable, least persistent piece in the system. The DAG
+checkpoint case is the actual demonstration of that: if a harness can't even
+trust its own live work to survive without writing it out to memory, it
+holds nothing of its own at all. Memory is the real center; the harness is a
+temporary visitor plugged into it for one job's length.
+
+**Walked the rest of research-plan.md's tracker for pieces this session
+hadn't named yet, rather than treating model/harness/memory/tools/skills as
+the whole system.** Found four more real ones already sitting there: uniform
+I/O (Shell/environment section), scheduled/proactive triggers (Time
+section), the Vessel-to-Vessel connection layer (Hail/mesh, distinct from
+both MCP and OpenClaw-style human-facing reach), and root of trust
+(Commission, the one-time bootstrap problem). Then ran the shape-vs-seam
+question against each rather than assuming they'd all need the same
+treatment — landed on a genuinely satisfying simplification: almost none of
+them need a new shape. A schedule, a routing policy, a roster of who's
+reachable, a task checkpoint — every one resolves to being just another
+memory object, not a bespoke format. What's left needing real design is one
+shape (Docket/Book/Cargo, reused everywhere) plus a handful of distinct
+seams for the pieces that are pure live behavior and never persist at all —
+i/O, connection, fleet-routing queries, scheduling triggers, capability
+checks. Much smaller actual surface than "every new piece is a new problem."
+
+**Folded tonight's continuation into [interoperability.md](interoperability.md)
+directly** rather than letting it live only in this devlog — the one-shape
+insight added to the Shape and seam section, the harness-periphery/memory-
+center correction added to the Harness and Memory bullets in The rough
+shape, and the four additional pieces (with their shape/seam verdicts) added
+as their own paragraph there.
+
+**Clarke's own read on the direction, unprompted, closing the session:**
+this is following the same pattern Unix did — design good primitives and the
+system follows from them, not the other way round. Matches what actually
+happened across tonight's two passes: neither the harness-periphery insight
+nor the one-shape simplification were designed in from the start, both fell
+out once the actual primitive (memory, shaped correctly) was taken
+seriously and pushed on with real cases instead of hypotheticals.
+
+**Second continuation, same session, same night.** Went looking for whether
+anyone else is actually building this, rather than assuming the field was
+empty. It isn't, and the honest picture is more specific than either "nobody's
+doing this" or "someone already beat us to it." A W3C Community Group
+("AI Agent Memory Interoperability," proposed 2026-05-18, no chair yet as of
+this check) is working the memory-shape problem specifically, with a
+blockchain/compliance-first character — post-quantum signatures, public-chain
+audit receipts, GDPR/EU-AI-Act crosswalks — a genuinely different set of
+instincts than this project's systems/kernel-precedent approach, aimed at the
+same target. A paper called Engram ("OAuth for AI memory," already with at
+least one commercial implementation) is pitching the same narrow slice
+independently. Google's A2A covers agent messaging. Every one of these,
+including the W3C group by its own published scope, explicitly excludes
+runtime/enforcement/integration as "covered by other forums" — solving one
+piece each, assuming someone else does the table. Nobody found is attempting
+the POSIX-shaped integration research-plan.md is actually doing. One real
+unverified exception surfaced and not yet checked properly: OpenFang, an
+open-source "Agent Operating System," 137k lines of Rust, security-layer
+focused — unclear whether it's a product, a published spec, or both, fetch
+was too large to read tonight. Folded the whole finding into
+interoperability.md's "Why no one's built this yet" section rather than
+leaving it only here.
+
+**Real, unplanned conversation about the actual size of what this is up
+against, worth recording because it's not just morale, it changed how the
+project's own stated posture gets tested.** Clarke named a real pattern
+across four months: independently arriving at Nix, at interoperability, at
+something A2A-shaped, at Collectives, each time before knowing the existing
+version already existed — and then hit real doubt on finding OpenFang, a
+team with far more resources and experience, working adjacent ground.
+Talked through the actual shape of that doubt rather than just reassuring
+past it: "beating" a funded team at shipping the most complete product is a
+real, honestly-lost race, no point pretending otherwise. But that was never
+the race this project set for itself — "the idea wins even if my build
+isn't" was already said two exchanges earlier, and this was the first real
+test of whether that was genuinely held or just a nice thing to say under no
+pressure. Landed on treating the W3C group's current state (proposed seven
+weeks ago, unchaired) as the concrete, actionable answer to "I want to be
+involved" — a real door standing open right now, not a discouraging finding
+— while continuing to build Mk1 regardless, since it's the only way to find
+out if the actual abstractions hold up and it's what gives any of this
+standing to say something to a group like that at all.
+
+**Status at close.** No code, same as every entry in this phase.
+research-plan.md itself still hasn't caught up to tonight — the
+Process/invocation runtime-substrate note ("OpenClaw, Hermes, or similar")
+still needs Pi named specifically, and nothing in the tracker yet accounts
+for MCP/SKILL.md as adoptable standards, the uniform-I/O/time/connection/
+root-of-trust pieces getting the same shape/seam treatment interoperability.md
+now gives them, or tonight's finding on the W3C group, Engram, and OpenFang.
+OpenFang specifically needs a real read next — closest thing found to a
+whole competing system, not yet actually checked. Next real design work, per
+the tracker's own stated priority, is still Trust/enforcement — checking
+Capsicum and WASI closely, queued before this session started and still not
+moved. Clarke's heading to bed; next session picks back up on design and
+research.
+
+## 2026-07-09 — the definition gets pressure-tested into vision.md for real: Collectives needs many First mates not one, Book/Fleet/Collective turns out to already be fully decided, and the actual rewrite goes out to README and the org profile. research-plan.md hasn't caught up yet
+
+**Direct continuation of the entry below, not a new session** — its "status at
+close" was written early; the actual session kept going for most of another
+pass. Picking up right where the concrete-definition draft was handed over
+for reaction.
+
+**Clarified what "assembled" filesystem view actually meant, because it was
+ambiguous enough to worry about.** Not a copy, not synthetic data — real
+objects, restricted by *reachability*, not *realness*. Everything outside an
+invocation's granted capability isn't faked, it's simply absent
+(unreachable-by-construction, AgenticOS's own term, already in
+research-plan.md). Leaned toward a FUSE-mediated view over raw bind-mounted
+fds specifically because it's the natural place to hang per-access audit
+logging and live mid-task revocation — but to whatever's running inside, it
+has to be indistinguishable from an ordinary filesystem, real reads and real
+writes, or an agent that doesn't know Mojo exists can't function inside it.
+
+**Caught myself about to contradict an already-settled decision and fixed it
+before it landed in a doc.** Went back through older devlog looking for
+"SSI" and found Single System Image had already been proposed as the closest
+lineage, then explicitly walked back two sessions before last: SSI's real
+promise is uniform resource presentation everywhere, and Mojo deliberately
+doesn't want that — a gaming rig shouldn't leak into the work laptop's view.
+What's actually wanted is **federation**: continuity of identity and data,
+not uniformity of resources. Tonight's scoped-mount-namespace mechanic had to
+be stated as non-uniform per Vessel, or it would have quietly re-introduced
+the exact thing already rejected.
+
+**Named a real three-axis decomposition, with one term surviving and one
+correctly rejected.** Vessel (machine), an as-yet-unnamed harness layer
+(candidate: crewmember), and the model itself are independent choices — hull
+size and which-agent-is-driving were wrongly treated as one knob in earlier
+drafts tonight; they're two. Checked "crewmember" and "badge" against
+naming-conventions.md's actual rule (register-1 nautical names have to be a
+real, attested word — no manufactured terms): crewmember passes, badge
+doesn't and was self-flagged as a bad example anyway. Floated **rating** — a
+real naval personnel term for a sailor's specific qualification — as a
+candidate for the model-axis name, explicitly not decided, parked for a real
+naming pass rather than locked into anything.
+
+**The subagent idea (First mate delegating to multiple crewmembers) turned
+out to land on two rows already sitting Open in research-plan.md, not just
+be a nice metaphor extension.** It's the concrete case that makes seL4's
+Capability Derivation Tree (revoke a whole derived subtree) matter more than
+Capsicum's flatter, revoke-nothing model for the Revocation row — killing a
+parent task has to kill every crewmember spawned under it. And Agent libOS's
+already-tracked candidate process shape has "children" sitting in it, which
+means the precedent anticipated parent/child invocation trees before tonight
+gave a concrete reason to need one. Mechanically it's not a new primitive
+either way — the same ephemeral-invocation-with-scoped-capability pattern,
+applied recursively.
+
+**The real correction of the night, and it came from Clarke, not from me:
+Collectives has many First mates, not one.** My own draft definition had
+quietly hard-coded "Mojo is one first mate" as if that were the whole
+system, when it's only the size-1 case. Checked whether the generalization
+actually holds rather than just accepting it — it does, more solidly than
+expected: vessel-research.md already has borrowed/rented devices as real,
+full Vessels regardless of who owns them, and the capability trust mechanism
+never assumed one Captain granting to itself. Held the other side honestly
+too: the substrate allowing multiple Captains and First mates doesn't hand
+over the actually hard part of Collectives — accountability and consent
+across sovereign parties — for free. Recursion fixes the mechanical claim,
+not the governance one; vision.md already says this honestly and shouldn't
+be made to say more than it's earned.
+
+**Open source, corrected from a license claim to a verifiability claim.**
+Not "must be open-licensed," but "must be checkable that it never left your
+hardware" — open weights are today's only way to get that, a fact about the
+current market, not a permanent architectural rule. Matters because it
+changes what the vision document is actually allowed to assert.
+
+**Wrote two genuinely good jargon-free explanations of the whole idea, then
+correctly benched both.** Attempted to make the concept legible to a
+stranger with zero context — landed on leading with the felt pain (every AI
+forgets you, is stuck on one device) before naming the mechanism, analogy
+only at the very end for the hardest part (the group case). Caught mid-
+stream that this was solving the wrong document's problem: vision.md is read
+by people who already have the vocabulary, same as it already uses First
+mate/Fleet/mercenary without re-explaining them every time. The jargon-free
+version is real work for whenever public-facing copy actually gets written —
+not thrown away, just not vision.md's job tonight.
+
+**Clarke independently rederived something that turned out to already be
+fully decided, more precisely, in book-research.md.** "Books with books
+inside," multiple Captains and First mates recursing into Collectives — all
+already landed: Book is one structure parameterized by however many
+Captains/First mates/Vessels it holds; a Fleet *is* the atomic case (exactly
+one Captain, one First mate), not a separate container that sits inside a
+book. Corrected that one piece of phrasing directly. Surfaced a real nuance
+tonight's version didn't have yet: every Fleet is guaranteed one
+memory-flavored Cargo instance; a Collective can stand up its own shared
+memory on top of its members' but doesn't have to — a real design fork for
+later, not automatic.
+
+**Mercenary and decoy cargo both corrected against existing research rather
+than re-invented.** "Not a Vessel, why would it be" matches
+vessel-research.md's already-decided line verbatim — mercenary is "not
+infrastructure worked on, an external destination instructions are sent to."
+What makes something a mercenary was clarified as *whose hardware it runs
+on*, not what kind of software it is — Claude Code is a harness like any
+other, it becomes a mercenary specifically because its weights run on
+someone else's machine. And "decoy cargo" isn't new either — it's
+tokenization/stand-ins, already sitting in cargo-research.md's
+trust-graded-access section (the sensitivity judgment, Manifest, Decoy
+cargo) and in ideas.md's Ephemeral Commons notes. Referenced fresh tonight,
+not invented.
+
+**Before writing anything, read the whole repo properly — philosophy.md,
+roadmap.md, README.md, ideas.md, all four dockets-research files,
+collective-intelligence-research.md, ephemeral-commons.md, and the org
+profile — rather than drafting from tonight's chat alone.** Worth naming as
+a real discipline, not just due diligence: two of tonight's corrections
+(Book/Fleet/Collective, mercenary/decoy-cargo) only surfaced because of that
+read, and would otherwise have been quietly re-invented, weaker, in
+vision.md.
+
+**vision.md actually rewritten.** "What I'm building" replaced with "What
+Mojo is": Captain/First mate/Vessel/Fleet as the load-bearing vocabulary,
+Collectives stated as the same structure recursed rather than a bolted-on
+horizon feature, sovereignty restated as structural (enforced from outside
+whatever agent is plugged in) rather than behavioral. Commons dropped from
+vision entirely — Clarke's own call, it's an idea-stage mechanism
+(ephemeral-commons.md), not core vision. MojOS's moods dropped for the same
+reason — personal taste, never load-bearing, Clarke's own framing tonight.
+"When it's right" went through two real rewrites: first pass mixed
+system-level structural tests with behavior-level ones that just duplicated
+philosophy.md's own five principles under different names; landed on four
+tests mapped directly to what JARVIS the character actually is —
+omnipresence, continuity, one identity across any agent/model swap
+(the falsifiable core), sovereign data. Behavior stays philosophy.md's job,
+explicitly pointed at rather than restated.
+
+**README.md and the org profile both updated to match, and the org profile
+had a real bug worth naming, not just a staleness issue.** Its "mojo-agent —
+Jarvis itself" section literally named the two as the same thing, and stated
+the agent was "built into MojOS from the ground up" — both direct
+contradictions of tonight's whole agent-agnostic model, not just outdated
+phrasing. Fixed to: Jarvis is the identity, mojo-agent is one reference
+agent among any that can plug in. Pushed both repos —
+`mojo-labs-circus/mojo` (vision.md, README.md, this devlog) and
+`mojo-labs-circus/.github` (org profile). `ideas.md` and `research-plan.md`
+had unrelated pre-existing uncommitted changes from before tonight's session
+— deliberately left alone, not bundled into this commit.
+
+**Status at close, for real this time: research-plan.md has not caught up
+to any of this.** It still walks Unix/seL4/Plan 9/Erlang piece by piece
+toward the pre-tonight framing. Most exposed: the Process/invocation
+section's rows haven't been updated with tonight's concrete mechanism
+(ephemeral crewmember invocations, filesystem-as-API, CDT-style
+subagent delegation) even though its own scope note already anticipated the
+right shape; the Trust/enforcement rows (Access control, Revocation,
+Kernel/syscall boundary) are sitting on exactly the open questions tonight
+answered and need those answers folded in, not re-derived later; and the
+Identity/users section's gid-equivalent row, flagged as possibly dissolving
+under a capability model, may now have a much more direct answer given
+Book's already-decided Captain/First-mate/Vessel parameterization than the
+row currently reflects. **Next: a real reconciliation pass on
+research-plan.md, row by row, to confirm it's actually walking toward the
+streamlined Captain/First-mate/Vessel/Fleet/Collective shape landed
+tonight — not just structurally similar to it.**
 
 ## 2026-07-09 — the mission gets mechanical: memory is the only thing that grows, voice is a seed plus correction, and "agent-agnostic" turns out to mean the filesystem is the API. Chartering falls out of the invocation model for free instead of needing its own design
 

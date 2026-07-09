@@ -193,6 +193,15 @@ here honestly. Fuller write-ups of many of these exist in git history (pre-reset
 - sops-nix for all secrets, own hardware and rented alike — no reason to treat
   local as trusted-by-default when the encrypted-at-rest version costs nothing
   extra.
+- Mercenary status should cover a full Claude Code (or Codex) session, not just
+  single questions — since decoy cargo is a live property on individual cargo,
+  not a one-shot prompt substitution, mojo-agent can proxy the whole session:
+  serve the decoy version of each file/cargo as the CLI reads it, translate its
+  output back onto real cargo as it comes back. No new mechanism, just the first
+  mate interposing for the session's length instead of once per prompt. Real
+  hope stays that open-source models get good enough that this isn't necessary
+  at all — but coding is the sharpest case against that today, since Claude
+  Code/Codex are genuinely the best tools for it right now.
 
 ## Product / org
 

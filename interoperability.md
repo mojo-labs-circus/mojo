@@ -1,0 +1,394 @@
+# Interoperability
+
+*The rough draft of the biggest idea in the project so far: that AI shouldn't be
+built as monolithic products, and that Mojo's actual job is to formalize the seams
+between the pieces so none of them ever have to be welded together again. This
+precedes and will drive both the eventual Mojo System Interface spec
+([research-plan.md](research-plan.md)) and a rewrite of [vision.md](vision.md).
+First pass, most of this will be wrong somewhere, good enough to build my first
+real Mojo system against — not final. Depth comes from actually building it and
+finding out.*
+
+---
+
+## The problem
+
+Every AI product that exists today — the ones I looked at closely, Letta, Hermes,
+Khoj, and the reach-layer OpenClaw — welds together things that don't need to be
+welded: which model does the thinking, what loop drives tool use, where memory and
+identity live, what tools and skills are available, how you get reached. Pick one
+of these products and you get all of it as one inseparable block, on that
+product's roadmap, in that product's format.
+
+This isn't a conspiracy. It's the default, because until now there's been nowhere
+else to put memory. A team building a good agent loop has no standard place to
+keep persistent identity, so they build one into their own loop, because they have
+to. Hermes's whole pitch is "persistent memory" — that's not a feature bolted on
+top, it's the product, baked into the one thing you're not supposed to be able to
+take with you.
+
+The cost of that default is real, not theoretical. It doesn't matter whether the
+company holding your memory is a trillion-dollar lab or a friendly open-source
+project — Nous Research's roadmap for Hermes is still a roadmap you don't control,
+and a year of accumulated context sitting in Hermes's format is a year you can't
+easily leave with. Open source changes who can audit the code. It doesn't change
+who decides the shape of your data.
+
+## Shape and seam
+
+The fix isn't "build a better monolith." It's decomposing the AI stack the way
+Unix decomposed the operating system: small pieces, each good at one thing,
+composed through interfaces nobody has to renegotiate every time.
+
+But an interface being shared isn't enough on its own. Two systems can both
+correctly implement the same API — the same verbs, read this, write that, check
+this permission — while storing something completely different underneath. Swap
+one for the other and you can call all the same functions, but your actual data
+doesn't move on its own; you get *behavioral* portability without *data*
+portability. That's most of what passes for "open" today.
+
+Real portability needs two things agreed on, not one:
+
+- **The seam** — the interface a harness or tool calls to read, write, and check
+  permissions against memory. This is the part that looks like an API.
+- **The shape** — what a unit of memory, and the permissions attached to it,
+  actually *is*, independent of whoever implemented it. This is the part that
+  looks like a file format.
+
+Get only the seam right and switching memory systems means exporting and hoping
+the new one understands your data losslessly — a real migration project, the kind
+Hermes already ships a bespoke one-off importer for (`hermes claw migrate`, built
+by hand, works one direction, only for that one source, breaks the moment the
+source format changes). Get the shape right too, and switching is closer to
+changing email providers: your messages survive the move intact, not because
+Gmail and Fastmail share code, but because the message format itself was never
+proprietary to begin with. That's the actual target — not a migration tool
+between every pair of systems, but no migration tool ever being necessary,
+because nobody's data was ever locked in a private shape.
+
+Not every piece needs the same amount of central control, though, and it matters
+which piece gets which treatment. Two different failure modes if you get this
+backwards:
+
+- Make everything a free-for-all and you get twenty years of Linux audio —
+  OSS, then ALSA, then PulseAudio, then JACK, all incompatible, because nobody
+  agreed early on what an audio stream actually *was*. Real pain, decades long,
+  only resolved once PipeWire unified it.
+- Make everything centrally controlled and you lose the entire point — no
+  competition, no specialization, one implementation everyone's stuck with.
+
+The split that actually works: the capability-enforcement boundary — what any
+plugged-in harness, tool, or skill is actually allowed to touch — has to be
+singular and hardened, the kernel. Real, already-shipping precedent for exactly
+this shape of problem exists and doesn't need to be invented: seL4's capability
+model, Capsicum's capability mode on a real POSIX system, WASI's no-ambient-access
+sandboxing. Everything else — which harness, which model, where the memory
+physically lives, how fleet routing decides what runs where, how you get
+reached — is userspace: real diversity is a feature there, because a bad
+implementation just doesn't get chosen, it doesn't compromise anyone else's
+sovereignty the way a weak enforcement layer would.
+
+**One shape turns out to do almost all the work.** Walking the rest of the
+system's pieces (below) to check which ones actually need a shape, not just a
+seam, the honest answer keeps coming back the same: almost nothing does, beyond
+memory's own. A scheduled trigger, a fleet-routing policy, the roster of who's
+reachable, an in-progress task's checkpointed state — every one of these is
+durable data someone would want to survive an implementation swap, and every
+one of them turns out to just be another memory object, not a new format to
+invent. There isn't a proliferation of bespoke shapes waiting to be designed —
+there's one shape (Docket/Book/Cargo), reused everywhere something needs to
+last, and a handful of distinct seams for the parts that are genuinely just
+live behavior and never need to persist at all. That's a much smaller design
+surface than "every piece needs its own everything," and it's the same
+Unix-style lesson showing up a level up: good primitives, and the system
+follows, not the other way round.
+
+## What's already settled — reuse, don't reinvent
+
+Some of these seams don't need Mojo to invent them at all. The industry is
+already converging on real, working standards for parts of this, and the honest,
+lazy, correct move is to consume them:
+
+- **Tools.** MCP (Model Context Protocol) already exists, is already adopted
+  across multiple labs, and already does exactly this job — pluggable
+  capabilities any harness or model can call through a shared interface. Adopt
+  it, don't compete with it.
+- **Skills.** SKILL.md, via the agentskills.io open standard, already exists.
+  Hermes itself targets it. Adopt it.
+- **Models.** Already the most competitive, most agnostic layer that exists —
+  real multi-provider dynamics, OpenAI's own Codex explicitly designed to point
+  at any Chat-Completions-or-Responses-compatible provider including local
+  open-weight models. Mojo doesn't need to build a model layer, just a routing
+  policy for choosing between what already exists.
+- **Harnesses.** Real, viable, already-existing candidates, not something Mojo
+  needs to build either — the actual reasoning loop, tool execution, LLM
+  orchestration. Pi is the one I've actually checked properly: no baked-in
+  memory to fight, no telemetry claims found anywhere, explicitly hands
+  containment back to whoever's running it instead of pretending to provide its
+  own — which is exactly what a capability-enforced boundary needs from
+  whatever plugs into it. opencode looks promising too but is unverified —
+  there currently appear to be two different GitHub orgs both using the name,
+  need to actually settle which before depending on it. Goose (built at Block,
+  now under the Agentic AI Foundation at the Linux Foundation) is a fourth
+  candidate, checked 2026-07-09: 70+ MCP extensions, any-LLM, foundation-
+  governed rather than single-vendor. No cross-session memory shipped in
+  core — a maintainer redirected a feature request for persistent project
+  memory (issue #4033) to third-party discussion rather than building it in,
+  and the requester's own framing volunteered that it "can be built as
+  extensions rather than core rewrites." Same useful property as Pi — no
+  memory to fight — but a different reason for it worth keeping distinct:
+  Goose is neutral by default, because nobody's shipped the standard yet, not
+  neutral by design the way Pi's explicit hand-back is. If a memory MCP
+  extension wins real adoption first, the same lock-in risk this whole
+  document is about reopens one layer down, at the extension instead of the
+  harness. Claude Code and Codex
+  are real, capable, and usable — but as **mercenaries**, not Fleet members:
+  both were found to send session data, files read, and account identifiers
+  back to their maker regardless of which model backend is configured, which
+  means the harness itself is the untrusted party, independent of whichever
+  brain is running inside it. Hired for one job, handed the minimum fragment,
+  never given a real view into memory. Same treatment vision.md already gives
+  closed frontier models, just extended to cover harnesses that behave the
+  same way even when open-source and model-agnostic.
+
+What's *not* settled anywhere, by anyone: a portable shape for personal AI memory
+and identity, and the enforcement boundary that protects it. That's the actual
+gap in the market, and it's the one piece Mojo has no choice but to build a real,
+working reference implementation of — not because building things is the
+mission, but because there's nothing to consume. Everything else on this list,
+Mojo mostly just needs to define the seam and let other people's pieces plug in.
+Memory is the one place it has to also build the piece, to prove the seam is
+real.
+
+## Why this is worth building
+
+The deeper case first: this is the shape every general-purpose technology
+takes on the way to becoming real infrastructure, not a shape unique to AI.
+Electricity was generators and proprietary distribution before the grid.
+Computing was incompatible mainframes before POSIX and TCP/IP made "built by
+different people, runs together anyway" the default instead of the
+exception. The web was competing, incompatible hypertext systems before HTTP
+and URLs. Every one of these went through vertically-integrated silos first,
+for the same reason AI is in one now — early on, everyone's racing to
+capture value before anyone's agreed on interfaces, and decomposition only
+happens once duplicated effort and lock-in get expensive enough that
+something forces the interfaces into existence. This isn't a bet that AI is
+the exception. It's a bet that it isn't — that it follows the same pattern
+everything else with this shape has already followed.
+
+There's evidence this has already started, not just historical analogy. MCP
+getting real multi-lab adoption, and SKILL.md getting adopted even by a
+direct competitor (Hermes, rather than inventing its own skill format), is
+the field already doing this on its own, unprompted, for the pieces where
+nobody has a moat to defend. It's stuck specifically on memory because
+that's the one piece the best-resourced players have an actual reason to
+keep locked — which is itself informative: the parts of AI already
+converging are exactly the parts nobody's incentivized to keep siloed, and
+the part that isn't is exactly the part somebody is.
+
+Two honest limits on all of this, worth keeping attached to the claim rather
+than left as unstated optimism. First: "needs" isn't "wants" — the field
+collectively benefits from this existing, but almost none of the players
+big enough to build it well are incentivized to be the ones who do, since it
+removes the moat that's worth the most to them (expanded on below). This
+doesn't happen because AI as a field asks for it. It happens if someone
+builds it well enough, outside that incentive structure, that using it
+becomes the obviously lazy choice for whoever builds the next thing.
+Second: done carelessly, this is worse than not having it at all — the
+Linux-audio failure mode from a few sections up, several competing
+half-standards, nobody actually interoperable, more fragmentation than the
+monolith phase had. Which is the actual justification for the slow,
+precedent-checked pace research-plan.md insists on: not caution for its own
+sake, but the one thing standing between this working and this making
+things worse.
+
+Vision.md already names three gaps — capability, sovereignty, context. This is
+the same argument at the interoperability layer specifically: even a fully
+open-source, self-hosted, sovereignty-branded product still recreates the
+sovereignty gap if there's no shared shape underneath it, because the lock-in
+that matters isn't "can I read the code," it's "can I leave with what I've built
+up." A year of memory inside Hermes is a year of switching cost regardless of
+Hermes's license. Shape and seam, done right, is the thing that actually removes
+that — not a nicer landlord, no landlord.
+
+It's also the mechanism for getting the same benefit everywhere that the model
+layer already has: specialization, capability tiers, cost tiers, real
+competition, because nobody's locked into one implementation of any given piece.
+The evidence this specialization is real, not hypothetical, is already sitting in
+the products surveyed — OpenClaw's real edge is multi-channel delivery, Khoj's is
+document retrieval, Hermes's is skill-authoring and automation, Pi's is a clean
+general-purpose loop. Strip memory out of each and what's left is genuinely
+different engineering, not the same thing wearing different branding. That
+diversity is worth being able to hotswap between per job, the same way you'd pick
+a cheap model for a quick classification and a frontier one for something hard.
+
+Personalization compounds from there — Linux's real pitch was never "one best
+OS," it was choose your window manager, your init system, your audio server, and
+assemble the machine that's actually yours. The same thing applied to AI: pick
+your harness, your model, your tools, all sitting on top of one identity that
+never fragments no matter what you swap underneath it. Individually interesting.
+For anyone doing real technical or professional work with specific requirements,
+not optional — which is exactly who vision.md already says this is for first.
+
+There's a bonus case worth naming honestly as a bonus, not the target: companies
+don't want lock-in either, for the same reason they wouldn't run critical
+infrastructure on a rival's proprietary platform. Collectives — vision.md's model
+for several sovereign Captains and First mates sharing one system without any of
+them surrendering ownership — is already the right shape for that, if it's ever
+worth building toward. Not a pivot, not now. Just evidence the underlying
+architecture generalizes further than one person's Fleet.
+
+The posture underneath all of this, worth stating directly because it's what
+makes the scope sane: the idea has to win, even if my build isn't the one people
+end up using. That's not a new belief bolted on for this document —
+[philosophy.md](philosophy.md) already says it: *"Linus built Linux because he
+needed it; the ecosystem that grew around it was a consequence of building
+something that genuinely worked. Build what needs to exist. Do it well. The rest
+follows."* This document is that same belief pointed specifically at the seam
+between AI's pieces, not just at the system built on top of them. If someone
+builds a better memory implementation that still speaks the same shape, that's
+not a loss — the whole reason to spend the effort getting the shape right instead
+of just shipping something clever is so that outcome is possible at all.
+
+## Why no one's built this yet
+
+Worth answering honestly, because if this is as needed as it looks, the absence
+of it needs a real explanation, not just "nobody thought of it."
+
+**Every company with the resources to build it well has a reason not to.**
+Portability is directly against the interest of anyone who's raised money on
+personal-AI stickiness. This isn't oversight — a neutral standard removes the
+moat, and nobody who benefits from the moat is going to fund its removal.
+
+**It's slow, unglamorous, and produces nothing demoable for a long time.**
+Getting a shape and a seam right is standards-body labor — checking every piece
+against real precedent, walking a tracker one row at a time
+([research-plan.md](research-plan.md) is doing exactly this) — not a weekend
+build. Bad fit for venture urgency, and a hard thing for a solo builder to stay
+on without needing outside validation along the way.
+
+**The pain is new.** Standards tend to follow fragmentation, not precede it —
+POSIX came after the Unix wars had already made incompatibility actively
+painful, it didn't prevent them. The harness landscape doing the equivalent
+thing — Pi, opencode, OpenClaw, Claude Code, Codex, Hermes, Letta all emerging
+inside roughly the same year — is recent enough that most people haven't felt
+the lock-in cost yet. The itch this answers is maybe a year old.
+
+**It needs a rare combination.** Real conviction about sovereignty, and real
+systems rigor — capability models, interface discipline, the willingness to
+check every piece against Unix, seL4, Plan 9, and Erlang/OTP before deciding
+anything. Most people who care about the first don't have the second, and vice
+versa. Small intersection, which is at least a partial, honest answer to "why
+hasn't someone already done this."
+
+**Checked 2026-07-09 whether any of this is already underway elsewhere — real
+activity exists, but scoped to single pieces, not the integration.** A W3C
+Community Group ("AI Agent Memory Interoperability," proposed 2026-05-18, no
+chair yet) is working the memory-shape problem specifically, with a
+blockchain/compliance-first flavor (post-quantum signatures, public-chain
+audit receipts, GDPR/EU-AI-Act crosswalks) rather than a systems/kernel-
+precedent one. A paper called Engram ("OAuth for AI memory") is pitching the
+same narrow slice, already with at least one commercial implementation.
+Google's A2A covers agent-to-agent messaging. MCP and SKILL.md, already
+adopted above. What's notable: the W3C group's own published scope explicitly
+excludes "agent runtime semantics" and "tool-routing semantics" as "covered
+by other forums" — every real effort found is solving its own single piece
+and assuming someone else does the integration, not attempting it. Nobody
+found is doing the POSIX-shaped thing — walk every piece against real
+precedent, land one coherent interface that ties memory, harness supervision,
+enforcement, and routing together rather than five uncoordinated protocols.
+One unverified exception worth checking properly next: OpenFang, an
+open-source "Agent Operating System" (137k lines of Rust, security-layer
+focused) — unclear yet whether it's a product, a spec, or both.
+
+## The rough shape
+
+Genuinely rough — this is the first pass, meant to be wrong in places, good
+enough to start building my own first Mojo system against, not a finished
+spec. The real, rigorous version of this is what
+[research-plan.md](research-plan.md)'s tracker is for, checked against actual
+precedent row by row. This is the sketch that has to exist before that tracker
+can be walked with real conviction about where it's heading.
+
+- **Model** — external, chosen per job, no seam work needed from Mojo beyond a
+  routing policy. Fleet, not frontier, decides which.
+- **Harness** — external. Pi today, more candidates as they get vetted. Mojo
+  doesn't build this — it defines the trust and supervision contract an
+  invocation runs inside, the same conclusion research-plan.md's
+  Process/invocation section already landed on independently: *"Mojo isn't
+  designing the agent; it's designing what the agent lives inside."* Worth
+  being precise about the actual hierarchy here: mechanically the harness is
+  the hub during one job — it's the thing calling out to the model, tools,
+  and memory — but architecturally it's the most peripheral, disposable piece
+  in the whole system, not the center. It holds nothing that outlives the
+  process. Even its own in-progress work — a multi-step task's state
+  mid-execution — isn't safe by default; if the harness doesn't checkpoint
+  that progress into memory as it goes, a crash or a mid-task harness swap
+  loses it outright. That's a real, currently open gap (research-plan.md's
+  "Supervision / fault recovery" row), not solved yet — candidate mechanism
+  is Agent libOS's checkpoint/fork/restore/commit pattern, one person's
+  unproven prior art, not a design.
+- **Tools** — MCP, adopted not reinvented.
+- **Skills** — SKILL.md / agentskills.io, adopted not reinvented.
+- **Memory & identity** — the one piece Mojo actually has to build, and the
+  actual architectural center of the whole system — everything above is a
+  temporary visitor into it, not a peer alongside it. The shape (Docket as
+  the core primitive, Book and Cargo underneath it — already being worked
+  out in research-plan.md's File-side section) plus the seam (capability-
+  based, seL4/Capsicum/WASI-flavored, direction already picked, mechanism not
+  yet designed) plus fleet control (which Vessel, which harness, which model,
+  decided per job — the routing policy, not a separate memory concern, but
+  its own policy data living in the same shape, per the note above).
+- **Enforcement boundary** — the kernel. Singular, hardened, not swappable.
+  Every consequential action any of the above pieces takes — a tool call, a
+  memory read, a model actually seeing real data — routes through this one
+  gate before it happens. Runs as ordinary userspace software on a real POSIX
+  system, per research-plan.md's own runtime-contract commitment — not a
+  custom OS, not something that needs a new kernel to exist underneath it.
+
+Beyond these five, research-plan.md's own tracker names a few more real
+pieces, most already resolved by the same one-shape/reuse-a-seam pattern
+rather than needing fresh invention: **uniform I/O** (how input/output flows
+into and out of an invocation — seam only, nothing persists in the
+convention itself), **time** (scheduled/proactive triggers — needs a shape,
+but it's just another memory object representing a standing instruction;
+seam reuses cron/systemd, not invented), **connection** (the mesh Vessels
+talk over — the live channel is seam-only and reuses Tailscale/WireGuard
+already, but the roster of who's reachable is memory-shaped, matching the
+Fleet section name naming-conventions.md already has for it), and **root of
+trust** (Commission — a one-time bootstrap process, not a recurring piece
+with its own shape; WASI's instantiation-time handle-passing is the flagged
+precedent for the mechanism itself).
+
+One more open thread the Harness bullet's checkpoint point above leads
+straight into: context-window compression. It's tempting to assume deciding
+which facts survive a summarization pass needs to be centralized to stay
+portable, and that assumption is wrong. The algorithm making that call can
+legitimately be harness-specific — a coding harness and a research harness
+caring about different things from the same history is the same kind of
+diversity that makes picking a harness for the job meaningful, not a
+portability risk. What actually has to be centralized is only the *output*:
+a summary computed by any harness has to land in memory's own shape, never
+stay trapped in that harness's private context buffer, or memory quietly
+re-fragments by harness the same way welded products already do. The real
+portability test is whether a new harness can read what an old one already
+wrote, not whether they'd have summarized it the same way. Still genuinely
+open: whether that write-back happens incrementally as compression occurs
+(matches the in-progress-task-state pattern just above, but means memory's
+shape has to tolerate partial/superseded summaries, not just finished ones)
+or only at session end (simpler shape, real data loss on crash). Not
+decided — flagged for when this row actually gets walked against precedent.
+
+## Where this goes next
+
+This document isn't the Mojo System Interface — that name is reserved for the
+real, rigorous spec research-plan.md's tracker is building toward, checked
+against precedent one row at a time, not rushed to match this draft's pace. This
+is what comes before it: the case for why that spec needs to exist at all, and a
+rough enough sketch of its shape to start building the first real Mojo system
+against while the rigorous version keeps getting worked out underneath it.
+
+It's also what the next [vision.md](vision.md) rewrite gets built from — folding
+the interoperability argument in alongside the personal-sovereignty one already
+there, not replacing it. Not done yet. This is the draft that makes that rewrite
+possible, not the rewrite itself.
