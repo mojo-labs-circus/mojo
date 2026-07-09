@@ -38,12 +38,10 @@ bodies and kernel projects make.
 No date attached to any of this. Progress is "does the standards document cover
 every piece in research-plan.md's tracker," not a calendar.
 
-The shape from here is three stages, not a list of separate future projects: the
-Mojo System Interface (this phase), Mojo — the Mk1 system built against it, then
-iterate. Multi-machine use, chartering, and Collectives aren't things bolted onto
-Mojo later — they're capabilities of the one system, realized as it matures
-through iteration. Nothing to wire in yet, but nothing separate to wire in later
-either.
+The shape from here is three stages: the Mojo System Interface (this phase),
+Mojo — the Mk1 system built against it, then iterate. Multi-machine use,
+chartering, and Collectives are capabilities of the one system, realized as it
+matures through iteration.
 
 Working rules for this phase:
 

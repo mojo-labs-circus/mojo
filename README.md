@@ -19,10 +19,11 @@ with, and public because the thinking is part of the work.
 | [ideas.md](ideas.md) | The net — every live idea, one line each |
 | [devlog.md](devlog.md) | Dated thinking, newest first |
 
-**Currently defining:** the Mojo System Interface, Mk1 — a first-pass,
-complete-coverage answer for every piece of the system, checked against real
-precedent (Unix, seL4, Plan 9, Erlang/OTP). [research-plan.md](research-plan.md)
-is the live tracker; [roadmap.md](roadmap.md) has the full phase breakdown.
+**Currently defining:** the Mojo System Interface, Mk1 — effectively Mojo's own
+POSIX. A first-pass, complete-coverage answer for every piece of the system,
+checked against real precedent (Unix, seL4, Plan 9, Erlang/OTP).
+[research-plan.md](research-plan.md) is the live tracker; [roadmap.md](roadmap.md)
+has the full phase breakdown.
 
 The eventual implementation, built once the standard exists:
 [mojos](https://github.com/mojo-labs-circus/mojos) ·
