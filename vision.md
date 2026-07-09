@@ -63,112 +63,82 @@ There's no persistent picture of you. A real personal AI carries your context
 permanently, across every device, and uses it to actually understand you rather than
 asking you to repeat yourself.
 
-## What I'm building
+## What Mojo is
 
-One system, in pieces that compose.
+Every AI someone uses today forgets them the moment the session ends, and is stuck
+wherever they opened it — a phone assistant that doesn't know what the laptop's
+knows, neither carrying anything forward, both owned by someone else's product.
+Mojo pulls identity out of any single app entirely.
 
-**mojo-agent — the first mate.** My personal AI, running on my machines. It's embedded
-in the system rather than sitting in a tab: it knows my machines, my files, my
-workflow, my preferences, and it keeps a brain — real, accumulating memory of me that
-lives on my hardware and nowhere else. It isn't a coding tool. I'm the captain; it's
-the first mate — and it works for me, not itself: it defers on anything that matters,
-never substitutes its judgment for mine, and its actual job is making me better at
-being captain, not more dependent on it. The seam between us never fully disappears —
-that's deliberate, it's what keeps "who's accountable here" answerable even once the
-day-to-day feels like one continuous person.
+The precedent is already proven one level down: harnesses made models
+hot-swappable, and nobody now would weld a harness to one model. Mojo is the same
+move one level up. Agents themselves — the harnesses, the products, the whole
+crowded fast-moving layer of them — become the swappable part, and Mojo is the
+layer underneath that survives the churn. An AI is stateless between calls; the
+same frozen weights run for everyone. What makes my AI *mine* was never in there.
+It's the context: the memory of my life and the permissions I've granted. Some days
+I think slower too — I'm still me. Identity is context, not compute.
 
-Command of everything I own outright: this machine, and every other machine of mine
-once the Circus exists — ringmaster and performers, still one fleet. Fleet command,
-the memory and the judgment, always lives at home, on the ringmaster (or, before I
-have one, whatever single machine I've got); only the hull doing the actual thinking
-changes. The fleet has classes, the same first mate at the helm of all of them, sized
-to the job — a sloop for something small and local, up through bigger hulls pooled
-from my own machines, up to a chartered frigate or galleon when a job needs more than
-anything I own gives. Every class gets the whole brain, chartered or owned — that's
-what makes it the fleet and not a mercenary: what changes between hulls is how much
-compute is under the hood, never how much it's trusted with. Chartering means renting
-compute for the length of one voyage, sometimes attested so even the dock owner can't
-see what ran, then letting it go — and it's cheap enough today to actually use:
-checked the pricing, confidential rental runs maybe 30–50% over plain for comparable
-hardware, not the order-of-magnitude tax expected, and whatever's rentable only keeps
-growing. What keeps it feeling like the same first mate across every hull rather than
-a different mind at a different size, short term: system prompts carrying voice and
-judgment, injected fresh regardless of hull — cheap, no training required. Long term,
-once prompting alone stops being enough: a personality adapter (a LoRA) per model
-family, same job, more durable. Either way memory itself never lives in the hull — it
-stays in the plain-file brain and gets retrieved fresh every time. Building and
-keeping whichever version current is MojOS's upkeep, same category as staging changes
-safely.
+So the system is built from that layer down, in a small vocabulary. A **Captain**
+is a person. A **First mate** is a persistent AI identity: what it remembers, what
+it's allowed to do — living on the Captain's own hardware, owing nothing to any
+product, handed fresh to whatever is actually doing the thinking. A **Vessel** is
+any machine that participates — owned, borrowed, or rented. A **Fleet** is the
+simplest whole system: one Captain, one First mate, every Vessel they work with.
+Which machine runs a task, which agent drives it, and which model does the
+thinking are three independent choices, made per job and changed without cost —
+different agents are good at different work, exactly as different models are —
+because nothing that matters ever lives inside any of them. The first mate is what
+stays constant across every swap.
 
-Beyond the fleet, mercenaries — the frontier models, Claude, GPT, whatever is
-sharpest in the world. Never part of the fleet, never trusted with it: hired for one
-mission at a time, handed a fragment of the charter — the minimum context the job
-needs, real values swapped for stand-ins first — and dismissed the moment they report
-back. They keep whatever they're handed regardless of what's asked of them; the only
-real defence is shrinking the fragment, not trusting their side to forget.
+Mine is called Jarvis, and the name is the spec: Tony Stark's JARVIS — one
+continuous counterpart across every machine, every interface, every scale of
+problem. That's also why the first mate can't just be a database with permissions
+attached: it's a character, with a voice and judgment that stay recognizable no
+matter what's underneath. The memory and the permissions are the foundation and
+the claim I can already stand behind; the character layer is built on top of them,
+and it earns a bigger place here as it proves out.
 
-The first mate only charters a bigger hull, or hires a mercenary, when it's actually
-worth what it costs — in money, in what has to be revealed — never by default. In
-practice this should skew hard toward the bottom: nearly everything on my own fleet,
-chartering for real but occasional load, mercenaries the rare exception, not a
-default channel. Working out *when* that's worth it well enough to trust
-automatically is still open; deciding it by hand for now, training a router on the
-decision once there's enough real use to learn from. And the ceiling itself is mine
-to set, not just the first mate's to judge — a hard line like "never hire a
-mercenary, full stop" is a real, respected setting, not a suggestion the system talks
-me out of. Whatever tools exist, how much they get used is my call.
+Sovereignty in this design is structural, not behavioral. The boundary around a
+first mate is enforced from outside whatever agent is plugged in — an agent that
+has never heard of Mojo still cannot exceed what it was handed, because what it
+wasn't handed simply isn't there. And the thinking itself stays genuinely private:
+models chosen on verifiable local privacy, which today means open weights on
+hardware I control — not because open source is the aesthetic, but because it's
+currently the only way "this never left my machines" is checkable rather than
+promised.
 
-The budget is the first mate's to manage, too — not just which hull a job goes to,
-but the standing decisions: which mercenary subscriptions are worth keeping, what
-chartering is costing over time, what the spend actually bought. "What did this cost
-me" gets the same discipline as "what did it see."
+Not every mind runs on hardware that's yours, and the model doesn't pretend
+otherwise. A frontier model behind someone else's API — Claude, GPT, whatever is
+sharpest in the world — is a **mercenary**: a hired gun, taken on for one mission
+at a time, handed the minimum fragment of context the job needs with real values
+swapped for stand-ins, and never given Fleet trust. Not because the model is
+worse — often it's better — but because its weights answer to someone else. The
+sharpest tools in the world, used without handing them your life. A *rented
+machine* is different: attested so even its owner can't see what ran, it's a real
+Vessel for the length of the rental. The fleet grows and shrinks with need;
+ownership was never what gated existence, only trust.
 
-The fleet described here now has a formal contract behind it, not just this
-narrative: [standing-orders.md](standing-orders.md), a POSIX-style spec — the
-behavioral rules any vessel or fleet must satisfy, independent of which OS or
-implementation actually satisfies them. It's the product of real design work, not a
-restatement of this page: Keel, the permission-ceiling/permission-grant split, a
-generational roster, Fleet and Collective as the same recursive container at
-different depths, vessel homogeneity confirmed rather than needing a type axis.
+And the structure recurses. A Fleet is the atomic case — one Captain, one First
+mate. The same structure, unchanged, holds several Captains and several First
+mates sharing a system: a **Collective** — a team, a family, a community, each
+member still sovereign, each first mate still its owner's alone, permissions never
+surrendered, participating in something larger without giving up what's theirs. AI
+as a real member of the group, accountability always tracing back to a human.
+People already work in groups where everyone runs a separate AI tool and
+coordination happens despite the fragmentation; Collectives makes the group
+itself — people and their AIs together — one system. The academic case that the
+group is the right unit is real and converging
+([collective-intelligence-research.md](collective-intelligence-research.md));
+nobody has built the system that treats it as one.
 
-**MojOS — the workshop.** The operating system built around the agent, on NixOS. The
-agent isn't a feature bolted on — it's the primary interface, and the OS is designed
-for it: the whole system declared in one configuration, changes staged and validated
-before they commit, always safe to undo. And the workshop has moods — switchable modes
-that change how the system looks, behaves, and how much of it shows: a dense hacker
-mode for deep work, a Grateful Dead mode when that's the energy, a plain-looking mode
-for when mates are in the room. The machine matches the person I am that day.
+## MojOS
 
-**The Circus — later.** Today each machine is an island. The Circus connects them so
-the agent follows you across devices as one coherent intelligence, not a separate
-instance per machine — the PC that becomes the home server, the laptop that joins it,
-the phone that's a window into it. Still entirely the first mate's own fleet: bigger
-ship classes to draw on, not a new tier of trust.
-
-**The Commons — the far horizon.** Chartering today means renting from whatever GPU
-supply already exists, one voyage at a time. The Commons is what that grows into: a
-network of datacentres run on attestation instead of trust — the operator can prove,
-cryptographically, that they never saw what ran on their hardware — that any personal
-AI, mine or anyone else's, can borrow from *and give back to*, not just charter from.
-How much to trust any given provider is the owner's call, not a default baked in —
-attested-but-known, or attested-and-anonymous, by choice. This is what keeps "everyone
-has their own server" from quietly recentralising the moment something needs real
-scale — the sovereignty promise holds even at the edge of what your own hardware can
-do.
-
-**Collectives — the far horizon.** Groups of people, each with their own sovereign
-agent, forming formal collectives: shared goals, explicit structure, AI participating
-in the group as a first-class member, accountability that always traces back to a
-human. The deepest and least-tested part of the vision. It stays on the horizon until
-the foundation under it is real — but it's where this ends up: if everyone has their
-own AI, the collectives they form are how individuals get institutional depth without
-institutional capture. Also solves something real happening right now: people
-already work together while each running their own separate AI tool, coordinating
-despite that fragmentation rather than through it — Collectives makes the group
-itself, people and their AIs together, one coherent system instead. Real academic
-grounding for treating the collective as its own accountable entity, not just
-individuals with tools, is in
-[collective-intelligence-research.md](collective-intelligence-research.md).
+Mojo runs on any Unix system — that reach is the point, and it's what makes the
+sovereignty claim credible to people who won't bet their machines on an unproven
+project. MojOS is the deepest host: NixOS plus Mojo's own opinionated defaults, the
+whole machine declarative and always safe to undo, not just Mojo's own footprint.
+It's the host I'll run myself. Best home, not a requirement.
 
 ## Who it's for
 
@@ -185,23 +155,24 @@ rather than the hard path.
 
 ## When it's right
 
-The system is right when these hold:
+The measure is the name: how much of JARVIS actually exists yet.
 
-1. **The agent is the primary interface.** You live in conversation with it — it
-   controls the system, works in parallel with you, surfaces things before you ask.
-   Not a chat tab you switch to.
-2. **Ownership is always answerable.** At any point in the system, "who owns this
-   data?" has one clear answer, and context leaves your hardware only by explicit
-   consent.
-3. **Mercenaries see questions, not your life.** The first mate hires the sharpest
-   frontier model for a single mission at a time, hands it a fragment of the charter
-   — the minimum it needs — and holds the rest locally.
-4. **It makes you more capable, not more dependent.** It pushes back, explains its
-   reasoning, and develops its user — measured by what you can do, not just by what
-   it can do.
-5. **Your machines stop being islands.** One intelligence across every device you own.
-6. **Groups can constitute themselves.** A family or a team can form a collective
-   with sovereign members and accountable AI participation.
+1. **It's everywhere you are.** One first mate across every Vessel — the server,
+   the laptop, the phone in your hand. Every device is a window into the same
+   one, never a separate instance per machine.
+2. **It never starts from zero.** You never re-explain yourself. Memory
+   accumulates for years, and next year it knows you better than this year does.
+3. **Swap the agent, swap the model — it's still Jarvis.** Nothing moves: the
+   memory, the permissions, the relationship. The falsifiable core; if this
+   fails, the central claim fails.
+4. **It's yours alone.** "Who owns this data?" always has one answer, and
+   context leaves your hardware only by explicit consent — anything hired from
+   outside sees a mission fragment, never your life.
+
+Four tests, each one a property JARVIS visibly has: omnipresence, continuity, one
+identity regardless of substrate, absolute loyalty to the data. How the first mate
+*behaves* — the sensei, pushing back, developing its user — is
+[philosophy.md](philosophy.md)'s jurisdiction, unchanged by any of this.
 
 ## An argument, not just software
 

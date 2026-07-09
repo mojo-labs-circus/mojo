@@ -1,9 +1,10 @@
 # mojo
 
-Mojo is a sovereign personal-AI platform, architected like an operating system.
-It adds Jarvis — your own first mate, an AI that actually knows you — and lets
-it work on your machine on your behalf. Scales from one machine, to your fleet,
-to Collectives of people and AIs working together.
+Mojo is the sovereign layer beneath your AI, not the agent itself. It's Jarvis:
+your memory and your permissions, yours alone, carried into whatever agent or
+model is actually doing the thinking — swap either and nothing moves. Scales
+from one machine, to your fleet, to Collectives of people and AIs working
+together.
 
 This repo holds no code. It's the project's brain: the vision, the philosophy, the
 plan, and every idea worth keeping — written for me and for the AI sessions I build
@@ -25,9 +26,10 @@ checked against real precedent (Unix, seL4, Plan 9, Erlang/OTP).
 [research-plan.md](research-plan.md) is the live tracker; [roadmap.md](roadmap.md)
 has the full phase breakdown.
 
-The eventual implementation, built once the standard exists:
-[mojos](https://github.com/mojo-labs-circus/mojos) ·
-[mojo-agent](https://github.com/mojo-labs-circus/mojo-agent)
+The implementation, built once the standard exists:
+[mojos](https://github.com/mojo-labs-circus/mojos), the host. Mojo is agent-agnostic
+— [mojo-agent](https://github.com/mojo-labs-circus/mojo-agent) is one candidate
+reference agent, not a requirement; anything that speaks the standard can plug in.
 
 ---
 
