@@ -1,8 +1,9 @@
 # mojo
 
-The thinking behind **Mojo** — my attempt at a sovereign personal AI: an agent that
-is genuinely yours, with a real memory of you, running on hardware you own, inside an
-operating system built around it. Not a chat tab. A first mate.
+Mojo is a sovereign personal-AI platform, architected like an operating system.
+It adds Jarvis — your own first mate, an AI that actually knows you — and lets
+it work on your machine on your behalf. Scales from one machine, to your fleet,
+to Collectives of people and AIs working together.
 
 This repo holds no code. It's the project's brain: the vision, the philosophy, the
 plan, and every idea worth keeping — written for me and for the AI sessions I build
@@ -14,6 +15,7 @@ with, and public because the thinking is part of the work.
 | [philosophy.md](philosophy.md) | What I believe and why this exists |
 | [roadmap.md](roadmap.md) | Now / next / horizon |
 | [research-plan.md](research-plan.md) | The current phase's live tracker, piece by piece |
+| [collective-intelligence-research.md](collective-intelligence-research.md) | The academic case for Collectives as a real, converging field |
 | [ideas.md](ideas.md) | The net — every live idea, one line each |
 | [devlog.md](devlog.md) | Dated thinking, newest first |
 

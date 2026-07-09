@@ -162,7 +162,13 @@ in the group as a first-class member, accountability that always traces back to 
 human. The deepest and least-tested part of the vision. It stays on the horizon until
 the foundation under it is real — but it's where this ends up: if everyone has their
 own AI, the collectives they form are how individuals get institutional depth without
-institutional capture.
+institutional capture. Also solves something real happening right now: people
+already work together while each running their own separate AI tool, coordinating
+despite that fragmentation rather than through it — Collectives makes the group
+itself, people and their AIs together, one coherent system instead. Real academic
+grounding for treating the collective as its own accountable entity, not just
+individuals with tools, is in
+[collective-intelligence-research.md](collective-intelligence-research.md).
 
 ## Who it's for
 
