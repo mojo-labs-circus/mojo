@@ -130,6 +130,11 @@ strict rule: the data itself stays in the standard shape, and anything a provide
 derives from it (indexes, embeddings) must be rebuildable from the data alone. The
 relationship is Obsidian and your vault: delete the app, keep everything.
 
+Because the data is the one irreplaceable thing in the system, the MSI also has
+to pin down how it keeps its own history: a bad write — a buggy runtime, a wrong
+conclusion — must be recoverable by rolling the data back, whatever pieces sit
+above it and whatever host OS sits below.
+
 **The identity** *(not a piece — the data; the only thing never swapped)*.
 Everything that makes the assistant *this* assistant: its memory of the owner, its
 persona and voice, the owner's policies and budgets, a record of who wrote what
@@ -170,7 +175,7 @@ nothing to conform, only a shape to keep.
 | j | Kernel ↔ everything consequential | The permission model: granting, narrowing, revoking, auditing — and how it works offline | MSI |
 | k | Machine ↔ machine | One identity across N machines: ordering, conflict, partition, and live-task handoff (who's driving) | MSI |
 | l | System ↔ outside agents | A2A, pinned version; talking to strangers, no trust extended | Adopt |
-| m | Provider ↔ the data | The standard data shape; everything derived must be rebuildable from the data alone | MSI |
+| m | Provider ↔ the data | The standard data shape; everything derived must be rebuildable from the data alone; how the data keeps history so a bad write can be rolled back | MSI |
 | n | New machine → owner's set | How a machine is admitted and how its trust is later revoked | MSI |
 
 ## What survives, what swaps

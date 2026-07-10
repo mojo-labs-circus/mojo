@@ -169,29 +169,31 @@ different: attested so even its owner can't see what ran, it's genuinely one of
 your machines for the length of the rental. Your set of machines grows and shrinks
 with need; ownership was never what gated participation, only trust.
 
-And the structure recurses. One person and their machines is the atomic case. The
-same structure, unchanged, holds several people sharing a system: a
-**Collective** — a team, a family, a community — each member still sovereign, each
-member's identity data still theirs alone, permissions never surrendered,
-participating in something larger without giving up what's theirs. AI as a real
-member of the group, accountability always tracing back to a human. People already
-work in groups where everyone runs a separate AI tool and coordination happens
-despite the fragmentation; Collectives makes the group itself — people and their
-AIs together — one system. The academic case that the group is the right unit is
-real and converging
-([collective-intelligence-research.md](collective-intelligence-research.md));
-nobody has built the system that treats it as one. It's aimed at deliberately
-second: an extension of the same primitives, reached only once the single-owner
-system is real — if the primitives are right, Collectives is what they already
-support, not a new system.
+The structure should also recurse — and that's a bet the primitives have to earn,
+not a feature on a list. If they're right, the same structure that holds one
+person and their machines holds several people sharing a system, with nothing new
+invented: a **Collective** — a team, a family, a community — each member still
+sovereign, each member's identity data still theirs alone, permissions never
+surrendered, AI as a real member of the group with accountability always tracing
+back to a human. People already work in groups where everyone runs a separate AI
+tool and coordination happens despite the fragmentation; the academic case that
+the group is the right unit is real and converging
+([collective-intelligence-research.md](collective-intelligence-research.md)), and
+nobody has built the system that treats it as one. Deliberately second: reached
+only once the single-owner system is real — and if getting there turns out to
+need new machinery instead of the primitives already supporting it, that's this
+bet failing, and it gets said out loud.
 
 ## MojOS
 
-Mojo runs on any Unix system — that reach is the point, and it's what makes the
-sovereignty claim credible to people who won't bet their machines on an unproven
-project. MojOS is the deepest host: NixOS plus Mojo's own opinionated defaults, the
-whole machine declarative and always safe to undo, not just Mojo's own footprint.
-It's the host I'll run myself. Best home, not a requirement.
+Mojo runs on any Linux distribution — that's a design constraint of the standard,
+not a preference, and it's what makes the sovereignty claim credible to people who
+won't bet their machines on an unproven project. MojOS is personal, not central:
+the OS I run myself — NixOS plus the defaults that make a machine running this
+system nicer to live on, the whole machine declarative and always safe to roll
+back. Nothing in Mojo requires it. It exists because the same defaults that help
+me will probably help anyone doing the same thing, and it's offered in exactly
+that spirit: best home, never a requirement.
 
 ## Who's building this, and who it's for
 

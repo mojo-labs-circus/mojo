@@ -81,12 +81,27 @@ adoptable beyond enthusiasts); README.md rewritten around the anatomy;
 roadmap.md's Now is anatomy → derive plan → walk it; naming-conventions.md
 rewritten to the new policy; AGENTS.md points at anatomy.md first.
 
+**Second pass, same session, after outside-reader feedback on the new
+vision:** Collectives reframed hedge-first (the recursion is a bet the
+primitives have to earn, said in the first sentence instead of disclaimed in
+the last — and if it needs new machinery, that's the bet failing, out loud);
+MojOS reframed personal-first ("personal, not central" — my OS, offered
+because the same defaults probably help anyone, with "runs on any Linux
+distribution" stated as a design constraint of the standard). Asked whether
+Nix's rollback story belongs in the anatomy: no — Nix is MojOS's mechanism
+and the anatomy is any-distro on purpose — but the mechanism-free property
+underneath it does: the identity data is the one irreplaceable thing, so the
+data itself must keep history and a bad write must be rollbackable, whatever
+sits above or below. Added to the memory-provider piece and seam (m) in both
+anatomy.md and anatomy.html. Org-level README rewritten too, via `gh` (MCP
+creds were failing): anatomy linked, identity-is-data framing, plain names,
+same Collectives/MojOS reframes.
+
 **Deliberately not done this session:** perfecting the anatomy (next session —
 it needs one more hard pass before it's trusted as the map); re-deriving
 research-plan.md from it (the session after — current tracker content is input,
 not casualty); rewriting `.claude/rules/msi-research-sessions.md` (goes with
-the plan rewrite); the org-level README (blocked — GitHub MCP credentials are
-failing; same rewrite applies to it when access is back).
+the plan rewrite).
 
 Session started as "audit research-plan.md's shape" and landed as a full
 restructure of it, driven by three corrections that all point the same way.

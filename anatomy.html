@@ -298,7 +298,7 @@
       <div class="band">
         <span class="eyebrow">Swappable piece — profile: Memory Provider</span>
         <h2>Memory provider</h2>
-        <p>The software that serves the data: retrieval, indexing, search, the views a runtime works from. Providers compete — a better one can be swapped in at any time, because of one strict rule: the data itself stays in the standard shape, and anything a provider derives from it (indexes, embeddings) must be rebuildable from the data alone. The relationship is Obsidian and your vault: delete the app, keep everything.</p>
+        <p>The software that serves the data: retrieval, indexing, search, the views a runtime works from. Providers compete — a better one can be swapped in at any time, because of one strict rule: the data itself stays in the standard shape, and anything a provider derives from it (indexes, embeddings) must be rebuildable from the data alone. The relationship is Obsidian and your vault: delete the app, keep everything. And because the data is the one irreplaceable thing, it keeps its own history: a bad write must be recoverable by rolling the data back, whatever sits above or below.</p>
       </div>
 
       <div class="seams">
@@ -378,7 +378,7 @@
           <tr><td class="id">j</td><td>Kernel &#8596; everything consequential</td><td>The permission model: granting, narrowing, revoking, auditing — and how it works offline</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
           <tr><td class="id">k</td><td>Machine &#8596; machine</td><td>One identity across N machines: ordering, conflict, partition, and live-task handoff (who&rsquo;s driving)</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
           <tr><td class="id">l</td><td>System &#8596; outside agents</td><td>A2A, pinned version; talking to strangers, no trust extended</td><td><span class="treat"><span class="dot adopt"></span>Adopt</span></td></tr>
-          <tr><td class="id">m</td><td>Provider &#8596; the data</td><td>The standard data shape; everything derived must be rebuildable from the data alone</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
+          <tr><td class="id">m</td><td>Provider &#8596; the data</td><td>The standard data shape; everything derived must be rebuildable from the data alone; how the data keeps history so a bad write can be rolled back</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
           <tr><td class="id">n</td><td>New machine &rarr; owner&rsquo;s set</td><td>How a machine is admitted and how its trust is later revoked</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
         </tbody>
       </table>
