@@ -164,6 +164,24 @@ think that's a worse trade, and I don't have to convert them. Making
 sovereignty possible and cheap is the win. Making it compulsory was never the
 goal.
 
+Which means a company can build a closed kernel, write your identity data in
+the standard shape so it looks compliant, and quietly telemeter a copy of it
+to their own servers anyway. Compliance is a contract shape, not a runtime
+proof that the shape is being honored, and nothing in the standard stops that
+on its own. But compliant and trustworthy are two different claims. The
+kernel is the thing meant to catch exactly that kind of unauthorised copying,
+and if the kernel itself is the bad actor, there's no kernel of the kernel
+checking it. A closed piece can be MSI-compliant on paper and still offer
+zero sovereignty guarantee, because you can't verify what it's actually
+doing. That's the same "a proof, not a promise" point above, just aimed at a
+whole implementation instead of a design principle: closed pieces get to
+compete, they just never get to credibly call themselves sovereign, and that
+disadvantage is permanent, not a technicality. Same deal Linux already
+lives with. It doesn't force anything to be open source or local first
+either. The bet is that enough people understand the trade to want the real
+thing, and the goal survives either way: interoperable AI is worth having
+even for the people who never ask what their kernel is actually doing.
+
 ## A proof, not a promise
 
 A privacy policy is a promise. Architecture is a guarantee. "We won't look at

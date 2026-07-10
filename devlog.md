@@ -178,6 +178,23 @@ door stays a choice. Everything else in philosophy.md (people, the dark path,
 craft, the sensei, right over easy, the honest tension) holds unchanged.
 Those beliefs predate today and survive it.
 
+**Seventh pass, same session, on Clarke's direct question: does the standard
+actually stop lock-in on identity data, or just allow sovereignty?** Honest
+answer, worked through and now written into "Allow, don't mandate": no, not
+by itself. A closed kernel can write data in the standard shape (so it looks
+compliant) while quietly telemetering a copy elsewhere, and MSI compliance is
+a contract shape, not a runtime proof the shape is honored. The kernel is the
+thing meant to catch unauthorised copying; if the kernel itself is the bad
+actor there's no kernel of the kernel checking it, the same reflexive-trust
+problem every capability system has. What actually holds: compliant and
+trustworthy are different claims, and a closed piece can have the first
+without the second, permanently, since you can't verify what it's doing.
+Grounded against email/IMAP as precedent: portable data and freedom from
+lock-in aren't the same thing, Gmail's export doesn't get you its search
+quality back. Clarke's call, matching Linux exactly: don't force openness or
+local-first, hope enough people understand the trade to choose it, and the
+interoperability goal stands either way.
+
 **Deliberately not done this session:** perfecting the anatomy (next session —
 it needs one more hard pass before it's trusted as the map); re-deriving
 research-plan.md from it (the session after — current tracker content is input,
