@@ -122,6 +122,24 @@ primitives will support it; we won't claim it until we've tested it"). The
 home-server future stays in vision.md where it belongs — the org front door
 now sells the mission, not the prophecy.
 
+**Fourth pass — vision.md gets the same mission-first rewrite.** Rebuilt from
+first principles, same vibe, better laid out. New order: "The mission" opens
+(the chatbots → agents → persistent-counterpart arc, the weld, and what
+interoperable-Jarvis-systems-grown-like-Linux actually means) → "What's at
+stake" (the three gaps, kept — they earned their place) → "What Mojo is"
+(interface-history argument, the standard, the two built pieces with the
+audit story, the distro proof, identity/character, hired help vs rented
+machines) → **"A Linux for AI", new section** carrying today's side-
+conversation thinking: Linux won infrastructure not the desktop and that's
+the shape of the bet; individuals bootstrap it the way hobbyists
+bootstrapped the PC; companies adopt it for the same reason they adopted
+Linux (portable data, auditable enforcement, no irreplaceable piece — not
+charity); existing beats displacing; and the endgame is neutral stewardship
+of the MSI — light the spark, hand over the fire. → "The future, if it
+works" (the home-server prophecy, demoted from the opening but kept whole,
+with Collectives' hedged paragraph living there) → Nix/MojOS → who's
+building → the five tests → the closer, all substantially as they were.
+
 **Deliberately not done this session:** perfecting the anatomy (next session —
 it needs one more hard pass before it's trusted as the map); re-deriving
 research-plan.md from it (the session after — current tracker content is input,

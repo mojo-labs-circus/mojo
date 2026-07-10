@@ -1,46 +1,42 @@
 # Vision
 
-*What I think the future should look like, and what I'm building toward. What a
-Mojo system concretely is lives in [anatomy.md](anatomy.md); the beliefs
-underneath it are in [philosophy.md](philosophy.md); what's actually happening
-right now is [roadmap.md](roadmap.md); the full interoperability argument this
-vision rests on is [interoperability.md](interoperability.md). The destination
-here is firm — the specific mechanisms are hypotheses that building will test.*
+*What this project is for, and where it goes if it works. What a Mojo system
+concretely is lives in [anatomy.md](anatomy.md); the beliefs underneath it are in
+[philosophy.md](philosophy.md); what's actually happening right now is
+[roadmap.md](roadmap.md); the full interoperability argument is
+[interoperability.md](interoperability.md). The mission here is firm — the
+specific mechanisms are hypotheses that building will test.*
 
 ---
 
-## The future
+## The mission
 
-Every house has a server in it. Not a novelty — infrastructure. As normal as a router:
-a square box, sits in a cupboard, you forget it's there. That's where your intelligence
-lives. Always on, always yours, never leaving your home.
+AI has already changed shape twice: chatbots, then agents that do real work.
+The next shape is visible from here, and every serious product is already
+racing toward it — a persistent counterpart. Always on, remembers you, acts
+for you, reachable from every machine you own. A Jarvis.
 
-The router analogy is deliberate. A router connects you to the internet — you don't
-think about it, it just works. The home server connects your intelligence to
-everything: your devices, your work, your life. It will probably be marketed and sold
-the same way. It comes with the house. It's in the listing. One bed, one bath, a
-server.
+The question isn't whether that arrives. It's what shape it arrives in — and
+right now it's arriving welded shut. Every product building one welds together
+things that don't need to be welded: which model does the thinking, what loop
+drives it, where memory and identity live, what tools it can reach, how it
+reaches you. Pick a product and you get all of it as one inseparable block —
+and the piece that actually matters, the accumulated picture of you, is
+trapped inside.
 
-Your personal AI lives on that server and grows with you. It learns how you think, how
-you work, what you value, how you make decisions. Over years it becomes a genuine
-extension of you — not a tool you use but a counterpart that knows you. The longer you
-have it the more valuable it becomes, and it's yours in the same way your memories are
-yours. No company owns it. No subscription can take it away.
+Mojo exists to make Jarvis-class systems interoperable instead: a standard —
+the **Mojo System Interface** — defining every piece such a system is made of
+and every seam between them, plus a first running system that proves the seams
+hold. So that these systems can grow the way Linux grew: every piece built,
+competed on, and improved by anyone; no lock-in anywhere; local and sovereign
+for whoever wants that; and the one thing that can never be rebuilt — your
+AI's accumulated understanding of you — in a portable shape that survives
+every swap, forever. The open-source community building these together and
+correctly, instead of a thousand welded products each trapping their users, is
+the whole point. Success isn't Mojo's implementation winning. It's the idea
+winning.
 
-Take that far enough and it changes what a computer even is. Personalisation gets deep
-enough that the system stops having a UX and starts having *your* UX — the machine
-conforms to the person instead of the person conforming to the machine. A kid who
-grows up with their AI from age five has, by adulthood, a counterpart that has watched
-them learn for fifteen years — not something they use, something they think with. The
-relationship is the asset, not the model running underneath it.
-
-And from that server, eventually, you can be part of any group that matters to you —
-your family, your team, your community — each getting exactly the version of you
-you've consented to share, your intelligence the constant thread through all of it.
-Intelligence as personal infrastructure: as unremarkable, and as essential, as running
-water.
-
-## The three gaps
+## What's at stake
 
 **The capability gap.** The tools that make computers genuinely powerful — Linux,
 version control, system configuration, scripting, automation — are only accessible to
@@ -73,116 +69,169 @@ asking you to repeat yourself.
 
 ## What Mojo is
 
-Every AI product that exists today welds together things that don't need to be
-welded: which model does the thinking, what loop drives it, where memory and
-identity live, what tools it can reach, how it reaches you. Pick a product and you
-get all of it as one inseparable block — and the piece that actually matters, the
-accumulated picture of you, is trapped inside. Mojo exists to pull that piece out,
-permanently.
+Monoliths like this have broken before, and they always break the same way:
+along an interface. Unix broke the proprietary OS monolith, and its
+descendants now run nearly everything. The PC clones broke IBM's hardware
+monopoly across a published hardware boundary. Carterfone broke Bell's grip on
+what was allowed to touch the phone network. The open web broke the walled
+gardens that wanted to be the whole internet. And AI has already started the
+same pattern one layer down: harnesses decoupled the model from the product,
+and nobody now would weld an agent to a single model. Mojo is the next
+decoupling in the same lineage — identity from everything else. The thing that
+should outlive every product gets pulled out of all of them.
 
-This has happened before, and it always breaks the same way: along an interface.
-Unix broke the proprietary OS monolith, and its descendants now run nearly
-everything. The PC clones broke IBM's hardware monopoly across a published
-hardware boundary. Carterfone broke Bell's grip on what was allowed to touch the
-phone network. The open web broke the walled gardens that wanted to be the whole
-internet. And AI has already started the same pattern one layer down: harnesses
-decoupled the model from the product, and nobody now would weld an agent to a
-single model. Mojo is the next decoupling in the same lineage — identity from
-everything else. The thing that should outlive every product gets pulled out of
-all of them.
+So Mojo, precisely, is a standard. The MSI defines the contract at every seam
+a complete personal AI system is made of — and the scope is deliberately the
+whole system, not just an agent's anatomy. A Jarvis-class system needs seams
+an agent alone never would: how you're reached, how standing instructions fire
+on time, how one identity stays coherent across all your machines, how the
+pieces get selected per task. The whole system is drawn precisely — every
+piece, every seam, and the one thing that never swaps — in
+[anatomy.md](anatomy.md); that document is the concrete form of everything
+this one argues for.
 
-So Mojo, precisely, is a standard. The **Mojo System Interface** defines the
-contract at every seam a complete personal AI system is made of — and the scope is
-deliberately the whole system, not just an agent's anatomy. The field itself is
-moving there: every serious product I've surveyed now pitches persistence as the
-product, not the loop. A Jarvis-class system — one identity, reachable from every
-machine you own, growing for years — needs seams an agent alone never would:
-reachability, proactive time-driven behavior, coherence across all your machines,
-routing between the pieces. The whole system is drawn precisely — every piece,
-every seam, and the one thing that never swaps — in [anatomy.md](anatomy.md);
-that document is the concrete form of everything this one argues for.
+The standard doesn't invent what already exists. Where the industry has a
+real, working answer, the MSI adopts it — MCP for tools, SKILL.md for skills,
+the already-converged model wire format, A2A for talking to agents outside
+your system. Where the market should compete, it deliberately leaves the
+inside open — how an agent runtime plans, how it manages its context — the
+same way POSIX never standardized a scheduler's internals, only what a process
+must expose. It defines only what nothing existing covers: the shape of the
+identity data, and the enforcement boundary that protects it. Even there, most
+of the substance is already precedented — agents today mostly keep their
+memory in plain files, which is exactly why this is standardizable at all.
+What's genuinely new is thin and specific: the permissions travelling *with*
+the data, provenance, and the rule that anything a session learns gets written
+back in the shared shape instead of staying trapped in one product's private
+buffer.
 
-The standard doesn't invent what already exists. Where the industry has a real,
-working answer, the MSI adopts it — MCP for tools, SKILL.md for skills, the
-already-agnostic model APIs, A2A for agent-to-agent traffic. Where the market
-should compete, it deliberately leaves the inside open — how an agent runtime
-plans, how it manages its context — the same way POSIX never standardized a
-scheduler's internals, only what a process must expose. It defines only what
-nothing existing covers: the shape of the identity data, and the enforcement
-boundary that protects it. Even there, most of the substance is already
-precedented — agents today mostly keep their memory in plain files, which is
-exactly why this is standardizable at all. What's genuinely new is thin and
-specific: the permissions travelling *with* the data, provenance, and the rule
-that anything a session learns gets written back in the shared shape instead of
-staying trapped in one product's private buffer.
+Mojo builds the first implementation of exactly those two pieces — the kernel
+and the memory layer — because they're the two seams where no accepted
+standard exists to adopt, and nobody with the resources to build them well has
+any incentive to: a neutral standard removes the moat, and nobody who profits
+from the moat funds its removal. The kernel is the system's enforcement layer:
+every consequential action any plugged-in agent, tool, or model takes is
+checked against what the owner allowed — and recorded. That record matters as
+much as the check: "what did my AI do, and who allowed it" always has an
+answer. For a person that's trust; for any organisation it's the difference
+between an AI system you can adopt and one you can't — auditability is what
+makes accountability real rather than promised. Each machine runs its own
+kernel instance, so enforcement keeps working offline, and all of an owner's
+machines answer to one shared policy. And the kernel is not singular in the
+world: the enforcement contract is part of the standard, Mojo's kernel is only
+the first reference, and someone smarter than me can and should build a better
+one. The same goes for the memory layer. Every piece Mojo builds is designed
+to be outcompeted through the same contracts it publishes — our
+implementations are first and crude on purpose, proof the seams hold, not the
+best version of anything.
 
-Mojo builds the first implementation of exactly those two pieces — the kernel and
-the memory layer — because they're the two seams where no accepted standard exists
-to adopt (prior art exists at both, and gets checked before anything is built),
-and nobody with the resources to build them well has any incentive to: a neutral
-standard removes the moat, and nobody who profits from the moat funds its removal.
-The kernel is the system's enforcement layer: every consequential action any
-plugged-in agent, tool, or model takes is checked against what the owner allowed —
-and recorded. That record matters as much as the check: "what did my AI do, and
-who allowed it" always has an answer. For a person that's trust; for any
-organisation it's the difference between an AI system you can adopt and one you
-can't — auditability is what makes accountability real rather than promised.
-Each machine runs its own kernel instance, so enforcement keeps working offline,
-and all of an owner's machines answer to one shared policy. And the kernel is not
-singular in the world: the enforcement contract is part of the standard, Mojo's
-kernel is only the first reference, and someone smarter than me can and should
-build a better one. The same goes for the memory implementation. Every piece Mojo
-builds is designed to be outcompeted through the same contracts it publishes.
-
-The first Mojo system, then, is a distro in the honest Linux sense: assembled from
-existing parts that already speak the adopted standards — an agent runtime someone
-else built, models someone else trained, tools someone else wrote — around the
-kernel and the memory layer that make them one system. That's not a shortcut; it's
-the proof. Every seam in the standard gets tested by whether something real, built
-by someone who has never heard of Mojo, actually plugs into it. The MSI earns its
-authority from the running system, never from being declared.
+The first Mojo system, then, is a distro in the honest Linux sense: assembled
+from existing parts that already speak the adopted standards — an agent
+runtime someone else built, models someone else trained, tools someone else
+wrote — around the kernel and the memory layer that make them one system.
+That's not a shortcut; it's the proof. Every seam in the standard gets tested
+by whether something real, built by someone who has never heard of Mojo,
+actually plugs into it. The MSI earns its authority from the running system,
+never from being declared.
 
 The identity data can't just be a database with permissions attached. Built on
-that foundation is a character — a voice and judgment that stay recognizable no
-matter what's underneath. Mine is called Jarvis, and the name is the spec: Tony
-Stark's JARVIS — one continuous counterpart across every machine, every interface,
-every scale of problem. The memory and the permissions are the foundation and the
-claim I can already stand behind; the character layer is built on top of them, and
-it earns a bigger place here as it proves out.
+that foundation is a character — a voice and judgment that stay recognizable
+no matter what's underneath. Mine is called Jarvis, and the name is the spec:
+Tony Stark's JARVIS — one continuous counterpart across every machine, every
+interface, every scale of problem. The memory and the permissions are the
+foundation and the claim I can already stand behind; the character layer is
+built on top of them, and it earns a bigger place here as it proves out.
 
-Sovereignty in this design is structural, not behavioral. The boundary around the
-identity is enforced from outside whatever agent is plugged in — an agent that has
-never heard of Mojo still cannot exceed what it was handed, because what it wasn't
-handed simply isn't there. And the thinking itself stays genuinely private: models
-chosen on verifiable local privacy, which today means open weights on hardware I
-control — not because open source is the aesthetic, but because it's currently the
-only way "this never left my machines" is checkable rather than promised.
+Sovereignty in this design is structural, not behavioral. The boundary around
+the identity is enforced from outside whatever agent is plugged in — an agent
+that has never heard of Mojo still cannot exceed what it was handed, because
+what it wasn't handed simply isn't there. And the thinking itself can stay
+genuinely private: models chosen on verifiable local privacy, which today
+means open weights on hardware I control — not because open source is the
+aesthetic, but because it's currently the only way "this never left my
+machines" is checkable rather than promised.
 
 Not every mind runs on hardware that's yours, and the model doesn't pretend
-otherwise. A frontier model behind someone else's API — Claude, GPT, whatever is
-sharpest in the world — is hired help: taken on for one job at a time, handed the
-minimum fragment of context the job needs with real values swapped for stand-ins,
-and never given access to the system itself. Not because the model is worse —
-often it's better — but because its weights answer to someone else. The sharpest
-tools in the world, used without handing them your life. A *rented machine* is
-different: attested so even its owner can't see what ran, it's genuinely one of
-your machines for the length of the rental. Your set of machines grows and shrinks
-with need; ownership was never what gated participation, only trust.
+otherwise. A frontier model behind someone else's API — Claude, GPT, whatever
+is sharpest in the world — is hired help: taken on for one job at a time,
+handed the minimum fragment of context the job needs with real values swapped
+for stand-ins, and never given access to the system itself. Not because the
+model is worse — often it's better — but because its weights answer to someone
+else. The sharpest tools in the world, used without handing them your life. A
+*rented machine* is different: attested so even its owner can't see what ran,
+it's genuinely one of your machines for the length of the rental. Your set of
+machines grows and shrinks with need; ownership was never what gated
+participation, only trust.
 
-The structure should also recurse — and that's a bet the primitives have to earn,
-not a feature on a list. If they're right, the same structure that holds one
-person and their machines holds several people sharing a system, with nothing new
-invented: a **Collective** — a team, a family, a community — each member still
-sovereign, each member's identity data still theirs alone, permissions never
-surrendered, AI as a real member of the group with accountability always tracing
-back to a human. People already work in groups where everyone runs a separate AI
-tool and coordination happens despite the fragmentation; the academic case that
-the group is the right unit is real and converging
-([collective-intelligence-research.md](collective-intelligence-research.md)), and
-nobody has built the system that treats it as one. Deliberately second: reached
-only once the single-owner system is real — and if getting there turns out to
-need new machinery instead of the primitives already supporting it, that's this
-bet failing, and it gets said out loud.
+## A Linux for AI
+
+The way this wins is the way Linux won, and it's worth being precise about
+what that was — because it wasn't the desktop. Windows and macOS still exist,
+still dominate consumer machines, still lock their users in, and that's the
+reality. Linux won *infrastructure*: servers, the cloud's own substrate,
+everything that companies build on — because owning your stack beats renting
+someone else's the moment the lock-in cost compounds. Red Hat, Google, Amazon
+didn't adopt Linux as charity; they adopted it because commodity
+infrastructure nobody owns lets everyone compete one layer up instead of each
+re-solving the same foundation. Kubernetes, Postgres, and the web's own
+protocols won the same way.
+
+That's the shape of this bet. For individuals: the technically capable first —
+people who run their own hardware, understand the sovereignty argument, and
+tolerate rough edges for something real. That's the same decentralisation path
+the PC took — it started with hobbyists too, and "started with" was never
+"ended with." For organisations: the same properties that make a Mojo system
+sovereign for a person — your data in a portable shape, enforcement you can
+audit, no piece you can't replace — are exactly what lets a company adopt AI
+infrastructure without handing its customers' data and its own switching costs
+to a vendor's roadmap. There are a great many companies that want what these
+systems do and can't accept where the data goes; an auditable, self-hostable,
+piece-swappable standard is how they get it. None of this requires displacing
+the incumbents. It requires existing — so that a real alternative does, and so
+the welded version is a choice people make rather than the only thing on
+offer.
+
+And the standard is built to outlive its builder. Everything here is
+scaffolding for other people's work: the seams are published so better
+implementations can replace ours, the thinking is public so the reasoning can
+be attacked, and the endgame for the MSI itself is neutral stewardship — a
+foundation, once it's real enough to deserve one — not a spec one person owns.
+Light the spark, hand over the fire.
+
+## The future, if it works
+
+Every house has a server in it. Not a novelty — infrastructure. As normal as a
+router: a square box, sits in a cupboard, you forget it's there. That's where
+your intelligence lives. Always on, always yours, never leaving your home —
+and it comes with the house. One bed, one bath, a server.
+
+Your AI lives there and grows with you. It learns how you think, how you work,
+what you value, how you make decisions. Over years it becomes a genuine
+extension of you — not a tool you use but a counterpart that knows you. The
+longer you have it the more valuable it becomes, and it's yours in the same
+way your memories are yours. No company owns it. No subscription can take it
+away. Take that far enough and it changes what a computer even is: the system
+stops having a UX and starts having *your* UX — the machine conforms to the
+person instead of the person conforming to the machine. A kid who grows up
+with their AI from age five has, by adulthood, a counterpart that has watched
+them learn for fifteen years — not something they use, something they think
+with. The relationship is the asset, not the model running underneath it.
+
+The structure should also recurse — and that's a bet the primitives have to
+earn, not a feature on a list. If they're right, the same structure that holds
+one person and their machines holds several people sharing a system, with
+nothing new invented: a **Collective** — a team, a family, a community — each
+member still sovereign, each member's identity data still theirs alone,
+permissions never surrendered, AI as a real member of the group with
+accountability always tracing back to a human. People already work in groups
+where everyone runs a separate AI tool and coordination happens despite the
+fragmentation; the academic case that the group is the right unit is real and
+converging
+([collective-intelligence-research.md](collective-intelligence-research.md)),
+and nobody has built the system that treats it as one. Deliberately second:
+reached only once the single-owner system is real — and if getting there turns
+out to need new machinery instead of the primitives already supporting it,
+that's this bet failing, and it gets said out loud.
 
 ## Nix, and MojOS
 
@@ -203,7 +252,7 @@ in Mojo requires it. It exists because the same defaults that help me will
 probably help anyone doing the same thing, and it's offered in exactly that
 spirit: best home, never a requirement.
 
-## Who's building this, and who it's for
+## Who's building this
 
 Right now: me, alone, and being upfront about that is part of the design, not a
 disclaimer. I've just finished the first year of a CS degree. This is a personal,
@@ -211,28 +260,18 @@ hands-on learning experiment, done in the open — the register Linux was announ
 in ("just a hobby, won't be big and professional"), and I mean that comparison as
 discipline, not destiny: build the small real thing first, stay honest about
 everything past it. The seed is solo-sized on purpose — Mk1 of the standard, the
-first kernel, the first memory implementation, the first system stitched from
-existing parts — because the adopt-everything posture keeps it that way. The thing
-it should become is not solo-sized, definitionally: a standard is a social object,
+first kernel, the first memory layer, the first system stitched from existing
+parts — because the adopt-everything posture keeps it that way. The thing it
+should become is not solo-sized, definitionally: a standard is a social object,
 and nobody delivers one alone — not even POSIX's committee did. Better kernels,
-better memory implementations, systems assembled by people I'll never meet. The
-project is designed so that gap is an invitation, not a rescue.
+better memory layers, systems assembled by people I'll never meet. The project
+is designed so that gap is an invitation, not a rescue.
 
-I'm also the first user — dogfooding from day one, sample size of one, finding out
-what's real. Beyond me: technically capable people motivated by autonomy, who
-understand the sovereignty argument, run their own hardware, and tolerate rough
-edges in exchange for something real. Correct sequencing, not a limitation — the
-PC wasn't for everyone in 1977 either. The early technical users are the
-bootstrapping strategy, not the target state. And past them sits a quieter,
-larger audience with the same problem wearing a suit: organisations that want
-what these systems do but can't accept where their data goes or what leaving
-would cost. The same properties that make a Mojo system sovereign for a person —
-your data in a portable shape, enforcement you can audit, no piece you can't
-replace — are exactly what lets a company build on it without betting the firm on
-a vendor's roadmap. Linux won infrastructure for that reason, not out of charity.
-The agent itself is what lowers the barrier for everyone else: over time it
-abstracts away the expertise sovereignty currently demands, until owning your AI
-is the path of least resistance rather than the hard path.
+I'm also the first user — dogfooding from day one, sample size of one, finding
+out what's real. The early technical users are the bootstrapping strategy, not
+the target state. The agent itself is what lowers the barrier for everyone
+else: over time it abstracts away the expertise sovereignty currently demands,
+until owning your AI is the path of least resistance rather than the hard path.
 
 ## When it's right
 
