@@ -8,11 +8,15 @@ Skim the last couple of [devlog.md](devlog.md) entries first — especially any
 HANDOFF one — to pick up where things left off.
 
 **Before working on anything Mojo-related, in any repo:** read
-[vision.md](vision.md) and [philosophy.md](philosophy.md) — they are how you
-understand Clarke and this project. [roadmap.md](roadmap.md) has the current focus
-and its finish line. [research-plan.md](research-plan.md) is the live tracker for
-the current phase — check its Status column before assuming any piece of the
-system is decided. Most of it says Open on purpose.
+[anatomy.md](anatomy.md) — what a Mojo system concretely is, the map everything
+else is written against — then [vision.md](vision.md) and
+[philosophy.md](philosophy.md), which are how you understand Clarke and this
+project. [roadmap.md](roadmap.md) has the current focus and its finish line.
+[research-plan.md](research-plan.md) is the research tracker — check its Status
+column before assuming any piece of the system is decided (most of it says Open
+on purpose), and note it's being re-derived from the anatomy (see roadmap.md);
+its walk order is superseded. Public-facing docs use plain names only — see
+[naming-conventions.md](naming-conventions.md).
 
 ## Current stage
 

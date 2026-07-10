@@ -1,10 +1,11 @@
 # Vision
 
-*What I think the future should look like, and what I'm building toward. The beliefs
-underneath it are in [philosophy.md](philosophy.md); what's actually happening right
-now is [roadmap.md](roadmap.md); the full interoperability argument this vision now
-rests on is [interoperability.md](interoperability.md). The destination here is firm —
-the specific mechanisms are hypotheses that building will test.*
+*What I think the future should look like, and what I'm building toward. What a
+Mojo system concretely is lives in [anatomy.md](anatomy.md); the beliefs
+underneath it are in [philosophy.md](philosophy.md); what's actually happening
+right now is [roadmap.md](roadmap.md); the full interoperability argument this
+vision rests on is [interoperability.md](interoperability.md). The destination
+here is firm — the specific mechanisms are hypotheses that building will test.*
 
 ---
 
@@ -96,98 +97,91 @@ deliberately the whole system, not just an agent's anatomy. The field itself is
 moving there: every serious product I've surveyed now pitches persistence as the
 product, not the loop. A Jarvis-class system — one identity, reachable from every
 machine you own, growing for years — needs seams an agent alone never would:
-reachability, proactive time-driven behavior, coherence across a fleet of devices,
-routing between the pieces. The standard is built the way POSIX is built:
-primitives that hold, schemas describing the shape of what's built from the
-primitives, contracts describing the seams between parts.
+reachability, proactive time-driven behavior, coherence across all your machines,
+routing between the pieces. The whole system is drawn precisely — every piece,
+every seam, and the one thing that never swaps — in [anatomy.md](anatomy.md);
+that document is the concrete form of everything this one argues for.
 
 The standard doesn't invent what already exists. Where the industry has a real,
 working answer, the MSI adopts it — MCP for tools, SKILL.md for skills, the
 already-agnostic model APIs, A2A for agent-to-agent traffic. Where the market
-should compete, it deliberately leaves the inside open — how a loop plans, how it
-manages its context — the same way POSIX never standardized a scheduler's
-internals, only what a process must expose. It defines only what nothing existing
-covers: the shape of memory and identity, and the enforcement boundary that
-protects it. Even there, most of the substance is already precedented — agents
-today mostly keep their memory in plain files, which is exactly why this is
-standardizable at all. What's genuinely new is thin and specific: the permissions
-travelling *with* the data, provenance, and the rule that anything a session
-learns gets written back in the shared shape instead of staying trapped in one
-product's private buffer.
+should compete, it deliberately leaves the inside open — how an agent runtime
+plans, how it manages its context — the same way POSIX never standardized a
+scheduler's internals, only what a process must expose. It defines only what
+nothing existing covers: the shape of the identity data, and the enforcement
+boundary that protects it. Even there, most of the substance is already
+precedented — agents today mostly keep their memory in plain files, which is
+exactly why this is standardizable at all. What's genuinely new is thin and
+specific: the permissions travelling *with* the data, provenance, and the rule
+that anything a session learns gets written back in the shared shape instead of
+staying trapped in one product's private buffer.
 
 Mojo builds the first implementation of exactly those two pieces — the kernel and
-the memory — because they're the two seams where no accepted standard exists to
-adopt (prior art exists at both, and gets checked before anything is built), and
-nobody with the resources to build them well has any incentive to: a neutral
+the memory layer — because they're the two seams where no accepted standard exists
+to adopt (prior art exists at both, and gets checked before anything is built),
+and nobody with the resources to build them well has any incentive to: a neutral
 standard removes the moat, and nobody who profits from the moat funds its removal.
-The kernel is singular *per Fleet* — one instance holds authority over what any
-plugged-in agent, tool, or model may touch — but it is not singular in the world:
-the enforcement contract is part of the standard, Mojo's kernel is only the first
-reference, and someone smarter than me can and should build a better one. The same
-goes for the memory implementation. Every piece Mojo builds is designed to be
-outcompeted through the same contracts it publishes.
+The kernel is the system's enforcement layer: every consequential action any
+plugged-in agent, tool, or model takes is checked against what the owner allowed —
+and recorded. That record matters as much as the check: "what did my AI do, and
+who allowed it" always has an answer. For a person that's trust; for any
+organisation it's the difference between an AI system you can adopt and one you
+can't — auditability is what makes accountability real rather than promised.
+Each machine runs its own kernel instance, so enforcement keeps working offline,
+and all of an owner's machines answer to one shared policy. And the kernel is not
+singular in the world: the enforcement contract is part of the standard, Mojo's
+kernel is only the first reference, and someone smarter than me can and should
+build a better one. The same goes for the memory implementation. Every piece Mojo
+builds is designed to be outcompeted through the same contracts it publishes.
 
 The first Mojo system, then, is a distro in the honest Linux sense: assembled from
-existing parts that already speak the adopted standards — a harness someone else
-built, models someone else trained, tools someone else wrote — around the kernel
-and the memory that make them one system. That's not a shortcut; it's the proof.
-Every seam in the standard gets tested by whether something real, built by someone
-who has never heard of Mojo, actually plugs into it. The MSI earns its authority
-from the running system, never from being declared.
+existing parts that already speak the adopted standards — an agent runtime someone
+else built, models someone else trained, tools someone else wrote — around the
+kernel and the memory layer that make them one system. That's not a shortcut; it's
+the proof. Every seam in the standard gets tested by whether something real, built
+by someone who has never heard of Mojo, actually plugs into it. The MSI earns its
+authority from the running system, never from being declared.
 
-The system the standard describes is built from a small vocabulary. A **Captain**
-is a person. A **First mate** is a persistent AI identity: what it remembers, what
-it's allowed to do — living on the Captain's own hardware, owing nothing to any
-product, handed fresh to whatever is actually doing the thinking. A **Vessel** is
-any machine that participates — owned, borrowed, or rented. A **Fleet** is the
-simplest whole system: one Captain, one First mate, every Vessel they work with.
-Which machine runs a task, which agent drives it, and which model does the
-thinking are three independent choices, made per job and changed without cost —
-different agents are good at different work, exactly as different models are —
-because nothing that matters ever lives inside any of them. The first mate is what
-stays constant across every swap.
+The identity data can't just be a database with permissions attached. Built on
+that foundation is a character — a voice and judgment that stay recognizable no
+matter what's underneath. Mine is called Jarvis, and the name is the spec: Tony
+Stark's JARVIS — one continuous counterpart across every machine, every interface,
+every scale of problem. The memory and the permissions are the foundation and the
+claim I can already stand behind; the character layer is built on top of them, and
+it earns a bigger place here as it proves out.
 
-Mine is called Jarvis, and the name is the spec: Tony Stark's JARVIS — one
-continuous counterpart across every machine, every interface, every scale of
-problem. That's also why the first mate can't just be a database with permissions
-attached: it's a character, with a voice and judgment that stay recognizable no
-matter what's underneath. The memory and the permissions are the foundation and
-the claim I can already stand behind; the character layer is built on top of them,
-and it earns a bigger place here as it proves out.
-
-Sovereignty in this design is structural, not behavioral. The boundary around a
-first mate is enforced from outside whatever agent is plugged in — an agent that
-has never heard of Mojo still cannot exceed what it was handed, because what it
-wasn't handed simply isn't there. And the thinking itself stays genuinely private:
-models chosen on verifiable local privacy, which today means open weights on
-hardware I control — not because open source is the aesthetic, but because it's
-currently the only way "this never left my machines" is checkable rather than
-promised.
+Sovereignty in this design is structural, not behavioral. The boundary around the
+identity is enforced from outside whatever agent is plugged in — an agent that has
+never heard of Mojo still cannot exceed what it was handed, because what it wasn't
+handed simply isn't there. And the thinking itself stays genuinely private: models
+chosen on verifiable local privacy, which today means open weights on hardware I
+control — not because open source is the aesthetic, but because it's currently the
+only way "this never left my machines" is checkable rather than promised.
 
 Not every mind runs on hardware that's yours, and the model doesn't pretend
 otherwise. A frontier model behind someone else's API — Claude, GPT, whatever is
-sharpest in the world — is a **mercenary**: a hired gun, taken on for one mission
-at a time, handed the minimum fragment of context the job needs with real values
-swapped for stand-ins, and never given Fleet trust. Not because the model is
-worse — often it's better — but because its weights answer to someone else. The
-sharpest tools in the world, used without handing them your life. A *rented
-machine* is different: attested so even its owner can't see what ran, it's a real
-Vessel for the length of the rental. The fleet grows and shrinks with need;
-ownership was never what gated existence, only trust.
+sharpest in the world — is hired help: taken on for one job at a time, handed the
+minimum fragment of context the job needs with real values swapped for stand-ins,
+and never given access to the system itself. Not because the model is worse —
+often it's better — but because its weights answer to someone else. The sharpest
+tools in the world, used without handing them your life. A *rented machine* is
+different: attested so even its owner can't see what ran, it's genuinely one of
+your machines for the length of the rental. Your set of machines grows and shrinks
+with need; ownership was never what gated participation, only trust.
 
-And the structure recurses. A Fleet is the atomic case — one Captain, one First
-mate. The same structure, unchanged, holds several Captains and several First
-mates sharing a system: a **Collective** — a team, a family, a community, each
-member still sovereign, each first mate still its owner's alone, permissions never
-surrendered, participating in something larger without giving up what's theirs. AI
-as a real member of the group, accountability always tracing back to a human.
-People already work in groups where everyone runs a separate AI tool and
-coordination happens despite the fragmentation; Collectives makes the group
-itself — people and their AIs together — one system. The academic case that the
-group is the right unit is real and converging
+And the structure recurses. One person and their machines is the atomic case. The
+same structure, unchanged, holds several people sharing a system: a
+**Collective** — a team, a family, a community — each member still sovereign, each
+member's identity data still theirs alone, permissions never surrendered,
+participating in something larger without giving up what's theirs. AI as a real
+member of the group, accountability always tracing back to a human. People already
+work in groups where everyone runs a separate AI tool and coordination happens
+despite the fragmentation; Collectives makes the group itself — people and their
+AIs together — one system. The academic case that the group is the right unit is
+real and converging
 ([collective-intelligence-research.md](collective-intelligence-research.md));
 nobody has built the system that treats it as one. It's aimed at deliberately
-second: an extension of the same primitives, reached only once the single-Captain
+second: an extension of the same primitives, reached only once the single-owner
 system is real — if the primitives are right, Collectives is what they already
 support, not a new system.
 
@@ -219,15 +213,22 @@ what's real. Beyond me: technically capable people motivated by autonomy, who
 understand the sovereignty argument, run their own hardware, and tolerate rough
 edges in exchange for something real. Correct sequencing, not a limitation — the
 PC wasn't for everyone in 1977 either. The early technical users are the
-bootstrapping strategy, not the target state. The agent itself is what lowers the
-barrier: over time it abstracts away the expertise sovereignty currently demands,
-until owning your AI is the path of least resistance rather than the hard path.
+bootstrapping strategy, not the target state. And past them sits a quieter,
+larger audience with the same problem wearing a suit: organisations that want
+what these systems do but can't accept where their data goes or what leaving
+would cost. The same properties that make a Mojo system sovereign for a person —
+your data in a portable shape, enforcement you can audit, no piece you can't
+replace — are exactly what lets a company build on it without betting the firm on
+a vendor's roadmap. Linux won infrastructure for that reason, not out of charity.
+The agent itself is what lowers the barrier for everyone else: over time it
+abstracts away the expertise sovereignty currently demands, until owning your AI
+is the path of least resistance rather than the hard path.
 
 ## When it's right
 
 The measure is the name: how much of JARVIS actually exists yet.
 
-1. **It's everywhere you are.** One first mate across every Vessel — the server,
+1. **It's everywhere you are.** One identity across every machine — the server,
    the laptop, the phone in your hand. Every device is a window into the same
    one, never a separate instance per machine.
 2. **It never starts from zero.** You never re-explain yourself. Memory
@@ -245,7 +246,7 @@ The measure is the name: how much of JARVIS actually exists yet.
 
 Five tests, each one a property the finished thing visibly has: omnipresence,
 continuity, one identity regardless of substrate, absolute loyalty to the data,
-and a foundation nobody — including me — gets to own. How the first mate
+and a foundation nobody — including me — gets to own. How the assistant
 *behaves* — the sensei, pushing back, developing its user — is
 [philosophy.md](philosophy.md)'s jurisdiction, unchanged by any of this.
 

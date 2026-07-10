@@ -1,61 +1,49 @@
 # Naming Conventions
 
-*How things in this project get named, so the vocabulary stays coherent instead of
-drifting per-document. Applies wherever Mojo needs a proper noun — standing-orders.md
-is the current heaviest user, but this isn't specific to it.*
+*How things in this project get named. Rewritten 2026-07-10, when the plain-naming
+policy landed alongside [anatomy.md](anatomy.md) — the old three-register scheme
+(nautical vocabulary as first-class terminology) is superseded; it lives in git
+history if the reasoning is ever needed.*
 
 ---
 
-## Three registers, not one
+## The policy: plain names in everything public-facing
 
-Names in this project come from three deliberately separate registers. Knowing which
-one a concept belongs to decides how it gets named — mixing them is the actual failure
-mode, not using any one of them.
+Anything a stranger is meant to read and build against uses plain functional
+English: the anatomy, the future msi.md, vision, README, the seam and piece names
+themselves — owner, window, router, agent runtime, model endpoint, kernel, memory
+provider, the identity, federation, machine admission.
 
-**1. Nautical/naval — for fleet-model entities and actions.** Captain, First mate,
-Keel, Flagship, Consort, Tender, Charter, Mercenary, Commission, Enlist, Hail, Flare,
-Watch bill. The rule: only a real, attested word or phrase — never an invented
-portmanteau, never a forced backronym. The test is whether an actual sailor could have
-said it. If no real term fits cleanly, that's a signal to drop into register 2, not to
-manufacture one.
+The precedent is POSIX itself: process, file, pipe, signal. No real standard asks
+its readers to learn an invented vocabulary first — themed naming lives in
+products (Kubernetes is literally Greek for "helmsman"), never in the standards
+they implement. Urbit is the cautionary tale on the other side: it invented its
+own words for everything and paid for it in adoption. The MSI's job is to be
+legible to system architects who have never heard of Mojo; every bespoke noun is
+a tax on that.
 
-**2. Plain functional English — for computed properties, policy mechanisms, and
-category labels.** Permission ceiling, the sensitivity judgment, the routing policy,
-the six Fleet section names (Roster, Permissions, Records, Communication, Accounting,
-Policy). These are deliberately *not* themed. Giving an abstract/computed concept a
-cute nautical name would make it read as more concrete or more "real" than it is —
-plain English keeps it honest about what it actually is: a rule, not an entity.
+## The nautical register: an analogy we think with, not terminology we ship
 
-**3. Product branding — for shipped software artifacts.** MojOS, mojo-agent,
-mojo-package. A separate namespace entirely, not fleet-model vocabulary. These name
-things Clarke ships, not things the fleet model describes.
+The fleet analogy — a captain, a first mate, vessels, hailing between ships — is
+genuinely good for thinking and talking about the system, and it stays available
+for exactly that: conversation, ideation, internal notes. It just doesn't get
+baked into documents as terminology anyone has to learn. If nautical terms earn a
+public place later, they can be added back deliberately — adding flavor later is
+cheap; removing load-bearing jargon later is not.
 
-Test before naming anything new: is this a real thing that exists or happens in the
-fleet model (register 1, if real nautical language fits) or a rule/computation about
-it (register 2)? Is it software Clarke is building (register 3)? Don't reach for
-register 1 just because it's more fun — a forced metaphor is worse than plain English.
+One distinction the old scheme blurred, worth keeping precise even in casual use:
+the identity is the *data*; the first mate — the persona, the character, the
+"Jarvis" — is what's *built on* that data. The data is the standard's concern;
+the character is built on top of it.
 
----
+## Product branding
 
-## Known loose ends
-
-Surfaced during the 2026-07-07 standing-orders.md walkthrough (see devlog), not yet
-fixed:
-
-- **Muster-ping (standing-orders.md #36)** — welds a real nautical word ("muster") to
-  tech jargon ("ping"). The only place two registers got mixed into one word. Worth
-  reconsidering as either a pure register-1 term or dropping to plain register-2
-  English ("liveness check").
-- **"Billet"** — used constantly throughout standing-orders.md (billet table, billeted,
-  ephemeral billet) but never gets its own numbered definition. Load-bearing vocabulary
-  that's only defined by implication.
-- **The mesh (standing-orders.md #31)** — explicitly still unnamed in the document
-  itself. The substrate is settled (Tailscale/WireGuard), the register-1 proper noun
-  isn't. Open decision, not resolved here — needs a real pass with Clarke rather than
-  a guess.
+A separate namespace entirely: Mojo (the project), the Mojo System Interface /
+MSI (the standard), MojOS (the NixOS-based host), mojo-agent, mojo-package.
+These name things that get shipped, not concepts in the standard.
 
 ## Standing naming hazard
 
-**Mojo** itself collides with Modular's existing Mojo programming language (already
-flagged in ideas.md, under Collectives/framework). Not urgent to resolve, but worth
-carrying here since it's the one name in the whole project that isn't ours alone.
+**Mojo** itself collides with Modular's existing Mojo programming language. Not
+urgent to resolve, but carried here since it's the one name in the whole project
+that isn't ours alone — worth settling before anything goes wide publicly.

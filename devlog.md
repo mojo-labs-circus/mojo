@@ -6,7 +6,87 @@ where the reasoning trail lives.*
 
 ---
 
-## 2026-07-10 — tracker rebuilt around the MSI-1 target shape: the spec's structure is fixed, the plan now terminates in the draft, adopt-or-adapt applies to the kernel and memory too
+## 2026-07-10 — the anatomy becomes the first-class document: leg 1 walked, the walk itself overturned, anatomy.md lands, and the public docs get rewritten in plain language
+
+Session started as "begin leg 1 (adopted seams)" and ended somewhere much
+bigger: the research plan's walk order is superseded, the project has a new
+first-class document — [anatomy.md](anatomy.md) — and vision/README/roadmap/
+naming-conventions are rewritten against it.
+
+**Leg 1's study happened and is banked, not landed.** Four parallel research
+passes on the adopted seams, all against the real current documents, not
+training memory: MCP's current spec is `2025-11-25` (JSON-RPC 2.0, stdio +
+Streamable HTTP; crucially, the spec itself disclaims enforcement — consent and
+safety are explicitly the host's job, which is exactly the hole the kernel
+exists to fill). A2A is 1.0.0 under the Linux Foundation (Agent Card discovery,
+task lifecycle, three interchangeable transports; auth is transport-level only,
+authorization explicitly agent-defined — it's a protocol for talking to
+strangers, extends no trust, so it composes with the federation seam rather than
+competing with it). SKILL.md has genuinely broad multi-vendor adoption (25+
+clients) but no version numbers — an adoption note has to pin a fetch date, not
+a version. Model endpoint: after I caught the research drifting toward frontier
+vendor APIs (wrong center of gravity — the system runs on open-source serving),
+a second pass on the actual OSS stacks: TGI is dead (archived March 2026), the
+real landscape is vLLM + SGLang + llama.cpp + Ollama, and all four genuinely
+converge on the OpenAI-compatible Chat Completions wire shape as their primary
+interop surface. Fragmentation is concrete and lives at exactly two edges:
+grammar-constrained/structured output and reasoning-trace exposure. So that
+seam's shape is "adopt the wire baseline, define a capability-declared envelope
+for the two unstable edges — a router may use a declared capability, must never
+assume one." None of this got marked Decided; it's input for when the re-derived
+plan reaches those seams.
+
+**The walk got challenged and lost.** First round: I noticed adopted seams
+punt to unbuilt legs (skills→memory schema, A2A→federation, model→invocation),
+proposed dissolving leg 1 into per-adoption checkpoints before their consuming
+design legs — a 12-leg walk. Second round, the real one: the tracker grew
+accretively (the row dates show it), and an accreted list can't prove its own
+completeness. The fix isn't reordering the list — it's drawing the whole system
+first and deriving the list from the drawing, the way POSIX's writers could see
+a running Unix before they wrote anything. Drew it as an artifact (three
+revisions with feedback): every piece, every seam labeled a–n, treatment
+color-coded. The drawing immediately earned its keep by finding four seams
+nothing tracked: owner verification (the system's login — Unix has PAM, we had
+nothing), machine admission (root-of-trust only covered machine #1), live-task
+handoff (data coherence was owned, action coherence wasn't — two machines, one
+task, who's driving), and conversation continuity (probably memory-shaped,
+never verified).
+
+**Anatomy corrections that reshape rows, from talking it through:** windows
+are a swappable piece like everything else (profile: Client), and a window runs
+*on* a machine or on a thin device — the machines themselves are not windows.
+The memory provider split out of the identity entirely — the Obsidian cut: the
+vault is not the app; providers compete on retrieval/indexing and anything
+derived must be rebuildable from the data alone, or portability silently dies.
+The owner is a human represented by something key-pair/DID-shaped so "the owner
+said so" is checkable. Leans recorded, not decided: kernel instance per
+machine, logically one per owner's set (enforcement must work offline; policy
+must not fork); router proposes, kernel disposes; trigger firing is the
+ground's job (the schedule is data, the firing is an act of authority).
+
+**The naming policy landed.** Plain functional names in everything
+public-facing — POSIX names nothing thematically; themes live in products, not
+standards, and Urbit is the cautionary tale. The nautical register survives as
+the analogy we think with, not terminology anyone must learn. One precision
+gain from the demotion: the identity is the *data*; the first mate — the
+persona, the "Jarvis" — is what's built *on* it. The old three-register
+naming-conventions.md is rewritten; the old scheme is in git history.
+
+**What actually changed on disk:** anatomy.md (new, first-class — the concrete
+"what Mojo is," seams a–n, the what-survives/what-swaps split) and anatomy.html
+(its visual rendering, kept in-repo at Clarke's call); vision.md rewritten
+plain (same ideology, anatomy-anchored, audit/accountability given real weight —
+"what did it do and who allowed it" as the thing that makes the system
+adoptable beyond enthusiasts); README.md rewritten around the anatomy;
+roadmap.md's Now is anatomy → derive plan → walk it; naming-conventions.md
+rewritten to the new policy; AGENTS.md points at anatomy.md first.
+
+**Deliberately not done this session:** perfecting the anatomy (next session —
+it needs one more hard pass before it's trusted as the map); re-deriving
+research-plan.md from it (the session after — current tracker content is input,
+not casualty); rewriting `.claude/rules/msi-research-sessions.md` (goes with
+the plan rewrite); the org-level README (blocked — GitHub MCP credentials are
+failing; same rewrite applies to it when access is back).
 
 Session started as "audit research-plan.md's shape" and landed as a full
 restructure of it, driven by three corrections that all point the same way.
