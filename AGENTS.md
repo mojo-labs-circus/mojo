@@ -25,6 +25,9 @@ Mk1 got wrong.
 Current phase is Mk1 of the Mojo System Interface: a first-pass, complete-coverage
 answer for every piece in research-plan.md's tracker — good enough to build against.
 Depth comes from iterating across versions once something real exists.
+[research-plan.md](research-plan.md) walks this as nine dependency-ordered legs;
+its "Currently on" line says which one, and `.claude/rules/msi-research-sessions.md`
+holds the session discipline — one leg per session, teach before deciding.
 
 Mojo's core architecture is a foundational, cross-cutting layer, so getting the
 core abstractions right comes before any code depends on them — the same bet

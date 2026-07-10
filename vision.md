@@ -116,7 +116,8 @@ learns gets written back in the shared shape instead of staying trapped in one
 product's private buffer.
 
 Mojo builds the first implementation of exactly those two pieces — the kernel and
-the memory — because they're the two seams where there's nothing to adopt, and
+the memory — because they're the two seams where no accepted standard exists to
+adopt (prior art exists at both, and gets checked before anything is built), and
 nobody with the resources to build them well has any incentive to: a neutral
 standard removes the moat, and nobody who profits from the moat funds its removal.
 The kernel is singular *per Fleet* — one instance holds authority over what any

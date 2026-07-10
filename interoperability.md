@@ -165,7 +165,10 @@ What's *not* settled anywhere, by anyone: a portable shape for personal AI memor
 and identity, and the enforcement boundary that protects it. That's the actual
 gap in the market, and it's the one piece Mojo has no choice but to build a real,
 working reference implementation of — not because building things is the
-mission, but because there's nothing to consume. Everything else on this list,
+mission, but because there's no settled standard to consume: prior art exists on
+both sides (Engram and Portable Agent Memory on the memory shape, kernel.chat's
+`agent-os` on enforcement — see below) and gets checked adapt-before-build, but
+nothing there is accepted enough to adopt outright the way MCP or SKILL.md are. Everything else on this list,
 Mojo mostly just needs to define the seam and let other people's pieces plug in.
 Memory is the one place it has to also build the piece, to prove the seam is
 real.

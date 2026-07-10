@@ -27,7 +27,10 @@ POSIX.1-1988 covered its whole scope thinly rather than perfecting one part and
 leaving the rest blank. [research-plan.md](research-plan.md) is the live
 tracker: walk each piece, check it against real precedent (Unix, seL4, Plan 9,
 Erlang/OTP, others as needed), land on Mojo's own answer — including where the
-answer is "adopt what exists" or "deliberately leave open."
+answer is "adopt what exists" or "deliberately leave open." Restructured
+2026-07-10 to terminate in the draft itself: the tracker's parts map one-to-one
+onto `msi.md`'s sections, and each part gets drafted into the spec as its rows
+land, so covering the tracker *is* assembling the draft.
 
 Next milestone: the first Mojo system, built against the standards document once
 it covers every tracked piece to first-pass depth. That system is a distro in
@@ -61,6 +64,11 @@ Working rules for this phase:
 Assemble the system against the Mojo System Interface once it covers every
 tracked piece — stitched from existing parts wherever a compliant one exists,
 built only where nothing does (the kernel, the memory).
+The milestone ends public, not private (decided 2026-07-10): the MSI-1 draft
+published plus a release a stranger can actually stand up — install docs,
+pinned parts, the hotswap test reproducible by someone who isn't me. That
+release going to forums is the proof of concept; a system only I can run
+proves nothing to anyone else.
 Lived with immediately once it exists — laptop now, PC from 15 September.
 That's Mojo running across more than one machine, which is just Fleet, already
 part of the system model — not a separate multi-machine phase to design later.

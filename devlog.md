@@ -6,6 +6,184 @@ where the reasoning trail lives.*
 
 ---
 
+## 2026-07-10 — tracker rebuilt around the MSI-1 target shape: the spec's structure is fixed, the plan now terminates in the draft, adopt-or-adapt applies to the kernel and memory too
+
+Session started as "audit research-plan.md's shape" and landed as a full
+restructure of it, driven by three corrections that all point the same way.
+
+**The Linus/POSIX lesson, taken seriously.** Asked what Linus actually did:
+he didn't write a standard first — his famous Usenet post was him asking where
+to *find* the POSIX documents, and POSIX itself codified fifteen years of
+already-running Unix. The committee-writes-spec-first pattern is OSI, and
+TCP/IP's running code killed it. Doesn't change the lifecycle (requirements →
+standard → system → iterate), but it sharpens what Mk1 has to be: a thin,
+complete, adoption-heavy first pass written to be built against immediately.
+Encoded into the plan as three working rules — a timebox rule (a row that
+resists landing after one real session gets a provisional answer plus an open
+flag, never an indefinite Deciding), a per-row definition of done (a stranger
+could build or adopt a compliant piece without talking to me — the bar the
+2026-07-09 session already named), and draft-as-you-go (each part's msi.md
+section drafted the same session its rows land, so the tracker being covered
+*is* the draft being assembled — no big transcription phase at the end).
+
+**Prior-art posture corrected: adopt-or-adapt everywhere, including the two
+built pieces.** I flagged that even the kernel and memory have prior art, and
+that's right — the repo itself found it (kernel.chat's `agent-os`, OpenFang's
+gates, Capsicum/WASI on the kernel side; Portable Agent Memory, Engram, the
+W3C CG on the memory side) but vision.md and interoperability.md still said
+"nothing to adopt"/"nothing to consume." Overstated. The defensible claim is:
+no accepted *standard* exists at those two seams — prior art exists and gets
+checked adapt-before-build; Mojo designs the residue. Both files got one-line
+fixes to say exactly that.
+
+**The tracker's shape didn't match the spec it's building — fixed.** The
+audit findings, all now in the restructured research-plan.md:
+
+- **The MSI-1 target structure is now stated up front** and the tracker maps
+  onto it one-to-one: §0 Conformance (RFC-2119, compliance profiles — one per
+  swappable piece: Memory Provider, Kernel, Harness, Client, Router, Model
+  endpoint — a piece is compliant against a profile, never against the whole
+  document; this is what makes hotswapping testable), §1 Base definitions
+  (Part A: primitives), §2 Schemas (Part B: First mate), §3 Contracts (Part
+  C), §4 Adopted standards (Part D), plus a non-normative Rationale appendix.
+- **Reachability had no rows anywhere** despite vision.md naming it as a seam
+  a Jarvis-class system needs and test 1 depending on it. New Part C section,
+  two rows: the channel/client contract (what a window into the First mate
+  must implement — Matrix/XMPP flagged as the "one identity, many clients"
+  precedent, unverified) and proactive delivery (the output half of Time's
+  trigger row).
+- **The adopted seams had no rows at all** — MCP, SKILL.md, A2A, and the model
+  APIs were "settled" in prose but the adoption decisions were never actually
+  walked or recorded anywhere. New Part D, four rows; each records what
+  adopting actually binds Mojo to. Skill format moved there from the First
+  mate section (it's an adoption call, same kind as MCP).
+- **Two more First mate rows**: the scoped view / mission fragment (the shape
+  of what a mercenary is handed — load-bearing for the whole mercenary model,
+  previously tracked nowhere) and a reused-shape catalog (interoperability.md
+  claims triggers, rosters, routing policies, task checkpoints, and audit
+  records are all "just memory objects" — that gets verified per object now,
+  not asserted).
+- **An audit-trail row under Trust** — the kernel mediates every consequential
+  access and nothing tracked what it records; accountability tracing to a
+  human is a vision.md commitment.
+- **Treatment column everywhere** (Adopt/Design/Leave open, ? for a lean) so
+  the tracker directly answers "what does the first build actually have to
+  cover" instead of that living in prose across two files.
+- **Dead columns cut**: the four OS columns only survive in Part A where OS
+  precedent is the point; Parts B–D carry a Precedent candidates column
+  instead — the old format forced "—" noise and hid the real (agent-era)
+  precedent. Shell/environment section dissolved into Process/invocation,
+  which is its actual spec home. Content-mutation row now explicitly owns
+  same-Vessel concurrent writes (two sessions at once), distinct from Fleet
+  coherence's cross-Vessel case.
+- **New secondary precedents seeded, all flagged unverified**: Landlock,
+  UCAN/Biscuit/macaroons (portable attenuable capability tokens — the one
+  precedent family for "permissions travelling with the data" no OS provides),
+  CRDTs (Automerge/Yjs, the automatic-convergence counterpoint to git's
+  explicit-merge answer on Fleet coherence), Matrix/XMPP, C2PA/Sigstore,
+  iCalendar RRULE.
+
+**Two decisions made explicitly this session:** draft-as-you-go for the spec
+(msi.md created when the first real section lands — no empty skeleton, per the
+repo's own convention), and the MVP finish line is a **fully runnable
+release** — install docs, pinned parts, the hotswap test reproducible by a
+stranger. Forum proof means the published MSI-1 draft plus a system someone
+else can stand up, not a demo only I can run. roadmap.md's Next now says so.
+
+Row count went 39 → 47. Nothing moved to Decided that wasn't already — the
+restructure is not research, and every new row starts Open.
+
+**Same-session follow-up, pressure-testing the restructure.** Four corrections
+out of it:
+
+- **Capsicum can't be the mechanism — it's FreeBSD-only** (the Linux port
+  died), which I hadn't registered when it got flagged as "likely the real
+  precedent." Kept as precedent for the *shape*, corrected in three places,
+  and the design consequence is now written down: portable enforcement has to
+  come from what an invocation is handed (WASI-style — what you weren't given
+  isn't there), with per-OS sandboxes (Landlock/Capsicum/macOS) as optional
+  hardening backends underneath, never the contract itself. WASI is the one
+  candidate that runs everywhere Mojo does.
+- **New working rule: nothing already thought is decided.** The
+  dockets-research files, "direction picked" notes, and Treatment leans are
+  inputs to the walk, not outcomes — a row walked honestly can overturn any of
+  them, Docket's own shape included. Was implied by the Status discipline;
+  now it's stated.
+- **Sequencing rewritten as "the walk" — nine study-then-decide legs**, each
+  naming the question it answers, what to study (the training), and what
+  msi.md section it drafts, so the research is a curriculum that ends in
+  decisions, not a checklist. One ordering fix: Captain moved before
+  File-side, so Docket ownership fields have a defined owner to point at.
+- **Backup/disaster recovery recorded as deliberately deferred** (the
+  all-vessels-lost case from book-research.md) — operational, not a seam, but
+  now written down instead of silently missing, with a re-entry condition if
+  the First mate walk proves an export envelope needs a contract.
+
+**Closed the loop on how the walk actually gets lived with, session to
+session.** Real prerequisite check: none for leg 1 (the adoption specs need no
+OS background), and OSTEP's persistence/virtualization chapters are the one
+worth reading, but alongside legs 3 and 6 rather than front-loaded — the
+recurring failure mode for a project shaped like this is reading a whole
+textbook before touching the tracker and losing the thread. No separate
+sources file: the study material is already named inside each leg's walk
+entry, and a second list would just drift out of sync with it. Landed the
+session pattern instead — every leg opens with a briefing on its named
+precedents before any deciding starts — and a one-line "Currently on: leg N"
+marker in research-plan.md so a session after a gap costs a glance, not a
+re-read. Both now written into the plan and carried in memory.
+
+**Session-flow discipline, same thread, one leg confined to one session.**
+Explicit agreement: work in a session stays on the leg named by the marker —
+never start a second leg because there's time left, never reopen a Decided
+leg without being asked. A leg spanning several sessions is expected (File-side
+especially); the constraint is never more than one leg *per session*, not one
+session *per leg* — multiple sessions in a single sitting are fine. Set up the
+same way `docs/framework/`'s dead session rules were: a path-scoped rule file
+(`.claude/rules/msi-research-sessions.md`, matching `research-plan.md` and
+`msi.md`) plus a `SessionStart` hook that greps the marker line and surfaces
+it automatically, so the discipline doesn't depend on either of us remembering
+to re-read the plan first.
+
+**Session flow made self-enforcing, not just documented.** Two hooks added to
+`.claude/settings.json`, both pipe-tested against real repo state before
+being written: a `SessionStart` hook that greps research-plan.md's "Currently
+on" line and surfaces it as context automatically (no re-read needed after a
+gap), and a `Stop` hook that blocks completion if vision.md, philosophy.md,
+roadmap.md, research-plan.md, interoperability.md, ideas.md, or msi.md
+changed this session but devlog.md didn't — the enforcement side of AGENTS.md's
+existing devlog habit, which was previously just a written rule I could forget
+to follow. `.claude/rules/msi-research-sessions.md` (the leg-confinement rule
+file, mirroring the existing dead `framework-sessions.md` pattern) now points
+at both hooks as the automated backstop. Neither hook fires mid-session, so
+both need `/hooks` opened once or a restart to pick up — the config-watcher
+caveat, not a bug.
+
+Next session picks up leg 1: walk Part D's four adoption rows, cheap and
+mostly confirmation, putting the first real section into msi.md.
+
+**Closing thread, not technical — worth keeping anyway.** Talked through the
+recurring doubt directly rather than past it: why isn't anyone else doing
+this, why should a first-year student trying to do it mean anything. Answer
+landed on, not just offered: it isn't literally true nobody else is
+working on it (kernel.chat, OpenFang, Portable Agent Memory, Engram, the W3C
+CG are all real, already named in interoperability.md's landscape checks) —
+the actual gap is nobody's finished stitching the pieces together, which
+reframes the whole worry from "am I seeing something nobody else sees" to
+"am I willing to do the unglamorous integration work several well-resourced
+efforts have stopped short of." The permissive licensing on all three real
+candidates (Apache 2.0, MIT) is itself part of the plan, not a side note —
+adopt-or-adapt was always meant to include forking the good parts of
+competing efforts, not just industry standards like MCP. Landed on the
+honest version of the "why me" answer too: the scarce resource this specific
+kind of work needs is unstructured time free of monetization pressure, which
+a first-year student on summer break has more of than most senior engineers
+with a startup runway to justify — not a consolation, an actual structural
+fact about who's positioned to do slow foundational work. No file changes
+from this thread; keeping the reasoning here so it doesn't only live in a
+chat log, per the repo's own habit rule.
+
+---
+
 ## 2026-07-09 (later) — MVP scope confirmed small by design; real competitive check finds close-but-incomplete precedent on both halves, sovereignty argument confirmed genuinely rare paired with a system
 
 Second session same day, following straight on from the identity-landing
