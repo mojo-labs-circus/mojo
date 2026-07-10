@@ -162,6 +162,22 @@ purpose: it's the trail, and editing it would be rewriting history. ideas.md,
 interoperability.md, and research-plan.md skipped too, since the latter two
 are due for supersession by the plan rewrite anyway.
 
+**Sixth pass: philosophy.md catches up to the newest position.** One real
+content gap found when checked against today's reframe: the doc read as if
+open source and sovereignty were requirements of the whole project. The
+newest position is the Unix/Linux one, now written in as a new section,
+"Allow, don't mandate": the interface is the commons and what people build
+against it is their business; the MSI requires exactly one thing, that the
+identity data stays portable so nobody can be trapped; closed implementations
+can compete behind the same seams, they just can't hold anyone hostage.
+"A proof, not a promise" got its open-source claim scoped to match: open
+source is a logical necessity wherever sovereignty is claimed, not a
+condition of compliance. And "Sovereignty is an axiom" gained the standard's
+form of the axiom: sovereignty must always be available; walking through the
+door stays a choice. Everything else in philosophy.md (people, the dark path,
+craft, the sensei, right over easy, the honest tension) holds unchanged.
+Those beliefs predate today and survive it.
+
 **Deliberately not done this session:** perfecting the anatomy (next session —
 it needs one more hard pass before it's trusted as the map); re-deriving
 research-plan.md from it (the session after — current tracker content is input,

@@ -137,6 +137,33 @@ chance to become something unexpected, that's a caste system with better PR. If
 you don't own the picture of who you are, someone else will, and they'll use it
 for their purposes.
 
+For the standard the axiom takes a different form: sovereignty must always be
+available. The MSI's job is to keep that door permanently open. Walking through
+it stays a choice.
+
+## Allow, don't mandate
+
+Unix taught this and Linux proved it: a good interface doesn't force anyone to
+be open or closed, local or cloud. POSIX allowed proprietary Unixes and free
+ones. Linux runs closed software every day. The interface is the commons, and
+what people build against it is their business.
+
+That's the MSI's posture. It doesn't require implementations to be open
+source, and it doesn't require anyone to run local. It requires exactly one
+thing: the identity data stays in the portable shape, so nobody can be
+trapped. A closed-source kernel can compete behind the same seams. What it
+can't do is hold your life hostage, because you can always leave with your
+data. That's the difference between a standard and a crusade.
+
+The same posture runs through everything Mojo offers: opinionated defaults,
+documented rather than required. I run local, open source, and sovereign, and
+the first system ships that way, because that's what I believe in and it's the
+configuration that proves the strongest claims. Someone else can run a
+compliant system pointed at hosted models, and the standard serves them too. I
+think that's a worse trade, and I don't have to convert them. Making
+sovereignty possible and cheap is the win. Making it compulsory was never the
+goal.
+
 ## A proof, not a promise
 
 A privacy policy is a promise. Architecture is a guarantee. "We won't look at
@@ -144,12 +171,15 @@ your data" is worth nothing. "The data never left your machine, and here's how
 you can verify that" is worth everything. Sovereignty should be provable, not
 pledged.
 
-Open source follows as logical necessity, not as a business-model choice. An AI
+Open source follows as logical necessity wherever sovereignty is actually
+claimed. The standard doesn't demand it (see above); the claim does. An AI
 that shapes how you think over a lifetime, running on closed source, offers no
-sovereignty guarantee worth anything. The only way "this works for you and only
-you" is credible is if anyone can read, audit, and verify it. And the frontier
-models, genuinely the best in the world, get used as what they are: brilliant
-contractors, borrowed for capability, never trusted with the full picture.
+sovereignty guarantee worth anything, because the only way "this works for you
+and only you" is credible is if anyone can read, audit, and verify it. So my
+own system is open to the bone, and any piece that wants to be trusted with
+the full picture has to be. And the frontier models, genuinely the best in the
+world, get used as what they are: brilliant contractors, borrowed for
+capability, never trusted with the full picture.
 
 ## How the agent behaves
 
