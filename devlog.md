@@ -104,6 +104,24 @@ plain names, same Collectives/MojOS reframes, and its roadmap now names the
 ends-public step — the MSI and first system posted online to make the case
 and invite better implementations.
 
+**Third pass — the org README rewritten from scratch, not patched.** The
+patched version still read like the old idea: a prophecy up top, then
+product-tour sections (Jarvis, Nix-and-MojOS, Collectives) describing things
+that aren't what's being made. The org is about one thing now: making
+Jarvis-style systems interoperable, Linux-style, so the open-source community
+can build them correctly together — no lock-in, local and sovereign if
+wanted, scaffolding others implement against. New shape: the lede carries the
+whole idea; "The problem" is the weld + sovereignty-is-ownership-plus-
+portability + the two unstandardized seams being exactly the moat; "What Mojo
+is" folds the Jarvis claim in as the falsifiable core instead of a section;
+"How this gets built" owns the honesty that our implementations are first and
+crude on purpose, with Nix/MojOS as how *we* build ours (documented, never
+required — implementers do it however they want); Collectives is no longer a
+section at all, just one hedged line in the roadmap's Then ("we think the
+primitives will support it; we won't claim it until we've tested it"). The
+home-server future stays in vision.md where it belongs — the org front door
+now sells the mission, not the prophecy.
+
 **Deliberately not done this session:** perfecting the anatomy (next session —
 it needs one more hard pass before it's trusted as the map); re-deriving
 research-plan.md from it (the session after — current tracker content is input,
