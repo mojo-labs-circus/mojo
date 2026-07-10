@@ -149,6 +149,19 @@ selectable system generations, and impermanence (root wiped every boot, only
 declared state survives), which makes "the data is the only thing that
 persists" mechanically true rather than conventional.
 
+**Fifth pass: the de-slop edit.** Clarke's words: make the project not look
+like a slop factory. Full style pass over every current public doc (anatomy
+md+html, vision, README, roadmap, naming-conventions, philosophy, AGENTS,
+org README): every em dash removed, sentences shortened, the stacked
+rhetorical constructions thinned out. Content unchanged everywhere;
+philosophy especially got style-only treatment since its ideas predate today.
+AGENTS.md also got its stale nine-leg walk paragraph replaced with the
+anatomy-first sequencing, and the no-em-dash rule is now written into its
+conventions so future sessions hold the line. Devlog history left alone on
+purpose: it's the trail, and editing it would be rewriting history. ideas.md,
+interoperability.md, and research-plan.md skipped too, since the latter two
+are due for supersession by the plan rewrite anyway.
+
 **Deliberately not done this session:** perfecting the anatomy (next session —
 it needs one more hard pass before it's trusted as the map); re-deriving
 research-plan.md from it (the session after — current tracker content is input,
