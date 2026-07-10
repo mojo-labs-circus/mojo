@@ -239,18 +239,33 @@ Mojo runs on any Linux distribution — that's a design constraint of the standa
 not a preference, and it's what makes the sovereignty claim credible to people who
 won't bet their machines on an unproven project. Nix — the package manager, which
 runs on any distro, no NixOS required — is how I plan to assemble and deploy the
-system itself: implementations pinned and reproducible, upgrades always safe to
-roll back, on whatever host someone already runs. The standard never requires
-Nix — pieces are swappable implementations however they're built — but the first
-system ships with it, because reproducible assembly is what makes "a stranger can
-stand this up" real.
+system itself, and the specifics are the point. **Flakes** pin every part of an
+assembly to exact versions, so "the first system" isn't a list of parts but a
+lockfile — reproducible by a stranger, bit for bit. **Generations** make every
+change atomic: installing, upgrading, or swapping a piece builds a new generation
+and flips a symlink, so a swap that goes wrong is one command from undone — a
+system whose whole claim is "replace pieces freely" needs swaps to be cheap and
+reversible in practice, not just permitted by contract. And **Home Manager**
+brings the same declarative, generational model to exactly the layer Mojo's
+pieces live in — user-level software, services, and configuration, no root, no
+NixOS — which makes it the natural way to run a Mojo system on whatever host
+someone already has. The standard never requires any of this; pieces are
+swappable implementations however they're built. The first system ships with it,
+and everything we learn about what helps gets documented rather than required.
 
-MojOS is that idea taken to the whole machine, and it's personal, not central:
-the OS I run myself — NixOS plus the defaults that make a machine running this
-system nicer to live on, everything declarative and always safe to undo. Nothing
-in Mojo requires it. It exists because the same defaults that help me will
-probably help anyone doing the same thing, and it's offered in exactly that
-spirit: best home, never a requirement.
+MojOS is the same idea taken to the whole machine, and it's personal, not
+central: the OS I run myself. NixOS makes the entire operating system one
+declarative **configuration** — every package, service, and setting written down
+in one place — and every rebuild a new system **generation**, selectable at
+boot: a bad change to anything, kernel included, is one reboot from undone.
+On top of that, **impermanence**: the root filesystem is wiped and rebuilt on
+every boot, and only explicitly declared state survives — so nothing accumulates
+that wasn't chosen, the machine can't quietly drift, and the identity data's
+home is explicit rather than implied. That's the strongest possible ground under
+"the data is the only thing that persists": on MojOS it's not a convention, it's
+mechanically true. Nothing in Mojo requires any of it. It exists because the
+same defaults that help me will probably help anyone doing the same thing, and
+it's offered in exactly that spirit: best home, never a requirement.
 
 ## Who's building this
 

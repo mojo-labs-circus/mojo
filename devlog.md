@@ -139,6 +139,15 @@ of the MSI — light the spark, hand over the fire. → "The future, if it
 works" (the home-server prophecy, demoted from the opening but kept whole,
 with Collectives' hedged paragraph living there) → Nix/MojOS → who's
 building → the five tests → the closer, all substantially as they were.
+The Nix/MojOS section then got its specifics on request: flakes (an assembly
+is a lockfile, reproducible bit for bit), generations (every swap atomic and
+one command from undone — a hotswap system needs swaps reversible in
+practice, not just permitted), Home Manager (the same model at exactly the
+user-level layer Mojo's pieces live in, any distro, no root); MojOS as the
+whole-machine version — NixOS's single declarative configuration, boot-
+selectable system generations, and impermanence (root wiped every boot, only
+declared state survives), which makes "the data is the only thing that
+persists" mechanically true rather than conventional.
 
 **Deliberately not done this session:** perfecting the anatomy (next session —
 it needs one more hard pass before it's trusted as the map); re-deriving
