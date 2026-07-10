@@ -88,14 +88,21 @@ the last — and if it needs new machinery, that's the bet failing, out loud);
 MojOS reframed personal-first ("personal, not central" — my OS, offered
 because the same defaults probably help anyone, with "runs on any Linux
 distribution" stated as a design constraint of the standard). Asked whether
-Nix's rollback story belongs in the anatomy: no — Nix is MojOS's mechanism
-and the anatomy is any-distro on purpose — but the mechanism-free property
-underneath it does: the identity data is the one irreplaceable thing, so the
-data itself must keep history and a bad write must be rollbackable, whatever
-sits above or below. Added to the memory-provider piece and seam (m) in both
-anatomy.md and anatomy.html. Org-level README rewritten too, via `gh` (MCP
-creds were failing): anatomy linked, identity-is-data framing, plain names,
-same Collectives/MojOS reframes.
+Nix's rollback story belongs in the anatomy: no — the anatomy stays
+mechanism-free and any-distro — but the property underneath it does: the
+identity data is the one irreplaceable thing, so the data itself must keep
+history and a bad write must be rollbackable, whatever sits above or below.
+Added to the memory-provider piece and seam (m) in both anatomy.md and
+anatomy.html. And corrected my own framing in the same pass: Nix is not
+MojOS-only — the package manager runs on any distro, and it's the planned
+assembly/deployment story for the first system (parts pinned, installs
+reproducible, upgrades rollbackable); MojOS is the same idea taken to the
+whole machine. The standard itself never requires Nix. vision.md ("Nix, and
+MojOS") and roadmap.md's Next say so now. Org-level README rewritten too, via
+`gh` (MCP creds were failing): anatomy linked, identity-is-data framing,
+plain names, same Collectives/MojOS reframes, and its roadmap now names the
+ends-public step — the MSI and first system posted online to make the case
+and invite better implementations.
 
 **Deliberately not done this session:** perfecting the anatomy (next session —
 it needs one more hard pass before it's trusted as the map); re-deriving

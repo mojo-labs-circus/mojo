@@ -73,7 +73,9 @@ someone else built, models someone else trained, MCP tools, SKILL.md skills),
 built only where nothing does (the kernel, the memory layer).
 The milestone ends public, not private (decided 2026-07-10): the MSI-1 draft
 published plus a release a stranger can actually stand up — install docs,
-pinned parts, the hotswap test reproducible by someone who isn't me. That
+pinned parts, the hotswap test reproducible by someone who isn't me. Nix — the
+package manager on any distro, not NixOS — is the deployment story: parts
+pinned, installs reproducible, upgrades rollbackable. That
 release going to forums is the proof of concept; a system only I can run
 proves nothing to anyone else.
 Lived with immediately once it exists — laptop now, PC from 15 September.

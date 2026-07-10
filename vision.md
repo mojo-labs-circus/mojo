@@ -184,16 +184,24 @@ only once the single-owner system is real — and if getting there turns out to
 need new machinery instead of the primitives already supporting it, that's this
 bet failing, and it gets said out loud.
 
-## MojOS
+## Nix, and MojOS
 
 Mojo runs on any Linux distribution — that's a design constraint of the standard,
 not a preference, and it's what makes the sovereignty claim credible to people who
-won't bet their machines on an unproven project. MojOS is personal, not central:
+won't bet their machines on an unproven project. Nix — the package manager, which
+runs on any distro, no NixOS required — is how I plan to assemble and deploy the
+system itself: implementations pinned and reproducible, upgrades always safe to
+roll back, on whatever host someone already runs. The standard never requires
+Nix — pieces are swappable implementations however they're built — but the first
+system ships with it, because reproducible assembly is what makes "a stranger can
+stand this up" real.
+
+MojOS is that idea taken to the whole machine, and it's personal, not central:
 the OS I run myself — NixOS plus the defaults that make a machine running this
-system nicer to live on, the whole machine declarative and always safe to roll
-back. Nothing in Mojo requires it. It exists because the same defaults that help
-me will probably help anyone doing the same thing, and it's offered in exactly
-that spirit: best home, never a requirement.
+system nicer to live on, everything declarative and always safe to undo. Nothing
+in Mojo requires it. It exists because the same defaults that help me will
+probably help anyone doing the same thing, and it's offered in exactly that
+spirit: best home, never a requirement.
 
 ## Who's building this, and who it's for
 
