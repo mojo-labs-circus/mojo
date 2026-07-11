@@ -52,6 +52,18 @@ resignation, confidence that the shape existing is the actual goal and MSI
 is one route to it, not the destination. Landed on: it doesn't matter whose
 name is on the standard, just that it exists at all.
 
+**Same edits carried into the org-level profile README** (mojo-labs-circus/
+.github, separate repo), condensed for its punchier register rather than
+pasted whole. The opening pitch and "What Mojo is" both got the same
+one-sentence extension: a better standard replacing MSI counts as winning
+too. A new section, "Why this instead of a monolith," gives the condensed
+per-audience adoption case (runtime builders, memory providers, model
+vendors, enterprises, open source) right where a stranger landing on the org
+page would actually ask "why would I use this." Everything else in that
+README (the problem, roadmap, who's building this, philosophy summary) was
+checked and left alone — still accurate, not touched by this session's
+changes.
+
 ## 2026-07-11 — seam s minted, steps tracker created, ready to draft MSI-1
 
 Same sitting as the re-derivation entry below; this session closed the gaps
