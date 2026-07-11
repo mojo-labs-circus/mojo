@@ -10,8 +10,14 @@ seam below, and none of them are pinned yet.*
 
 ## What a Mojo system is
 
-A Mojo system is a personal AI. A Jarvis: always on, remembers you, reachable
-from every device you own, and yours. It is assembled from swappable pieces the
+**Digital counterpart:** a persistent AI system that maintains one continuous
+identity, memory, and set of permissions with its owner across time, devices,
+interfaces, and implementations. The term this document and the MSI are
+written against, the same way POSIX had to define "operating system" before it
+could define anything else.
+
+A Mojo system is one: always on, remembers you, reachable from every device
+you own, and yours. It is assembled from swappable pieces the
 way a Linux system is: distributions, desktops, and shells compete and get
 replaced, while your home directory stays yours. The **Mojo System Interface
 (MSI)** is the standard that defines each piece and each seam between pieces, so
@@ -267,7 +273,7 @@ assistant, not several that happen to share notes. Keeping that true is the
 fleet manager's job, through the federation and machine-admission seams. Other
 people's agents are different owners, opaque by design: A2A carries the
 conversation and nothing about it extends trust. This is also how one person's
-Jarvis speaks to another's.
+digital counterpart speaks to another's.
 
 ## The seams
 

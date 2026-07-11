@@ -14,7 +14,7 @@ specific mechanisms are hypotheses that building will test.*
 AI has already changed shape twice: chatbots, then agents that do real work.
 The next shape is visible from here, and every serious product is already
 racing toward it: a persistent counterpart. Always on, remembers you, acts for
-you, reachable from every machine you own. A Jarvis.
+you, reachable from every machine you own. A digital counterpart.
 
 The question isn't whether that arrives. It's what shape it arrives in, and
 right now it's arriving welded shut. Every product building one welds together
@@ -24,7 +24,7 @@ reaches you. Pick a product and you get all of it as one inseparable block, and
 the piece that actually matters, the accumulated picture of you, is trapped
 inside.
 
-Mojo exists to make Jarvis-class systems interoperable instead. It's a
+Mojo exists to make digital counterparts interoperable instead. It's a
 standard, the **Mojo System Interface**, defining every piece such a system is
 made of and every seam between them, plus a first running system that proves
 the seams hold. The point is to let these systems grow the way Linux grew:
@@ -84,7 +84,7 @@ pulled out of all of them.
 
 So Mojo, precisely, is a standard. The MSI defines the contract at every seam a
 complete personal AI system is made of, and the scope is deliberately the whole
-system, not just an agent's anatomy. A Jarvis-class system needs seams an agent
+system, not just an agent's anatomy. A digital counterpart needs seams an agent
 alone never would: how you're reached, how standing instructions fire on time,
 how one identity stays coherent across all your machines, how the pieces get
 selected per task. The whole system is drawn in [anatomy.md](anatomy.md), every
@@ -259,8 +259,11 @@ your intelligence lives. Always on, always yours, never leaving your home, and
 it comes with the house. One bed, one bath, a server.
 
 Your AI lives there and grows with you. It learns how you think, how you work,
-what you value, how you make decisions. Over years it becomes a genuine
-extension of you. Not a tool you use, a counterpart that knows you. The longer
+what you value, how you make decisions. It isn't a copy of you and it doesn't
+replace your judgment. It's a second, distinct part of the same whole: it
+knows things you don't, remembers what you've forgotten, watches what you're
+not watching, and keeps working while you sleep, all of it in relation to you
+and nobody else. Not a tool you use, a counterpart that knows you. The longer
 you have it the more valuable it becomes, and it's yours in the same way your
 memories are yours. No company owns it. No subscription can take it away. Take
 that far enough and it changes what a computer even is. Personalisation gets
@@ -338,6 +341,27 @@ standard is a social object, and nobody delivers one alone. Not even POSIX's
 committee did. Better kernels, better memory layers, systems assembled by
 people I'll never meet. The project is designed so that gap is an invitation,
 not a rescue.
+
+Why is a gap this size still open for one person to walk into? Mostly
+incentive, not oversight. The companies with the resources to build this get
+paid to build the best assistant and keep users inside it, not to make
+switching assistants easy, the same reason nobody at a cloud vendor gets
+promoted for making their platform replaceable. Standards also tend to arrive
+after the first generation of products, not during it: POSIX came after years
+of incompatible Unixes, TCP/IP after years of incompatible networks. The
+industry right now is still mostly arguing about model quality and agent
+loops, one layer above where this sits. And most companies still treat the
+model, or the application, or the network, as the asset. If the accumulated
+identity is actually the asset, as this project bets, everything reorganizes
+around a different set of boundaries, and that's not a boundary almost anyone
+currently invested in a product is incentivized to draw.
+
+None of that proves the bet is right. There are only three honest
+explanations for why nobody's built this yet: everyone missed it, it's too
+early, or it's wrong. Assuming the first one is the trap. The only real test
+is the falsifiable core above: swap the pieces and see if the identity
+survives. If it doesn't, the gap was never a gap, it was a wall, and that's
+worth knowing too.
 
 I'm also the first user, dogfooding from day one, sample size of one, finding
 out what's real. The early technical users are the bootstrapping strategy, not

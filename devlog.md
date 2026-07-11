@@ -6,6 +6,64 @@ where the reasoning trail lives.*
 
 ---
 
+## 2026-07-11 — "Jarvis" split into persona vs. category term, "digital counterpart" adopted, why-nobody's-building-this landed in vision
+
+Also not a research session. Clarke brought back a conversation with a
+separate outside model, this time about why nobody else appears to be
+building MSI, plus a naming question the same conversation surfaced: what do
+you actually call a Jarvis-class system.
+
+**The naming problem was real, not just style.** "Jarvis" was doing two jobs
+at once across anatomy.md, vision.md, and README.md: the generic category
+term for what the standard defines ("Jarvis-class system"), and the proper
+name of Clarke's own instance (vision.md's "Mine is called Jarvis, and the
+name is the spec"). naming-conventions.md already drew this distinction in
+principle (persona built on the data vs. the data itself) but never resolved
+the category-term overload, and "Jarvis-class" riding as a technical term in
+docs meant to be plain-language and stranger-legible was also borrowed
+Marvel IP doing spec work it shouldn't have been doing.
+
+**Resolved by splitting, not renaming.** "Digital counterpart" is the
+category term now; it wasn't imported from the outside chat so much as
+formalized from a word this project's own docs already reached for
+organically (vision.md's "a persistent counterpart," "a counterpart that
+knows you," devlog's own "persistent-counterpart arc"). "Jarvis" stays
+exactly where it was as Clarke's own instance's name, product branding
+alongside MojOS and mojo-agent, untouched at vision.md's "Tony Stark's
+JARVIS" passage and the "measure is the name" section. A formal,
+POSIX-style definition of digital counterpart went into anatomy.md's opening
+("the term this document and the MSI are written against, the same way
+POSIX had to define 'operating system' before it could define anything
+else"), matching identity/memory/permissions vocabulary already established
+rather than inventing new terms like "authority relationship." Mechanical
+swap followed through anatomy.md, vision.md, and README.md, and mirrored
+into the org-level profile README (mojo-labs-circus/.github, separate repo,
+condensed register kept as before) in a local clone, not yet pushed, pending
+Clarke's go-ahead on a push to a public repo.
+
+**On why nobody else is building this: most of the outside chat's reasons
+were kept, one was cut, nothing was pasted in wholesale.** Kept: the
+incentive argument (nobody at a platform company gets paid to make their
+platform replaceable), the timing argument (standards arrive after the
+first product generation, not during it, already vision.md's own
+POSIX/TCP-IP point), the delayed-reward funding problem, and the sharpest
+one, that most companies still treat the model or the app or the network as
+the asset rather than the accumulated identity, which restates this
+project's actual thesis as a market observation rather than adding a new
+one. Cut: "most builders don't think in systems," judged as self-flattery
+wearing an independent-cause costume when it's really the incentive
+argument again, and everything in the source chat character-reading Clarke
+personally, which isn't market analysis and doesn't belong in a project doc
+regardless. Also cut as redundant: the Linux/Kubernetes "people join for a
+seam they care about, not for you" point, already made by vision.md's
+existing Linux-driver analogy in "Why every builder benefits." New content
+landed in vision.md's "Who's building this," a paragraph on why the gap is
+still open (incentive plus timing plus the wrong-asset problem) and a second
+tying to the existing falsifiable-core test: three honest explanations for
+why nobody's built this (missed it, too early, wrong), assuming the first
+one is the trap, and the only real test is whether identity actually
+survives the swap.
+
 ## 2026-07-11 — outside review on vision: adoption argument written, "lose the standard too" sharpened, router flag carried
 
 Not a research session (phase 1 stays untouched). Clarke ran vision.md and

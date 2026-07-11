@@ -2,9 +2,10 @@
 
 Mojo is a standard first: the **Mojo System Interface (MSI)**, effectively a
 POSIX for personal AI. It defines every piece a complete personal AI system is
-made of and every seam between them, so that the system's identity (a Jarvis:
-your memory, your permissions, your assistant's character, yours alone, as
-plain portable data) survives any change of the pieces underneath it. Swap the
+made of and every seam between them, so that the system's identity (a digital
+counterpart: your memory, your permissions, your assistant's character, yours
+alone, as plain portable data) survives any change of the pieces underneath it.
+Swap the
 agent runtime, the model, the memory provider, even the kernel, and nothing
 that matters moves. Anyone can build a better implementation of any piece; the
 owner runs whichever they want. Mojo builds its own system as the proof,
