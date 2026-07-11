@@ -64,6 +64,31 @@ README (the problem, roadmap, who's building this, philosophy summary) was
 checked and left alone — still accurate, not touched by this session's
 changes.
 
+**Then the org-README's own Philosophy section got a real fix, on Clarke's
+call that the original was thin and wrong, not just missing something.**
+"Open source by necessity" as a blanket line collides with philosophy.md's
+"Allow, don't mandate": the standard itself never requires open source or
+local, only that identity data stays in the portable shape. What's actually
+open by necessity is Clarke's own implementation, because a sovereignty
+claim specifically needs to be provable rather than promised ("A proof, not
+a promise"). Rewrote the section to keep those two claims separate instead
+of collapsed into one, and added a second paragraph carrying the
+wanting-to-lose belief with its actual reasoning (credit vs. existence pull
+apart, this project already knows which one it picks), not just a
+cross-reference. Two pushes to that repo this session; the first one landed
+a version that was still too thin, caught and fixed in the same sitting.
+
+**philosophy.md itself got the matching gap closed.** The belief that Mojo
+losing, even the standard itself losing to something better, is success had
+only ever been written down as strategy, in vision.md. It's actually
+personal, the same non-ownership the agent is designed to practice toward
+its user (surface, challenge, never decide) pointed back at the project that
+built it, so it earned its own section: "Wanting to be outcompeted," placed
+after "Right over easy," before "The honest tension." Also fixed a small
+drift while in there: "The honest tension" still said "I'm a first-year
+student," left over from before this year finished; matched it to vision.md
+and the org-README's "just finished the first year of a CS degree."
+
 ## 2026-07-11 — seam s minted, steps tracker created, ready to draft MSI-1
 
 Same sitting as the re-derivation entry below; this session closed the gaps

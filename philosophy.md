@@ -229,10 +229,28 @@ round. Linus built Linux because he needed it; the ecosystem that grew around
 it was a consequence of building something that genuinely worked. Build what
 needs to exist. Do it well. The rest follows.
 
+## Wanting to be outcompeted
+
+The measure was never whether Mojo specifically wins. It's whether the idea
+does: identity that survives every swap, pieces that compete on open
+contracts instead of lock-in. If someone builds a better kernel, a better
+memory layer, even a better standard than the MSI itself, the right response
+is relief, not defense. That's not humility performed for effect. It's the
+same non-ownership the agent itself is built to practice toward its user
+(surface, challenge, never decide, the vision stays with you), pointed back
+at the project that built it. Wanting credit and wanting the thing to exist
+pull in different directions the moment they conflict, and I already know
+which one I'd pick, because I've watched the alternative: people protect
+their own version past the point it's still the best answer, and the
+ecosystem is smaller for it. Doing the right thing, the thing this whole
+philosophy starts from, doesn't stop applying to the project once the
+project has my name on it.
+
 ## The honest tension
 
-This project is idealistic and hard, and I'm a first-year student who doesn't
-know enough yet. Both of those are true and both stay written down, because
+This project is idealistic and hard, and I've just finished my first year as
+a CS student, still short of the depth this needs. Both of those are true
+and both stay written down, because
 pretending otherwise would break the honesty rule above. Two doubts have to be
 kept separate: doubt about the scope (is all of this buildable?) and doubt
 about the philosophy (do I actually believe this?). The second one I don't
