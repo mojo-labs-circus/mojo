@@ -197,6 +197,60 @@ be attacked, and the endgame for the MSI itself is neutral stewardship, a
 foundation once it's real enough to deserve one, not a spec one person owns.
 Light the spark, hand over the fire.
 
+## Why every builder benefits
+
+The honest version of the pitch isn't "join the standard." It's "here's the
+cost each of you is currently paying that MSI removes," because standards win
+on removed cost, not elegance. POSIX won because it removed porting cost.
+TCP/IP won because it removed network incompatibility. MCP is winning right
+now because it removes the N-tools-times-M-agents integration matrix. MSI has
+to remove something just as real, and it removes a different cost for each
+layer of builder.
+
+An agent-runtime builder today either builds identity, memory, permissions,
+and sync themselves, or wires together someone else's incompatible versions
+of all four, none of which was the thing they actually wanted to be good at.
+MSI lets a runtime builder just be a runtime builder, the same way Postgres
+doesn't also ship a kernel.
+
+A memory-provider builder faces the reverse problem: N runtimes times M
+memory systems is an integration matrix that punishes anyone who isn't
+already the biggest player. One shared contract turns that into N runtimes
+plus one memory contract, and every provider gets every runtime for free the
+moment they speak it. The exact mechanism that made MCP explode, aimed one
+layer down.
+
+Model vendors don't need MSI. Their moat is model quality, not distribution,
+and this doesn't threaten that, it just stops them from also owning the user
+relationship on top of it. That's a real loss for them and I won't pretend
+otherwise, but it isn't existential: they still get hired as the best model
+for the job in every Mojo system that exists, the same way AWS makes enormous
+money running Linux without owning it.
+
+Enterprises are the strongest case and probably the real wedge, because they
+already think in these terms without needing convincing. Three years of
+accumulated customer context trapped in one vendor's private format is a
+switching cost procurement already has a name for. And "what did our AI do
+and who allowed it" is a compliance question every enterprise buyer already
+has to answer, and today mostly can't. MSI makes both of those structurally
+true instead of promised in a sales deck.
+
+Open source doesn't want one canonical AI system any more than it wanted one
+canonical OS. It wants a stable seam where a contribution matters across
+every implementation that speaks it, the same reason people write Linux
+drivers instead of trying to write an OS from scratch. Eleven real seams
+instead of one monolith is eleven communities building in parallel instead of
+one project everyone forks and abandons.
+
+Underneath all five is the same mechanism: MSI turns a vertical market, where
+whoever welds the most pieces together first wins the user, into a
+horizontal one, where whoever builds the best version of one piece wins that
+layer. Almost nobody currently winning the vertical race benefits from that
+shift. Almost everyone not currently winning it does, which is most of the
+market, and most of the reason this is buildable by someone with no company
+behind them. It doesn't require beating the incumbents at their own game. It
+requires the horizontal game to exist at all.
+
 ## The future, if it works
 
 Every house has a server in it. Not a novelty. Infrastructure. As normal as a
@@ -332,3 +386,14 @@ piece Mojo builds is replaceable through the contracts it publishes, so the
 idea can win even where my implementation loses. Mojo is the proof that another
 path was possible. And if it's good enough, if the standard is good enough, it
 becomes the path.
+
+I mean the losing literally, all the way down. Every piece Mojo builds is
+designed to be outcompeted, and that includes the standard itself. If someone
+designs a cleaner MSI, one that gets identity portability and piece
+decomposition right in a way mine doesn't, the correct outcome is that theirs
+wins and mine becomes a footnote in how it got there. I'm not attached to MSI
+being the standard. I'm attached to the shape existing at all: identity that
+outlives every implementation, pieces that compete on contracts instead of
+lock-in. If someone else's spec is how that shape actually wins, that's not a
+loss, it's the goal reached by a route I didn't build. It doesn't matter
+whose name is on the standard, just that it exists at all.

@@ -6,6 +6,52 @@ where the reasoning trail lives.*
 
 ---
 
+## 2026-07-11 — outside review on vision: adoption argument written, "lose the standard too" sharpened, router flag carried
+
+Not a research session (phase 1 stays untouched). Clarke ran vision.md and
+anatomy.md past a separate outside model and brought the conversation back in
+to fold in what held up.
+
+**The critique's read on anatomy was mostly confirming**, and its one real
+suggestion, decompose the Router because it's accreting too much authority,
+turned out to already be answered: anatomy.md's Router prose already puts
+authority in the kernel (seam j) and leaves the router only selection (seam
+d), with hard limits explicitly "the owner's policy data, which a router
+obeys... never properties of the router itself." No anatomy change. The real
+risk isn't a monolithic router, it's an opaque one: a router with zero formal
+authority can still function as a de facto OS if nobody can see why it picked
+what it picked. That's a seam-d contract requirement, not a piece-list
+change, and got carried into research-plan.md's row d as a flag: a router's
+decision should have to expose its candidates and reasoning, and stay
+overridable by policy data.
+
+**Adoption argument written into vision.md**, new section "Why every
+builder benefits" after "A Linux for AI." The move: standards win on removed
+cost, not elegance, and the cost removed is different per audience, not one
+pitch reused five times. Runtime builders stop having to also build
+identity/memory/permissions/sync. Memory providers get every runtime for
+free off one contract instead of an N×M integration matrix (the MCP
+mechanism, one layer down). Model vendors lose the user relationship but
+keep getting hired as the best model for the job, an AWS-on-Linux trade, not
+an existential one. Enterprises are the real wedge: portable context solves
+a switching-cost problem procurement already has a name for, and the
+kernel's audit trail answers a compliance question they already have to
+answer. Open source gets eleven real seams to build into instead of one
+project to fork. Underneath all five: MSI turns a vertical market (whoever
+welds the most together first wins the user) into a horizontal one (whoever
+builds the best single piece wins that layer), and almost everyone not
+currently winning the vertical race benefits from that shift.
+
+**"Losing" pushed one level further than it was written.** The mission
+section already said the idea winning matters more than Mojo's
+implementation winning; that was still implicitly about the pieces, not the
+standard itself. Added to the closing section, "An argument, not just
+software": the standard itself is meant to be outcompeted too, by anyone who
+gets identity portability and piece decomposition righter than MSI does. Not
+resignation, confidence that the shape existing is the actual goal and MSI
+is one route to it, not the destination. Landed on: it doesn't matter whose
+name is on the standard, just that it exists at all.
+
 ## 2026-07-11 — seam s minted, steps tracker created, ready to draft MSI-1
 
 Same sitting as the re-derivation entry below; this session closed the gaps
