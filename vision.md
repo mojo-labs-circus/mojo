@@ -348,9 +348,14 @@ paid to build the best assistant and keep users inside it, not to make
 switching assistants easy, the same reason nobody at a cloud vendor gets
 promoted for making their platform replaceable. Standards also tend to arrive
 after the first generation of products, not during it: POSIX came after years
-of incompatible Unixes, TCP/IP after years of incompatible networks. The
-industry right now is still mostly arguing about model quality and agent
-loops, one layer above where this sits. And most companies still treat the
+of incompatible Unixes, TCP/IP after years of incompatible networks. That
+incompatibility already exists here too: OpenClaw, Hermes, Letta, Khoj, real
+digital counterparts running today, imperfect, each welded to its own harness
+or format. MSI is the POSIX move, not the OSI one: arbitrate the systems
+already running instead of writing a standard into a vacuum (the comparison
+in full is [interoperability.md](interoperability.md)). The industry right
+now is still mostly arguing about model quality and agent loops, one layer
+above where this sits. And most companies still treat the
 model, or the application, or the network, as the asset. If the accumulated
 identity is actually the asset, as this project bets, everything reorganizes
 around a different set of boundaries, and that's not a boundary almost anyone
