@@ -12,11 +12,13 @@ HANDOFF one) to pick up where things left off.
 everything else is written against. Then [vision.md](vision.md) and
 [philosophy.md](philosophy.md), which are how you understand Clarke and this
 project. [roadmap.md](roadmap.md) has the current focus and its finish line.
-[research-plan.md](research-plan.md) is the research tracker. Check its Status
-column before assuming any piece of the system is decided (most of it says Open
-on purpose), and note it's being re-derived from the anatomy (see roadmap.md);
-its walk order is superseded. Public-facing docs use plain names only, and no
-em dashes; see [naming-conventions.md](naming-conventions.md).
+[research-plan.md](research-plan.md) is the research tracker, re-derived from
+the anatomy 2026-07-11 and keyed to its seams. Check its Status column before
+assuming any piece of the system is decided (most of it says Open on purpose).
+[msi-steps.md](msi-steps.md) is the step-by-step procedure through that plan;
+sessions work its first unchecked step. Public-facing docs use plain names
+only, and no em dashes; see
+[naming-conventions.md](naming-conventions.md).
 
 ## Current stage
 
@@ -26,13 +28,12 @@ requirements (vision.md/philosophy.md, done) → the Mojo System Interface, Mk1
 iterate, versioning both the standard and the system as real use teaches what
 Mk1 got wrong.
 
-Current phase, resequenced 2026-07-10: get [anatomy.md](anatomy.md) right,
-then re-derive [research-plan.md](research-plan.md) from it seam by seam, then
-walk that plan and draft msi.md as answers land. A first-pass,
-complete-coverage answer for every seam, good enough to build against; depth
-comes from iterating across versions once something real exists. The old
-nine-leg walk and its session rules are superseded;
-`.claude/rules/msi-research-sessions.md` gets rewritten with the plan.
+Current phase: draft **MSI-1** by walking [msi-steps.md](msi-steps.md) in
+order: finish the anatomy piece pass, walk the seams (drafting msi.md as each
+lands), then the assembly pass. A first-pass, complete-coverage answer for
+every seam, good enough to build against; depth comes from iterating across
+versions once something real exists. After MSI-1: reference implementations,
+stitched into the first runnable Mojo system.
 
 Mojo's core architecture is a foundational, cross-cutting layer, so getting
 the core abstractions right comes before any code depends on them. It's the

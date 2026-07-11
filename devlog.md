@@ -6,6 +6,304 @@ where the reasoning trail lives.*
 
 ---
 
+## 2026-07-11 — seam s minted, steps tracker created, ready to draft MSI-1
+
+Same sitting as the re-derivation entry below; this session closed the gaps
+that entry flagged and set up the drafting workflow.
+
+**Readiness call: yes, MSI-1 drafting starts now.** The anatomy holds to the
+best of what's knowable up front, the seams are enumerated, and the prior art
+is unusually rich — this is POSIX-side standardization of things that already
+exist (MCP, A2A, SKILL.md, OpenAI-compatible serving, capability systems,
+CRDTs), not OSI-side invention. One habit locked in against the OSI failure
+mode: every seam gets walked against reality (the actual spec documents, real
+code, real memory files on disk), never summaries of summaries. After MSI-1:
+reference implementations, stitched into the first real Mojo system.
+
+**Seam s minted (was the unlettered memory binding).** Runtime ↔ memory
+provider. The router picks providers per run, so a harness must be able to
+talk to whichever provider it's handed; without a uniform surface that's a
+harness×provider compatibility matrix, the exact thing the standard exists to
+prevent — same reasoning that gave models seam e and tools seam f. 19 seams
+now, a–s, in anatomy.md, anatomy.html, and the tracker. First candidate to
+check when walked: collapse into f, providers as just MCP servers exposing
+retrieval tools; if MCP can't carry result provenance (r) and view scoping
+(m's travelling permissions), it's an MSI envelope instead. Deliberately not
+decided in this session: whether writes pass through a provider at all —
+only that wherever they pass, they land in the data's shape (m).
+
+**On the primitive question (do we still define a Docket-like unit, or is
+the primitive just files?):** both, at different layers, and that's already
+the anatomy's position ("plain files, built on a small set of file-like
+primitives the MSI defines"). The bytes are ordinary Unix files, greppable
+and portable — that's the runtime contract and it's non-negotiable. But POSIX
+files don't carry what a remembered fact needs: identity that survives
+rename, history and retraction, provenance, travelling permissions. So the
+MSI's unit is a format-plus-conventions on top of files — the way a git
+object is "just a file" in .git but the real primitive is the commit, or an
+Obsidian note is "just markdown" but the frontmatter is load-bearing. No new
+filesystem, no VFS, no kernel object. Its exact shape and its name are step
+2.6's job (the m walk); "Docket" itself is dead as a public name per
+naming-conventions.md.
+
+**msi-steps.md created** — the procedural tracker, written so a cheaper
+model can run sessions cold: find the first unchecked step, do only it,
+per-step instructions and non-negotiable guardrails (ask Clarke before
+anything architectural, timebox rule, Decided means a stranger could build
+from it). research-plan.md stays the why-and-status; msi-steps.md is the
+what-next. Session rules and AGENTS.md updated to point at it.
+
+**Next session: step 1.1**, the piece pass, starting with Window — prose
+check, seam-side check (a, b, c), gap hunt.
+
+## 2026-07-11 — anatomy critique triaged; research plan re-derived from the anatomy, POSIX-style
+
+Two things in one session: an outside model's critique of anatomy.md got
+triaged, and the research plan got rebuilt around the anatomy's seams.
+
+**The critique mostly confirmed the spine** (piece/data split, router vs
+runtime, kernel as enforcement, providers derive). Its one challenge, that
+"identity" is a weak name for the data box, was half right for the wrong
+reason. Renaming the data is off the table: "identity" is the load-bearing
+thesis noun across vision.md and philosophy.md, and it's philosophically apt
+(what makes X the same X over time is memory continuity, which is exactly the
+claim). The real collision was local: anatomy.md also used "identity" for the
+owner's key-pair/DID login, a completely different thing three lines away in
+the same diagram. Fixed by renaming the owner's side to **credential** in
+anatomy.md and anatomy.html. The data keeps its name.
+
+**Method locked: however POSIX actually works is how the MSI gets made.**
+Concretely: normative content is interfaces only, so a piece's real
+definition is the union of the seam-sides it implements, and anatomy.md's
+prose is informative, not normative; conformance is against profiles (bundles
+of seam-sides), never the whole document; rationale is a separate
+non-normative appendix; and POSIX codified running practice iteratively, so
+draft-as-you-go stands and the assembly pass is a coherence read. First
+version is **MSI-1**, the way POSIX-1 was, iterated openly from there (the
+"Mk1" label in older docs means the same thing).
+
+**research-plan.md rewritten, remapped rather than wiped.** The old file's
+structure was dead (nautical vocabulary, the superseded nine-leg walk) but
+its prior-art capital was earned, so every old row was mapped onto the
+anatomy's lettered seams and carried forward inside the seam rows. The new
+plan is three phases: piece pass (prose + seam-side list + gap hunt per
+piece), seam walk (study-then-decide per seam, drafting msi.md as each
+lands), assembly (§0 profiles from what landed, contradiction check,
+coherence read). Walk order re-proposed dependency-first: adopted seams, then
+a, m, j, i, d+g, then p/q/r, o, c+b, with k+n last. Session rules
+(.claude/rules/msi-research-sessions.md) rewritten to match.
+
+**The remap surfaced two real gaps, which is the method working:**
+
+- **Seam p had no row anywhere in the old plan.** Trust/enforcement covered
+  permissions and Connection covered the wire, but "how does a real secret
+  get injected into exactly one call without entering model context" was
+  never asked. Row created, candidates to gather when walked.
+- **The runtime ↔ memory provider binding has no seam letter.** The map's
+  per-run bindings read "(e) model · (f) tools · memory · (q) sandbox" and
+  memory is the unlettered one; seam m is providers ↔ data, not runtime ↔
+  provider. Either provider APIs get a lettered seam or they're deliberately
+  unstandardized and only the data shape makes providers swappable. Flagged
+  in the new Pieces table, to be resolved during phase 1's memory-provider
+  pass.
+
+**Where this leaves things:** currently on phase 1, the piece pass. The
+lifecycle pass of 2026-07-10 already did most of the prose; what's left is
+the per-piece seam-side check and gap hunt, and the two flags above are its
+first two work items.
+
+## 2026-07-10 — looked at the SAIHM protocol, not adopting
+
+Sidebar, not a session. Clarke asked whether the SAIHM protocol could help
+the identity work. Checked the actual IETF draft rather than the marketing
+site: it's an Independent Submission, single author, six-month expiry, so it
+carries no more weight than a blog post, and it's tightly coupled to a
+specific blockchain project (COTI chain, a governance token, on-chain audit
+anchoring, two of its eight tools are token-vote plumbing). Verdict: not a
+standard, one vendor's proposal, same tier as the other memory-schema
+candidates already sitting in research-plan.md (Portable Agent Memory,
+Engram, W3C AI Agent Memory Interop CG).
+
+Stripped of the chain and token layer, a few mechanisms are real and land on
+open seams: identity as a post-quantum keypair derived from a seed that
+never leaves the holder's machine (a worked instance of the key-pair/DID
+identity anatomy.md already commits to), per-cell encryption keyed off that
+identity, cryptographic erasure by destroying the key rather than queuing a
+delete, and revocable sharing contracts as one answer to the open "N holders
+of one capability" question for Collectives. Not added to the research plan;
+Clarke was just intrigued, not proposing adoption. Worth a look if the
+memory-schema seam gets walked for real.
+
+## 2026-07-10 — lifecycle pass on the anatomy: runs, services, system control; the router leaves the run; memory providers go plural; fleet manager named
+
+Started as "are we happy with the anatomy or do we keep hunting for more
+pieces." The piece list held. What didn't hold was the lifecycle story, and
+pulling on one loose thread (seam g: who watches the triggers when nothing is
+running?) unravelled the whole "runtime pieces assembled per run" box.
+
+**The router was misfiled.** It sat inside the ephemeral run box, but the
+router is what chooses what a run is made of — it can't live inside the thing
+it assembles, and something has to be awake watching the clock when no run is
+live. The router is persistent now, and trigger-watching is its job. That
+closes the seam-g gap without inventing a separate scheduler piece.
+
+**Three lifecycles, not two.** I first framed it as agent-invocation
+(ephemeral) vs overarching system (persistent), but the middle didn't fit
+either bucket. The split that landed:
+
+- **Runs** — ephemeral. One agent runtime working one task. The harness is
+  the only piece born and killed with the run.
+- **Services** — plural. Models, tools, memory providers, sandboxes. Several
+  of each kind can serve one machine at once; what's per-run is the binding,
+  not necessarily the process.
+- **System control** — singular. Router, kernel, credential broker,
+  provenance, fleet manager. Exactly one live instance of each per machine.
+
+**The sorting rule** fell out of arguing the individual cases: if two live
+instances disagreeing about a fact would itself be the security hole (a
+permission, a secret's scope, a trust tag, fleet membership), the piece is
+singular. If several simultaneous readings of the same data are safe, it's
+plural. Provenance was the deciding case: if a run could pick its own trust
+tagger, untrusted content gets laundered through the laxest one. Same shape
+as two brokers disagreeing about a secret. Both moved to system control.
+
+**Memory providers go plural, and seam m was wrong as written.** The doc
+said "concurrent writes reconcile inside one provider." But the whole point
+of the identity being a standard substrate is that several memory systems
+can serve it at the same time — a vector-heavy one beside a grep-style one,
+per-run pick. So there is no "one provider" for writes to reconcile inside.
+Corrected rule: providers derive, they never own. Writes land in the data's
+standard shape and reconcile at the data; anything a provider builds must be
+rebuildable from the data alone. That makes the rebuildability rule
+load-bearing instead of just a nice property.
+
+**Fleet manager is a new piece.** Nothing owned seams k and n; the kernel
+paragraph gestured at "one shared policy" but named no mechanism for
+admission, revocation, sync, or who's-driving handoff. That's a distinct
+concern from enforcement, so it's a distinct piece, same logic that split
+router from kernel. Tailscale is the likely reference-implementation pick
+there (WireGuard-keyed machine identity basically for free), kept out of the
+doc the same way vLLM is just an example under Model. Note for later: the
+piece's posture is MSI-defined, not Adopt — Tailscale isn't an open protocol
+the way MCP is.
+
+Anatomy.md and anatomy.html both rewritten to this structure. Eleven
+conformance profiles now (Fleet Manager joins), still 18 seams. Skills
+clarified as data the runtime reads, not a running piece.
+
+**Where this leaves the plan:** the piece-by-piece pass is real but shallow
+on purpose — right name, one-paragraph scope, lifecycle bucket, nothing
+about internals. This session was that pass, mostly. Depth goes into the
+seams: a piece's true definition is the union of the seam contracts that
+touch it, so the seam-by-seam prior-art walk is where the real work is, and
+re-deriving research-plan.md from the anatomy is still the next move.
+Reference implementations stay later.
+
+## 2026-07-10 — six Jarvis-class codebases read for real pieces we hadn't named: four new pieces, four new seams, personas go plural
+
+Session started as "research the anatomy of the welded-shut monoliths" and
+went through two real corrections before it produced anything trustworthy.
+
+**First correction: the premise was wrong.** Hermes and OpenClaw, the two
+named up front, aren't closed monoliths — both are open-source, self-hosted
+agents, closer to what Mojo is building than to a walled garden. Swapped in
+the actual closed comparators (Alexa+, ChatGPT with memory/connectors, Apple
+Intelligence, Meta AI) for that half of the question. Real finding from that
+pass: every closed vendor welds windows to one vendor's own machine identity
+(nobody lets a third party build a compliant client), and none has anything
+resembling a live task-aware router — model choice is either fixed or a
+static per-user default everywhere.
+
+**Second correction: "monolith" doesn't mean closed, it means welded.**
+Clarke's actual ask was to read the real source of OpenClaw and Hermes and
+inventory what pieces they'd built internally, welded together or not — not
+compare feature surfaces. First pass at that was still too narrow: checking
+source code against a pre-guessed candidate list (five things found from
+OpenClaw/Hermes) instead of doing a ground-up inventory. Caught and corrected
+mid-flight, including sending correction messages to three already-running
+research forks. Ground-up, the method held: read the actual directory trees
+and cite file paths, list everything found, map onto the anatomy after, not
+before.
+
+**Six systems, read for real, not from docs:** OpenClaw, Hermes Agent, Letta
+(MemGPT), Khoj, ElizaOS, GAIA. Same five candidate concerns checked in every
+one, but instructed each time to also report anything wholly new. What came
+back, confidence-ranked by how many independent codebases built it without
+coordinating:
+
+**Four new pieces, each built independently by most or all six systems and
+named nowhere in the old anatomy.** A device-capability surface (camera, GPS,
+contacts, screen control) that every system splits from its conversational
+client — OpenClaw's node-host, Khoj's operator `Environment`, ElizaOS's
+`native/plugins/`, three separate teams landing on the same two-jobs-not-one
+split. Named **Peripheral** in the doc (not Actuator — camera and GPS are
+sensors, not actuators, so that name only covered half the piece; not
+Device — collides with "machine"). A **credential broker**, distinct from the
+kernel: five of six systems build a dedicated subsystem for secret
+storage/scoping/injection, separate code from the permission check itself.
+**Sandbox**, distinct from tool-availability policy: where an action executes
+(container, host, remote service — Khoj even externalizes it to a network
+sandbox) is a different question from which actions are allowed at all, and
+every system keeps them as separately-built concerns. **Provenance**: only
+strongly confirmed in two of six (OpenClaw's `quarantine-health.ts`,
+ElizaOS's whole `evidence/` subsystem) but real and separately engineered
+where it exists, and a genuine specialization axis under Clarke's own
+decomposition philosophy — more pieces, more competition, when the piece is
+real.
+
+**Refinements to existing seams, not new pieces.** Model endpoints are
+modality-typed in practice (Khoj: separate swappable configs for chat,
+embedding, image, speech) — seam e updated so a compliant Model profile
+doesn't assume chat-only. Scheduled runs (seam g) broadens from "clock → a
+run" to any trigger: clock, external event (GAIA's dedicated `triggers/`
+system, separate from its clock scheduler), or idle time. Run contract (seam
+i) gets live interruption/cancellation, missing before (GAIA's
+`interruption.py` — the current framing only covered before/after a run, not
+control during). Data shape (seam m) gets per-unit permissions (Letta's
+`read_only` memory blocks — a global kernel grant isn't the only place
+permission can live) and in-provider conflict reconciliation, motivated
+twice over: GAIA needed it inside one memory engine even without federation,
+and it's the direct consequence of runs now being explicitly concurrent.
+Machine admission (seam n) gets hardware attestation as one admissible
+mechanism (ElizaOS's TEE + revocation list).
+
+**Design decisions made in conversation, not found in any codebase.** Seam
+d's router has zero precedent across all six systems, confirmed six times
+over — and the reason isn't that nobody needed it, it's that nobody else has
+enough hot-swappable pieces for a router to have a job. Mojo is the first
+design in the set that creates the condition seam d exists to serve; kept
+exactly as designed, not softened. Pushed further in discussion: the router
+doesn't just pick a harness and a model, it assembles the *whole* per-run
+piece-set — including which memory provider, which sandbox — and that
+assembly is chosen fresh per run, recursively per sub-run, with runs treated
+as ephemeral, killable, and concurrent by default. Half of this turned out to
+already be implied by "assembled per run" in the original diagram; made
+explicit rather than left to inference. Personas go from an open question to
+decided: an owner can hold as many as they want, each a voice plus a scoped,
+permissioned view over one shared memory — not separate memory stores. This
+wasn't invented in the session; naming-conventions.md already drew the
+identity-is-data / persona-is-built-on-it line, the research just gave the
+mechanism (per-unit permissions) that makes plural personas concrete instead
+of aspirational. And "dream mode" — an idle-triggered memory consolidation
+pass Clarke remembered wanting before this project's reset — was real:
+found in git history (commit `7880305`, the old `jarvis-spec.md`, pre-reset).
+Same idea, confirmed, folded into seam g's idle-trigger case in plain
+language; the colorful name stays out of anatomy.md itself per the naming
+policy, not lost.
+
+**What actually changed on disk:** anatomy.md and anatomy.html both — the
+ASCII map and its HTML rendering gain a Peripherals band and a Sandbox /
+Credential Broker / Provenance row inside the runtime pieces; four new seam
+letters (o, p, q, r) bring the ledger from 14 rows to 18 and conformance
+profiles from six pieces to ten; seams d, e, g, i, m, n reworded for
+granular/recursive routing, modality-typed models, any-trigger runs, live
+interruption, per-unit permissions with in-provider conflict handling, and
+attestation-as-admission; the identity section rewritten for plural personas
+over one memory. No decisions here are final in the sense research-plan.md
+uses the word — this is anatomy work, feeding the plan, not the plan itself.
+
+---
+
 ## 2026-07-10 — the anatomy becomes the first-class document: leg 1 walked, the walk itself overturned, anatomy.md lands, and the public docs get rewritten in plain language
 
 Session started as "begin leg 1 (adopted seams)" and ended somewhere much

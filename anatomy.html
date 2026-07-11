@@ -105,7 +105,6 @@
     font-family:var(--mono); font-size:.62rem; letter-spacing:.12em; text-transform:uppercase;
     color:var(--muted); padding:0 .5rem;
   }
-  .us-grid{display:grid; grid-template-columns:minmax(10rem,14rem) 1fr; gap:.8rem; align-items:stretch}
   .mini{border:1.5px solid var(--line-strong); border-radius:6px; background:var(--panel); padding:.6rem .8rem; position:relative}
   .mini h3{font-size:.85rem; margin:0; font-weight:700}
   .mini p{margin:.15rem 0 0; font-size:.74rem; color:var(--muted)}
@@ -113,11 +112,6 @@
   .harness{border:1.5px solid var(--line-strong); border-radius:6px; background:var(--panel); padding:.8rem .9rem; position:relative}
   .harness h3{font-size:.95rem; margin:0; font-weight:700}
   .harness > p{margin:.2rem 0 .7rem; font-size:.78rem; color:var(--muted)}
-  .faculties{display:grid; grid-template-columns:repeat(auto-fit,minmax(11rem,1fr)); gap:.6rem}
-  .fac{border:1.5px solid var(--adopt); border-radius:5px; padding:.5rem .7rem; background:color-mix(in srgb, var(--adopt) 7%, var(--panel))}
-  .fac h4{font-size:.8rem; margin:0; font-weight:700}
-  .fac p{margin:.1rem 0 0; font-size:.7rem; color:var(--muted)}
-  .fac .eyebrow{margin-bottom:.05rem}
   .loop-open{
     border:1.5px dashed var(--open); border-radius:5px; margin-top:.6rem; padding:.45rem .7rem;
     font-size:.72rem; color:var(--muted);
@@ -159,7 +153,7 @@
   .splitcard.keeps{border-color:var(--design); background:color-mix(in srgb, var(--design) 6%, var(--panel))}
   .splitcard h3{font-size:.9rem; margin:0 0 .3rem; font-weight:700}
   .splitcard p{margin:0; font-size:.8rem; color:var(--muted)}
-  @media (max-width:720px){ .split{grid-template-columns:1fr} .us-grid{grid-template-columns:1fr} .outward{grid-template-columns:1fr} }
+  @media (max-width:720px){ .split{grid-template-columns:1fr} .outward{grid-template-columns:1fr} }
 
   .tablewrap{overflow-x:auto; border:1px solid var(--line); border-radius:6px}
   table{border-collapse:collapse; width:100%; font-size:.8rem; min-width:46rem}
@@ -193,7 +187,7 @@
     <div class="band owner">
       <span class="eyebrow">A human</span>
       <h2>The Owner</h2>
-      <p style="margin-inline:auto">One person. Inside the system they are represented by a verifiable identity, something key-pair or DID-shaped, so any piece can check that &ldquo;the owner said so&rdquo; actually means the owner said so. Every permission in the system bottoms out here.</p>
+      <p style="margin-inline:auto">One person. Inside the system they are represented by a verifiable credential, something key-pair or DID-shaped, so any piece can check that &ldquo;the owner said so&rdquo; actually means the owner said so. Every permission in the system bottoms out here.</p>
     </div>
 
     <div class="seams">
@@ -214,9 +208,21 @@
       </div>
     </div>
 
+    <div class="band" style="margin-top:.6rem">
+      <span class="eyebrow">Swappable piece, profile: Peripheral</span>
+      <h2>Peripherals</h2>
+      <p>Every capability the system senses or acts through on the owner&rsquo;s devices: camera, location, contacts, notifications, screen control. A phone is usually both a window and a peripheral host, but talking through a device and commanding it are two different jobs with two different contracts. A peripheral declares what it offers; every invocation of one is a consequential action and goes through the kernel.</p>
+      <div class="windows">
+        <span class="win">camera</span><span class="win">location</span><span class="win">contacts</span><span class="win">notifications</span><span class="win">screen control</span><span class="win">&hellip;any capability</span>
+      </div>
+    </div>
+
     <div class="seams">
       <div class="seam">
         <div class="chip design"><span class="id">c</span>Client contract: what a window is handed, what it may cache, what it must never hold on its own</div>
+      </div>
+      <div class="seam">
+        <div class="chip design"><span class="id">o</span>Peripheral contract: what a capability declares, how it is invoked, every invocation kernel-checked</div>
       </div>
     </div>
 
@@ -224,49 +230,14 @@
       <span class="frame-label">One of the owner's machines: laptop · desktop · server</span>
 
       <div class="runtime">
-        <span class="region-label">The runtime pieces, assembled per run</span>
-        <div class="us-grid">
-          <div class="mini">
-            <span class="eyebrow">Swappable piece, profile: Router</span>
-            <h3>Router</h3>
-            <p>Given a task, the available pieces, and the owner&rsquo;s constraints and budget, it selects what runs: which agent runtime, which model, on which machine. Routers compete on selection quality. Hard limits are the owner&rsquo;s policy data, which a router obeys. They are never properties of the router itself.</p>
-          </div>
-
-          <div class="harness">
-            <span class="eyebrow">Swappable piece, profile: Harness</span>
-            <h3>Agent runtime</h3>
-            <p>The loop that does the thinking and acting: an existing agent runtime, adopted whole. The MSI defines only how it connects, what it is handed and what it owes back. Its insides are its own business.</p>
-            <div class="faculties">
-              <div class="fac">
-                <span class="eyebrow">Swappable, profile: Model endpoint</span>
-                <h4>Model</h4>
-                <p>A local or self-hosted model server such as vLLM, Ollama, or llama.cpp. Any endpoint speaking the standard wire shape is interchangeable.</p>
-              </div>
-              <div class="fac">
-                <span class="eyebrow">Consumed format</span>
-                <h4>Tools</h4>
-                <p>MCP servers. What a tool may actually touch is decided by the kernel below, not by the tool protocol.</p>
-              </div>
-              <div class="fac">
-                <span class="eyebrow">Consumed format</span>
-                <h4>Skills</h4>
-                <p>SKILL.md directories: learned procedures. They live in the data layer and travel with it.</p>
-              </div>
-            </div>
-            <div class="loop-open">The runtime&rsquo;s internals (how it plans, manages context, retries) are deliberately not standardized. Runtimes compete there; the MSI only pins the connections.</div>
-          </div>
+        <span class="region-label">Runs: ephemeral. One agent runtime working one task, killable, several live at once</span>
+        <div class="harness">
+          <span class="eyebrow">Swappable piece, profile: Harness</span>
+          <h3>Agent runtime</h3>
+          <p>The loop that does the thinking and acting: an existing agent runtime, adopted whole. The one piece that is born and dies with the run itself. The MSI defines only how it connects, what it is handed and what it owes back. Its insides are its own business.</p>
+          <div class="loop-open">The runtime&rsquo;s internals (how it plans, manages context, retries) are deliberately not standardized. Runtimes compete there; the MSI only pins the connections. It reads Skills (SKILL.md) straight from the identity the same way it reads any other data, not as a per-run binding like the services below &mdash; skills aren&rsquo;t chosen per run, they&rsquo;re just there.</div>
         </div>
-
         <div class="seams" style="padding-top:.9rem">
-          <div class="seam">
-            <div class="chip design"><span class="id">d</span>Routing contract: task + roster + constraints in, selection out</div>
-          </div>
-          <div class="seam">
-            <div class="chip adopt"><span class="id">e</span>Model wire contract: the OpenAI-compatible baseline all local servers already speak, plus declared optional capabilities</div>
-          </div>
-          <div class="seam">
-            <div class="chip adopt"><span class="id">f</span>Tool protocol: MCP</div>
-          </div>
           <div class="seam">
             <div class="chip adopt"><span class="id">h</span>Skill format: SKILL.md</div>
           </div>
@@ -275,35 +246,109 @@
 
       <div class="seams">
         <div class="seam">
-          <div class="chip design"><span class="id">i</span>Run contract: what a runtime is handed (identity fragment, capabilities, task) and what it owes back (its learnings, written into the data&rsquo;s shape)</div>
+          <div class="chip adopt"><span class="id">e</span>Model wire contract: the OpenAI-compatible baseline all local servers already speak, plus declared optional capabilities</div>
         </div>
         <div class="seam">
-          <div class="chip design"><span class="id">g</span>Scheduled runs: how a standing instruction fires on time, even when nothing else is running</div>
+          <div class="chip adopt"><span class="id">f</span>Tool protocol: MCP</div>
+        </div>
+        <div class="seam">
+          <div class="chip design"><span class="id">s</span>Memory access: what a run asks of a provider and what every compliant provider must accept and return</div>
+        </div>
+        <div class="seam">
+          <div class="chip design"><span class="id">q</span>Sandbox contract: where an allowed action executes and what it can see while running</div>
         </div>
       </div>
+
+      <div class="runtime">
+        <span class="region-label">Services: plural. Several of each kind can serve one machine at once; which ones a run uses is the router&rsquo;s pick</span>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(13rem,1fr)); gap:.8rem">
+          <div class="mini">
+            <span class="eyebrow">Swappable piece, profile: Model endpoint</span>
+            <h3>Models</h3>
+            <p>Local or self-hosted model servers such as vLLM, Ollama, or llama.cpp. Any endpoint speaking the standard wire shape is interchangeable. Endpoints are modality-typed (chat, embedding, image, speech), separately swappable, and a runtime may use different endpoints for different steps of the same run.</p>
+          </div>
+          <div class="mini">
+            <span class="eyebrow">Consumed format</span>
+            <h3>Tools</h3>
+            <p>MCP servers. What a tool may actually touch is decided by the kernel, not by the tool protocol.</p>
+          </div>
+          <div class="mini">
+            <span class="eyebrow">Swappable piece, profile: Memory Provider</span>
+            <h3>Memory providers</h3>
+            <p>The software that serves the data: retrieval, indexing, search, the views a runtime works from. Because the data stays in the standard shape, several providers can serve the same identity at once, a vector-heavy one beside a grep-style one, and a run is pointed at whichever suits its task. Providers derive, they never own: anything built from the data must be rebuildable from the data alone. The relationship is Obsidian and your vault. Delete the app, keep everything. What a run asks of a provider and what it gets back is its own seam (s); whatever path a write takes, it lands in the data&rsquo;s shape, which is m&rsquo;s business.</p>
+          </div>
+          <div class="mini">
+            <span class="eyebrow">Swappable piece, profile: Sandbox</span>
+            <h3>Sandboxes</h3>
+            <p>Where a permitted action actually executes: a container, an isolated process, another of the owner&rsquo;s machines, a remote service. Placement, not permission. Which actions are allowed at all is the kernel&rsquo;s decision; where an allowed action runs, and what it can see while running, is the sandbox&rsquo;s.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="runtime" style="margin-top:.8rem">
+        <span class="region-label">System control: singular. Exactly one live instance of each per machine, swapped by the owner, never per run</span>
+        <div class="mini">
+          <span class="eyebrow">Swappable piece, profile: Router</span>
+          <h3>Router</h3>
+          <p>Always on. When nothing is running, the router is what watches the triggers: the clock, outside events, idle time. When one fires, or the owner asks for something, it assembles the run: which agent runtime, which model, which memory provider, which sandbox, on which machine, within the owner&rsquo;s constraints and budget. Every binding is chosen per run, and sub-runs get their own selection, recursively. Routers compete on selection quality. Hard limits are the owner&rsquo;s policy data, which a router obeys. They are never properties of the router itself.</p>
+        </div>
+
+        <div class="seams">
+          <div class="seam">
+            <div class="chip design"><span class="id">d</span>Routing contract: task + roster + constraints in, selection out</div>
+          </div>
+          <div class="seam">
+            <div class="chip design"><span class="id">g</span>Triggered runs: how a run fires from the clock, an outside event, or idle time; downtime memory maintenance is just a run; triggers themselves are data</div>
+          </div>
+        </div>
 
       <div class="band kernel">
         <span class="eyebrow">Swappable piece, profile: Kernel</span>
         <h2>Kernel</h2>
         <span class="tag">enforcement</span>
-        <p>The enforcement layer. Every consequential action (reading the data, writing it back, touching a tool that reaches the outside world) passes through here and is checked against what the owner allowed. It grants, narrows, and revokes permissions, and records what happened. Each machine runs its own kernel instance so enforcement keeps working offline, but all of an owner&rsquo;s machines answer to one shared policy. Like every other piece, the kernel is swappable: the MSI pins the contract precisely so that better kernels can replace any given one.</p>
+        <p>The enforcement layer. Every consequential action (reading the data, writing it back, touching a tool or a peripheral that reaches the outside world) passes through here and is checked against what the owner allowed. It grants, narrows, and revokes permissions, and records what happened. Each machine runs its own kernel instance so enforcement keeps working offline, but all of an owner&rsquo;s machines answer to one shared policy. Like every other piece, the kernel is swappable: the MSI pins the contract precisely so that better kernels can replace any given one.</p>
       </div>
 
       <div class="seams">
+        <div class="seam">
+          <div class="chip design"><span class="id">i</span>Run contract: what a runtime is handed (identity fragment, capabilities, task), what it owes back (its learnings, written into the data&rsquo;s shape), and how a live run is interrupted or killed</div>
+        </div>
         <div class="seam">
           <div class="chip design"><span class="id">j</span>Enforcement contract: the permission model, granting, narrowing, revoking, auditing</div>
         </div>
       </div>
 
-      <div class="band">
-        <span class="eyebrow">Swappable piece, profile: Memory Provider</span>
-        <h2>Memory provider</h2>
-        <p>The software that serves the data: retrieval, indexing, search, the views a runtime works from. Providers compete, and a better one can be swapped in at any time, because of one strict rule: the data itself stays in the standard shape, and anything a provider derives from it (indexes, embeddings) must be rebuildable from the data alone. The relationship is Obsidian and your vault. Delete the app, keep everything. And because the data is the one irreplaceable thing, it keeps its own history: a bad write must be recoverable by rolling the data back, whatever sits above or below.</p>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(13rem,1fr)); gap:.8rem">
+        <div class="mini">
+          <span class="eyebrow">Swappable piece, profile: Credential Broker</span>
+          <h3>Credential broker</h3>
+          <p>Custody of the owner&rsquo;s secrets: API keys, tokens, passwords. It stores them, scopes them, and injects them into the specific call that needs them, so a real secret never sits in a model&rsquo;s context or a runtime&rsquo;s hands. The kernel decides whether an action is allowed; the broker makes sure the secret reaches only that action. Custody is exactly the kind of fact two live instances must never disagree about.</p>
+        </div>
+        <div class="mini">
+          <span class="eyebrow">Swappable piece, profile: Provenance</span>
+          <h3>Provenance</h3>
+          <p>Trust-tags content before it reaches a run: where it came from, whether the owner wrote it, whether it arrived from the open web. A runtime and a kernel can then treat a stranger&rsquo;s words differently from the owner&rsquo;s. One live instance per machine: if a run could pick its own tagger, untrusted content could be laundered through the laxest one.</p>
+        </div>
+        <div class="mini">
+          <span class="eyebrow">Swappable piece, profile: Fleet Manager</span>
+          <h3>Fleet manager</h3>
+          <p>Keeps the owner&rsquo;s machines one system. It admits a new machine into the set, revokes one no longer trusted, and coordinates the machines so one identity stays coherent across all of them: sync, conflict, partition, who&rsquo;s driving a live task. The kernel enforces on one machine; the fleet manager makes N machines answer as one assistant.</p>
+        </div>
       </div>
 
       <div class="seams">
         <div class="seam">
-          <div class="chip design"><span class="id">m</span>Data shape: providers read and write the standard shape, never a private one</div>
+          <div class="chip design"><span class="id">p</span>Secret custody: secrets stored, scoped, and injected into exactly the call that needs them, never into model context</div>
+        </div>
+        <div class="seam">
+          <div class="chip design"><span class="id">r</span>Content trust: how external content is trust-tagged before it reaches the model</div>
+        </div>
+      </div>
+      </div>
+
+      <div class="seams">
+        <div class="seam">
+          <div class="chip design"><span class="id">m</span>Data shape: several providers can serve the same data at once; providers derive, never own. Writes land in the data&rsquo;s standard shape and reconcile there</div>
         </div>
       </div>
 
@@ -311,7 +356,7 @@
         <span class="eyebrow">Not a piece: the data. The only thing never swapped</span>
         <h2>The identity</h2>
         <span class="tag">portable · yours</span>
-        <p>Everything that makes the assistant <em>this</em> assistant: its memory of you, its persona and voice, the owner&rsquo;s policies and budgets, a record of who wrote what under what authority. Permissions travel with the data itself. Stored as plain files. It can be packaged up and dropped into an entirely different assembly of pieces and it is still the same assistant. This is what makes any Mojo system <em>yours</em>.</p>
+        <p>Everything that makes the assistant <em>this</em> assistant: its memory of you, its personas, its skills (SKILL.md, learned procedures a runtime reads straight off the data), the owner&rsquo;s policies and budgets, a record of who wrote what under what authority. The memory is one; the personas on top of it can be many &mdash; each a voice plus a scoped view over the same memory, cut by per-unit permissions the data itself carries, so a work persona and a casual persona are two characters reading from one brain, not two brains. Permissions travel with the data itself. Stored as plain files. It can be packaged up and dropped into an entirely different assembly of pieces and it is still the same assistant. This is what makes any Mojo system <em>yours</em>.</p>
         <div class="prims">Built on a small set of file-like primitives the MSI defines: the equivalent of files and directories in an OS.</div>
       </div>
 
@@ -359,7 +404,7 @@
 
   <section>
     <h2>Seam ledger</h2>
-    <p>Every arrow in the diagram and what the MSI must pin down for it. Six pieces get conformance profiles (Client, Router, Harness, Model endpoint, Kernel, Memory Provider), meaning an implementation is compliant against its profile, never against the whole document. The identity is data, not a piece: nothing to conform, only a shape to keep.</p>
+    <p>Every arrow in the diagram and what the MSI must pin down for it. Eleven pieces get conformance profiles (Client, Peripheral, Router, Harness, Model endpoint, Sandbox, Credential Broker, Provenance, Kernel, Memory Provider, Fleet Manager), meaning an implementation is compliant against its profile, never against the whole document. The identity is data, not a piece: nothing to conform, only a shape to keep.</p>
     <div class="tablewrap">
       <table>
         <thead>
@@ -369,17 +414,22 @@
           <tr><td class="id">a</td><td>Owner &#8596; any window</td><td>How the human is verified as the owner. The login of the system</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
           <tr><td class="id">b</td><td>System &rarr; owner</td><td>That a compliant window can receive an unsolicited delivery; urgency policy is the owner&rsquo;s data</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
           <tr><td class="id">c</td><td>Window &#8596; system</td><td>What a window is handed, may cache, must never hold authoritatively</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
-          <tr><td class="id">d</td><td>Task &rarr; selection</td><td>Inputs (task, roster, constraints, budget) and output (a selection); selection quality is competitive</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
-          <tr><td class="id">e</td><td>Runtime &#8596; model server</td><td>The OpenAI-compatible baseline, plus how optional capabilities (structured output, reasoning traces) are declared rather than assumed</td><td><span class="treat"><span class="dot adopt"></span>Adopt + envelope</span></td></tr>
+          <tr><td class="id">d</td><td>Task &rarr; a run&rsquo;s assembly</td><td>Inputs (task, roster, constraints, budget) and output (a full piece-set for a run, chosen again for every sub-run); selection quality is competitive</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
+          <tr><td class="id">e</td><td>Runtime &#8596; model server</td><td>The OpenAI-compatible baseline, plus how optional capabilities (structured output, reasoning traces) are declared rather than assumed; endpoints are modality-typed (chat, embedding, image, speech), never assumed chat-only</td><td><span class="treat"><span class="dot adopt"></span>Adopt + envelope</span></td></tr>
           <tr><td class="id">f</td><td>Runtime &#8596; tools</td><td>MCP, pinned version; enforcement stays with the kernel, not the protocol</td><td><span class="treat"><span class="dot adopt"></span>Adopt</span></td></tr>
-          <tr><td class="id">g</td><td>Clock &rarr; a run</td><td>How a standing instruction fires with nothing else running; the schedule itself is data</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
+          <tr><td class="id">g</td><td>A trigger &rarr; a run</td><td>How a run fires with nothing else running: the always-on router watches the clock, outside events, and idle time (downtime maintenance, like consolidating and pruning memory, is just a run); triggers themselves are data</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
           <tr><td class="id">h</td><td>Skills &rarr; runtime</td><td>SKILL.md as the on-disk shape; skills live in the identity and travel with it</td><td><span class="treat"><span class="dot adopt"></span>Adopt</span></td></tr>
-          <tr><td class="id">i</td><td>Kernel &rarr; runtime</td><td>What a run is handed (identity fragment, permissions, task) and owes back (learnings, in the data&rsquo;s shape)</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
+          <tr><td class="id">i</td><td>Kernel &rarr; runtime</td><td>What a run is handed (identity fragment, permissions, task), what it owes back (learnings, in the data&rsquo;s shape), and how a live run is interrupted or killed</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
           <tr><td class="id">j</td><td>Kernel &#8596; everything consequential</td><td>The permission model: granting, narrowing, revoking, auditing, and how it works offline</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
-          <tr><td class="id">k</td><td>Machine &#8596; machine</td><td>One identity across N machines: ordering, conflict, partition, and live-task handoff (who&rsquo;s driving)</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
+          <tr><td class="id">k</td><td>Machine &#8596; machine</td><td>One identity across N machines: ordering, conflict, partition, and live-task handoff (who&rsquo;s driving); the fleet manager&rsquo;s seam</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
           <tr><td class="id">l</td><td>System &#8596; outside agents</td><td>A2A, pinned version; talking to strangers, no trust extended</td><td><span class="treat"><span class="dot adopt"></span>Adopt</span></td></tr>
-          <tr><td class="id">m</td><td>Provider &#8596; the data</td><td>The standard data shape; everything derived must be rebuildable from the data alone; how the data keeps history so a bad write can be rolled back</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
-          <tr><td class="id">n</td><td>New machine &rarr; owner&rsquo;s set</td><td>How a machine is admitted and how its trust is later revoked</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
+          <tr><td class="id">m</td><td>Providers &#8596; the data</td><td>The standard data shape; everything derived must be rebuildable from the data alone; how the data keeps history so a bad write can be rolled back; per-unit permissions travel in the data (they are what cuts a persona&rsquo;s view); several providers can serve the same data at once, so concurrent writes reconcile at the data, never inside one provider</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
+          <tr><td class="id">n</td><td>New machine &rarr; owner&rsquo;s set</td><td>How a machine is admitted (hardware attestation is one admissible mechanism) and how its trust is later revoked; the fleet manager&rsquo;s seam</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
+          <tr><td class="id">o</td><td>Runtime &#8596; peripherals</td><td>What a peripheral declares it offers, how it is invoked, and that every invocation is kernel-checked</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
+          <tr><td class="id">p</td><td>Broker &#8596; anything needing a secret</td><td>How secrets are stored, scoped, and injected into exactly the call that needs them, without entering model context; custody, not permission</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
+          <tr><td class="id">q</td><td>Kernel &rarr; sandbox</td><td>Where an allowed action executes and what it can see while running; placement is swappable (local container, host, another machine, remote service)</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
+          <tr><td class="id">r</td><td>External content &rarr; a run</td><td>How content is trust-tagged before it reaches the model: source, authorship, what vouches for it</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
+          <tr><td class="id">s</td><td>Runtime &#8596; memory provider</td><td>What a run asks of a provider (query in, sourced results out) and what every compliant provider must accept and return, so a harness can talk to whichever provider it is handed; whatever path a write takes, it lands in the data&rsquo;s shape, which is m&rsquo;s business</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
         </tbody>
       </table>
     </div>
