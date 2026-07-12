@@ -11,7 +11,7 @@ superseded; it lives in git history if the reasoning is ever needed.*
 
 Anything a stranger is meant to read and build against uses plain functional
 English: the anatomy, the future msi.md, vision, README, and the seam and piece
-names themselves. Owner, window, router, agent runtime, model endpoint, kernel,
+names themselves. Owner, client, router, harness, model endpoint, kernel,
 memory provider, the identity, federation, machine admission.
 
 The precedent is POSIX itself: process, file, pipe, signal. No real standard

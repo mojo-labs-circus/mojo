@@ -70,8 +70,8 @@ Working rules for this phase:
 ## Next: the first Mojo system
 
 Assemble the system against the Mojo System Interface once it covers every
-seam. Stitched from existing parts wherever a compliant one exists (an agent
-runtime someone else built, models someone else trained, MCP tools, SKILL.md
+seam. Stitched from existing parts wherever a compliant one exists (a harness
+someone else built, models someone else trained, MCP tools, SKILL.md
 skills), built only where nothing does (the kernel, the memory layer).
 
 The milestone ends public, not private (decided 2026-07-10): the MSI-1 draft

@@ -6,6 +6,572 @@ where the reasoning trail lives.*
 
 ---
 
+## 2026-07-12 (later) — Tools (1.5) covered: instance = one MCP server, a run gets a roster not a pick; piece names collapsed onto profile names (Window→Client, Agent runtime→Harness, Model→Model endpoint); the whole swappable/profile tag scheme simplified; Client confirmed to run on unowned hardware, caching flagged as maybe-not-at-all
+
+Started as step 1.5 (Tools) and detoured into two real structural findings
+before landing back on Tools itself. Both detours were legitimate piece-pass
+work, not scope creep: they surfaced while actually reading the doc closely
+for the Tools pass and changed content Tools' own prose depends on.
+
+**Cardinality audit: three lifecycles were never four.** Walked every piece's
+instance count (one vs. many, per-machine vs. fleet-wide) against the intro's
+existing Runs/Services/System-control split and found Client had no bucket at
+all — not per-run like a service, not singular-per-machine like system
+control, just never named. The diagram already drew this right (the WINDOWS
+box sat outside the "one of the owner's machines" box from the start); the
+prose never caught up. Fixed: the split is four lifecycles now, a new
+**Reach** bucket for clients (many, owner-scoped, not bound to any one
+machine). Separately, Fleet manager was the only system-control piece
+without its own explicit "one live instance per machine, because X"
+sentence, even though its whole job is cross-machine coordination — the
+worst piece to leave that implicit. Added the sentence (same
+disagreement-must-not-happen reasoning as Kernel/Broker/Provenance, plus the
+offline-resilience angle: each machine needs its own instance for the fleet
+to stay coherent when one machine drops). Also caught a plain miss while in
+there: Router's prose listed what it assembles per run (harness, model,
+memory provider, sandbox) and left out tools, even though the diagram's own
+binding line already included it. Fixed.
+
+**The swappable/profile tag scheme was carrying dead weight.** Clarke asked
+what `[swappable: X]` in the diagram was actually doing. Answer: "swappable"
+is the system-wide invariant, already stated once at the top of the document
+("every piece is a replaceable implementation") — repeating it on every box
+and every piece's parenthetical violates the document's own rule about
+stating cross-cutting facts once. Dropped it everywhere. That left `profile:
+X`, which turned out to be carrying a second question: why do piece names
+and profile names differ at all? Dug through the devlog rather than
+guessing: profile names (Client, Harness, Router, Kernel, Sandbox...) were
+coined 2026-07-09, in the "borrow POSIX verbatim or don't name it at all"
+naming pass, before anatomy.md existed. Piece names (Window, Agent runtime)
+were coined 2026-07-10, when anatomy.md itself got written and the project
+moved onto plain names — and most pieces landed on the same word both times
+by coincidence (Router/Router, Kernel/Kernel...). Window/Client and Agent
+runtime/Harness didn't, purely because nobody went back and reconciled them.
+naming-conventions.md's own illustrative list already said "window" and
+"agent runtime," confirming the divergence was never a decision, just debt.
+
+Clarke's call, explicit: collapse to the industry-standard word every time —
+"stick to all the words that are actually used in the industry... that's
+what makes this a standard built on what exists and also more easy to
+adopt." Harness and Client win (both real terms of art; "harness" was
+already winning in practice, used all over research-plan.md's own prose).
+**Renamed piece-wide: Window → Client, Agent runtime → Harness**, swept
+through anatomy.md (prose, diagram, seam table), research-plan.md (Pieces
+table, seam table, dated findings' own session-name labels), msi-steps.md,
+naming-conventions.md's canonical list, vision.md, interoperability.md,
+README.md, and roadmap.md. Left two things alone on purpose: vision.md's and
+anatomy.md's own poetic "a window into the same one identity" lines, which
+use "window" as an ordinary English metaphor, not the piece name; and any
+direct quotation of another project's own proper-noun component (OpenClaw's
+"Agent Runtime" is their name for their thing, not ours).
+
+**Model/Model endpoint checked against the same question, then closed the
+same way.** Same 2026-07-09 origin as Client/Harness, so on the surface it
+looked like the same bug. It isn't quite: "Model" is genuinely ambiguous
+between the weights (not Mojo's concern) and the serving interface (the
+actual conformance surface — a compliant piece is judged by its wire API,
+not which weights sit behind it), and the piece's own prose already does
+that disambiguating work ("wherever inference actually runs... any endpoint
+speaking the standard wire shape is interchangeable"). Window/Client and
+Agent runtime/Harness never had that job, they were pure duplicate
+phrasings. Raised whether to close this last gap anyway, matching the same
+"stick to industry words" principle (model endpoint is itself real
+vocabulary — SageMaker, Azure ML, vLLM/Ollama docs all use it), and gave
+Clarke an actual recommendation rather than leaving it open: take the rename
+anyway, because leaving Model as the sole exception means the naming rule
+needs an asterisk ("piece name = profile name, except Model, because
+disambiguation") instead of holding with no exceptions at all — the cost is
+a marginally heavier word in a few high-frequency spots (Router's assembly
+list, seam e), the benefit is one rule instead of a rule-plus-footnote.
+Clarke: "yeh do it." **Renamed piece-wide: Model → Model endpoint**, same
+sweep as Client/Harness (anatomy.md prose, diagram, seam table;
+research-plan.md's Pieces table, seam e's row, every dated finding's own
+piece-pass label; msi-steps.md). This closes the tag question completely:
+every piece's parenthetical is now just its bucket word (`reach`, `the run`,
+`service`, `system control`), the `profile: X` tag is gone from every piece
+paragraph with no exceptions, and the diagram's four `[profile: X]` bracket
+lines were deleted outright rather than just de-"swappable"-d, since every
+box title now matches its profile name (case/pluralization only) and the
+canonical piece↔profile mapping already lives once, in "## The seams"' own
+sentence. Tools keeps its own special case, below (no profile at all, not a
+name mismatch).
+
+**Tools (1.5), the actual step, landed once the above was settled.** Real
+prior art checked: Claude Desktop's own `mcpServers` config, which runs
+several independent MCP servers side by side (brave-search, filesystem,
+puppeteer, sequential-thinking) — real, shipped confirmation that a Tools
+instance is one MCP server, exactly parallel to a Model endpoint being one
+instance, and that several can serve one machine at once the same way the
+intro already claims generically for services. The real finding, surfaced by
+Clarke asking directly how a harness actually gets linked to "the multiple
+services that have the tools": unlike a Model endpoint, a run isn't pointed at *one*
+Tools instance. A harness legitimately needs several tool capabilities live
+in one run at once (search and filesystem and calendar together), so seam
+f's binding is a roster — a subset of the machine's available servers
+assembled per run — not a single pick. Model endpoint's own version of "maybe it's
+actually a set, not a singleton" question is still open at d (whether a run
+can get handed more than one same-modality endpoint); Clarke: "eventually a
+roster will probably be right [for models too], each with their own
+capabilities and permissions, but leave that for later." Nothing written for
+models this session, flagged as already-open at d.
+
+Tag simplified to `(service; no profile)`: "consumed format: MCP" was
+smuggling two facts into one tag (no MSI profile, and MCP as the adopted
+protocol) when only the first is actually piece-specific — MCP-the-protocol
+is already stated in seam f's own row and in Tools' very next sentence, and
+no other adopted-standard piece gets a tag naming its standard. Prose
+rewritten to state the roster point plainly; the retired-Peripheral ground
+(hardware and software tools are the same MCP shape) re-confirmed against
+the same evidence, not reopened — Clarke's "whether physical peripherals
+fit" question resolved by the instance-granularity answer itself, a camera
+is just another MCP server in the same roster as everything else, no special
+case needed. research-plan.md: seam f's row gets the roster finding plus an
+open question for the real walk (how the router assembles the roster, how
+f's contract exposes it); Tools' Pieces-table row flipped to Covered.
+
+**Housekeeping:** msi-steps.md 1.5 ticked (relabeled "Tools (no profile)");
+research-plan.md's "Currently on" line updated, next unchecked step is 1.6,
+Memory provider.
+
+**Client confirmed to work on unowned hardware, a real gap in its prose
+found in the process.** Clarke's question: can a client run on a friend's or
+work machine, e.g. a work laptop connecting back to the home system on a
+scoped "work" persona? Mechanically yes, and it's a clean validation of why
+personas exist at all (authenticate as owner via seam a from anywhere, get
+served whichever persona's scoped view applies, no new mechanism needed).
+But Client's prose only covered two cases, "one of the owner's machines" or
+"a thin device that runs nothing else," and a borrowed work laptop is
+neither. Fixed: the piece now states the actual defining trait plainly, a
+client can run on any reachable device, ownership doesn't matter, since it
+holds nothing authoritative locally to begin with. Surfaced a real open
+question this creates for seam c: what a client may cache locally matters a
+lot more on hardware the owner doesn't control. Clarke's lean, not decided:
+caching might not be worth allowing at all, not just scoping it down.
+Flagged on seam c's row for its real walk (2.16), alongside the
+already-open two-clients-one-run question.
+
+Also reconfirmed in passing: peripherals-as-tools still holds (unchanged),
+and Model endpoint's own "maybe it's actually a roster too" question is
+still open at d, not lost, not resolved this session.
+
+## 2026-07-12 — Model (1.4) covered: vLLM/llama.cpp vs. Ollama's real architectural split resolved by the wire shape itself, vendor APIs confirmed in scope as mercenary-tier instances, mid-run same-modality model swapping flagged open for d
+
+Checked vLLM, Ollama, and llama.cpp's current server docs against the Model
+piece's existing claims before touching prose, per the phase 1 discipline.
+Modality-typed endpoints held up (llama.cpp's own server lists chat,
+embeddings, etc. as distinct paths, matching OpenAI's real shape). Found one
+real thing not yet in the tracker: vLLM and llama.cpp each run one model per
+server instance (confirmed on vLLM's own docs — "each vLLM instance only
+supports one task" — and its forums, where multi-model means separate
+processes on separate ports behind an external proxy); Ollama is the
+opposite, one server multiplexing many models, loaded or swapped per request
+via the `model` field and kept resident by `keep_alive`. Resolved without
+inventing anything: `model` is already a per-request field in the wire shape
+regardless of which architecture sits behind the endpoint, and `/v1/models`
+(real, standard, implemented by all three) already answers "what's back
+there." Landed as a finding on seam e's row, not a piece-prose change.
+
+Real scope question surfaced and put to Clarke directly, since it touches
+the piece's boundary: does the Model piece include vendor-hosted frontier
+APIs (Claude, GPT) as an ordinary, capability-narrowed instance, or are they
+handled by some separate mechanism not yet named anywhere? Argued for
+inclusion on three grounds — yesterday's Agent runtime precedent (mercenary-
+tier harnesses stay invisible to their own piece prose, the trust tier lives
+entirely in d and j), step 2.1's own plan to read the Anthropic Messages API
+alongside the OpenAI-compatible surface (only sensible if vendor endpoints
+are in scope), and vision.md's own existing language for frontier models as
+"hired help... handed the minimum fragment of context... never given access
+to the system itself" (vision.md:154-160), which already describes exactly
+this mechanism. Clarke confirmed: vendor APIs included, same
+invisible-to-the-piece pattern as the harness case — the standard doesn't
+get to decide models for people, self-hosted and sovereign by design, never
+forced, and proper scoping lets mercenary-tier vendor access work safely
+alongside it. Model prose rewritten accordingly (anatomy.md): dropped "local
+or self-hosted," which read as excluding vendor APIs outright, in favor of
+"wherever inference actually runs," self-hosted hardware the owner controls
+or a vendor's hosted API, with no trust-tier language in the piece prose
+itself, matching how Agent runtime's prose stayed silent on mercenary tier.
+
+Also confirmed, not a design change: pointing a self-hosted server at
+better/rented hardware, and a runtime on one machine calling a model server
+on a different one, both already hold. Model is a separate piece connected
+over seam e's wire, never assumed co-located with the runtime; the router
+already picks "which model... on which machine" per run (anatomy.md), and
+vision.md's owned/rented ladder already covers a rented machine as
+"genuinely one of your machines for the length of the rental." Nothing to
+add for either.
+
+One real gap did surface from Clarke's own follow-up, left open rather than
+resolved on the spot: the existing "a runtime may use different endpoints
+for different steps of the same run" only clearly covers cross-modality
+switching (chat vs. embedding vs. image vs. speech). Whether a run can also
+swap between two models of the *same* modality mid-run (cheap model for
+routine steps, stronger one for a hard step) is a live, unanswered question
+about whether router assembly is one-shot per run or can hand a run a
+candidate set to choose among per step. Flagged into seam d's row for its
+real walk; either answer makes it a harder router+kernel job (assembly
+grants the set, enforcement checks each call against it) but not a new
+mechanism class, the same shape as the sub-run-gets-its-own-selection
+recursion d's row already carries.
+
+## 2026-07-13 — Agent runtime (1.3) covered: subprocess lean, write-back corrected off a false "at the end" framing, mercenary-tier harnesses land as a router+kernel decision, capability-declaration gap resolved against OpenClaw's real `supports()` predicate
+
+Opened with real prior art before touching prose, per the phase 1 discipline.
+Checked OpenAI's Agents SDK (`Runner.run()` vs. the raw Responses API is a
+real, already-shipped version of the exact runtime/wire-format split
+anatomy.md draws, their own docs name the seam explicitly), Claude Agent SDK
+("the same tools, agent loop, and context management that power Claude
+Code," bundled as one adopted-whole unit, matching the piece's framing almost
+word for word), and CrewAI/smolagents/LangGraph as three genuinely different
+internal shapes for the same job, real evidence that runtime internals are
+actually competitive, not quietly converged. Two real gaps surfaced: every
+precedent checked invokes its runtime as an in-process library call, never a
+subprocess or network service, and nothing in the tracker picked a side; and
+no SDK has a capability-declaration format a third party could consume.
+
+Clarke's calls on both, argued not assumed:
+
+**Subprocess.** His lean: a run should be its own OS-level process, on
+purpose, against the grain of what the vendor SDKs actually do. Ties to real
+precedent already sitting in the tracker (exec/argv/env, Erlang/OTP's cheap
+isolated processes) and to anatomy.md's own existing "ephemeral... killable"
+claim, not invented on the spot. Flagged for the future walk: a process
+boundary buys killability and crash isolation, not the security boundary,
+that's still j's job regardless of how i lands.
+
+**Context management isn't one thing, and my first framing of it was
+wrong.** Asked whether context management could be split out as a separate
+concern. Real answer: part of it already is. What crosses a run boundary
+(recent history, standing summaries, what a run needs to feel continuous) is
+already i/m/s's business, the Window piece pass found this on 2026-07-11.
+What's genuinely harness-internal is the live, in-run token-budget
+management, and standardizing that would gut the exact competition the piece
+exists to enable. Tightened anatomy.md's Agent runtime prose to say this
+precisely instead of a blanket "manages context."
+
+**Write-back: corrected off a wrong assumption, twice in the same edit.** My
+first draft of the tightened prose said the MSI defines what a harness owes
+back "at the end," implying a private staged copy reconciled at run-end.
+Clarke caught this immediately, wrong and unnecessary at once: a harness
+holds no private filesystem, it reads and writes against the shared data
+directly throughout a run, the same way every consumer does, and a
+private-copy-merged-at-the-end model would just reintroduce the exact
+concurrent-write-reconciliation problem m's design (concurrent writes
+reconcile at the data, never inside one provider) already exists to prevent.
+Resolves seam i's standing incremental-vs-session-end open question:
+incremental. Also a lesson in the piece-prose discipline itself: the wrong
+framing was smuggling a seam-i timing mechanism into piece-defining prose
+that never needed to assert it either way. Fixing the wrong claim and fixing
+the over-explaining turned out to be the same edit.
+
+**Mercenary-tier harnesses land as a router+kernel decision, invisible to
+every other piece.** Clarke connected this to older ground: the
+owned/rented/mercenary trust ladder from the pre-2026-07-08 naming era
+(Keel/Billet-era devlog, machine trust specifically) generalizes cleanly to a
+second, independent axis, harness trust, alongside the existing mercenary-vs-
+chartered distinction at seam e for models. His call: to every piece
+downstream, a mercenary-tier harness is an ordinary runtime, only d (which
+candidate gets picked, and why) and j (what capability set it's actually
+granted) know the difference, and router+kernel jointly own enforcement
+across every trust axis, scoped to the degree the owner's policy wants.
+Neither seam needed a new mechanism, d's existing selection-transparency
+flag and j's capability-narrowing model already covered it, this just names
+a real case of what they already do. Personas confirmed as the
+identity/memory side of it: a mercenary-tier harness gets a persona built for
+exactly that purpose rather than real access. Found the concrete prior sketch
+already sitting in ideas.md (decoy cargo, served per-file/per-object,
+translated back onto the real data on write, proxied for a whole session
+length, named explicitly against Claude Code/Codex).
+
+**Capability declaration, the harder gap, resolved in two research passes.**
+First pass (vendor SDKs, orchestration frameworks) found nothing, no
+third-party-consumable format anywhere. Clarke pushed back correctly: that
+vendor-SDK vocabulary isn't even the right place to look, since Mojo's
+mainline target is open-source community harnesses, closed vendor SDKs run
+mercenary-tier only. Second pass found real precedent in OpenClaw
+specifically: each harness implements a `supports(context) => {supported,
+priority} | {supported: false}` predicate, core calls it during selection
+(explicit config wins first, then `supports()` across registered harnesses,
+then a fallback), and debug logging already exposes the chosen harness, the
+reason, and every candidate's result, real shipped precedent for exactly the
+selection-transparency shape d's row already wanted. Only one actual declared
+capability flag exists anywhere checked (`authBootstrap: "harness"`,
+OpenClaw, added ad hoc for one integration's real need). Letta's own 2026
+deprecation of its declarative `tool_rules` system, explicitly to avoid
+inhibiting frontier capabilities, is a second independent real signal against
+building declarative capability machinery upfront. Landed lean: MSI-1 adopts
+OpenClaw's shape (a `supports(context)` predicate per harness, mandatory
+candidate-exposure and selection-reasoning as part of d's contract) rather
+than inventing a capability schema, small, proven, not speculative. Also
+surfaced OpenClaw's "prepared attempt" object (provider/model, auth, context
+budget, transcript, workspace/sandbox/tool policy, streaming callbacks
+resolved into one object before a harness runs) as real precedent worth
+checking against when seam i is actually walked.
+
+**A third pull on OpenClaw, for later, not for MSI-1 itself.** Once the
+capability-declaration question landed, Clarke wanted more: OpenClaw isn't
+just prior art for the standard, it's a real MIT-licensed codebase
+(github.com/openclaw/openclaw) he can actually read and adapt when writing
+Mojo's own router reference implementation, well after MSI-1 is drafted. A
+GitHub issue on the repo confirms it swaps between real independent backends
+(an embedded default runtime, OpenAI's Codex CLI, Anthropic's Claude CLI, and
+ACP, Agent Client Protocol, as a generic adapter), stronger evidence than an
+internal abstraction, proof the pattern works for genuinely separate,
+independently-built agents plugging in as harnesses. Structure at a glance:
+`src/` is the core app, `packages/agent-core/` is where the context-budget
+work actually lives (confirmed via commit history), `packages/acp-core/` is
+the external-CLI adapter. Exact file paths for `supports()` and the prepared-
+attempt object's schema weren't pinned down remotely, real reference-
+implementation work, deferred on purpose until that stage actually starts.
+One caution logged here rather than treated as fact: some specific numbers a
+web-scrape pass returned (star/fork counts) read as inflated and are
+unverified, worth a real look (`gh repo view` or a clone) before ever citing
+them anywhere that matters.
+
+**Self-correction, same session:** Clarke asked directly whether the prose
+and seam updates were still right after all the research, and checking
+honestly turned up a real overclaim. Seam d's row stated the `supports()`
+predicate's exact signature, the selection-priority order, and the
+`authBootstrap` flag name as confirmed findings, but they were only ever
+reported by the first research pass (web search, likely docs-level content,
+not source), and the second, deeper pass explicitly could not verify them
+against real code, it only confirmed the repo, its MIT license, and, via a
+real GitHub issue, that OpenClaw genuinely swaps between independent real
+backends. That general shape is solid and doubly sourced; the specific
+mechanism details are not, and research-plan.md's seam d row now says so
+directly rather than implying both were checked equally.
+
+**Piece pass result:** Agent runtime's prose and seam-sides list (e, f, i, q,
+h, s) both held, tightened not rewritten. Four seam rows carry real findings
+out of this session (i, d, j, m), all leans, not yet Decided, that's phase
+2's job.
+
+**To resume:** next unchecked step is 1.4, Model (Model endpoint).
+
+## 2026-07-12 — Peripheral (1.2) retired: not a piece, collapses into Tools
+
+Picked up 1.2 mid-research, exactly where the last session left it: five raw
+prior-art sources gathered, not yet synthesized with Clarke.
+
+First pass at synthesis proposed a device-bound test (a peripheral is
+whatever's bound to one of the owner's own machines, a camera vs. a generic
+network-reachable tool). Clarke corrected this immediately: Jarvis has to be
+able to reach anything in Tony's world, appliances, cameras, a suit, not just
+compute the owner is sitting at. That killed the proximity framing, and my
+replacement guess (physical-world sensing/actuation vs. software) didn't land
+either, Clarke flagged it as confusing rather than clarifying, and redirected
+to the right question: check whether Peripheral needs to exist as a separate
+thing at all, against how OpenClaw and Hermes actually do it, rather than
+theorizing a boundary from scratch.
+
+Checked real running code rather than reasoning further. OpenClaw's
+computer-use (browser control, desktop control, OS-level access) already goes
+through its general tool-calling path, no separate contract, carried over
+from the prior session. New this session: **Hermes-iOS**
+(github.com/dylan-buck/Hermes-iOS), a real shipped companion app for
+NousResearch's Hermes-agent. Its own README: "This app gives Hermes camera,
+mic, health data, location, and notifications. All available in one MCP
+tool." Mechanically, an iPhone connector streams camera/location/health/
+motion data into a local SQLite DB, and Hermes queries it through 8 tools on
+one MCP server (`get_user_location`, `get_health_summary`,
+`query_sensor_data`, etc.), the identical mechanism as any other tool call.
+Two independently-built real systems now converge on the same answer: no
+separate wire protocol or declaration format for peripherals exists in
+practice. It's tools.
+
+Mechanical reasoning for why this holds up, not just "two examples agree":
+the kernel already gates every consequential action the same way regardless
+of which piece it came from (seam j is universal), and MCP already handles
+declaration and invocation (tool listing + call). Seam o's job, "declare what
+a peripheral offers, check every invocation," was already fully covered by f
+and j combined. There was nothing left for a separate seam to contract.
+
+Secondary finding surfaced by the Hermes-iOS evidence: some of what looks
+like peripheral access isn't a live call at all. Location/health/motion
+stream continuously into storage and get queried later
+(`query_sensor_data`), structurally a memory/provider concern (m/s), not an
+invocation. So "peripheral" data splits cleanly across two seams that already
+exist, live actuation/sensing is a Tools call (f), passive telemetry is
+memory data (m/s). No third mechanism needed anywhere.
+
+Clarke's call, explicit: collapse Peripheral entirely, and framed why this is
+the right posture for a first version, not just this one piece, "we're
+trying to standardize what already exists... POSIX didn't invent new pieces
+of a Unix system." If people want to add (or remove) pieces after MSI-1
+ships, that's what versioning is for, but the first best effort stays as
+close to prior art as it can get.
+
+**Retired: the Peripheral piece, the Peripheral profile, seam o.** Ten pieces,
+ten profiles, ten seams now, down from eleven. anatomy.md: the Peripherals
+box and seam-o arrow cut from the diagram, the Peripherals piece paragraph
+removed, Tools' prose gained a line that hardware and software tools are the
+same shape (a camera and a search API are both just an MCP server), Kernel's
+prose and the "eleven pieces" line updated, seam o's row removed from the
+seam table. research-plan.md: Peripheral's Pieces-table row removed, Kernel's
+seam-sides list dropped "o", seam o's tracker row removed, a Retired note
+added recording the reasoning and where the two useful scraps of prior art
+went (Matter/HomeKit's typed capability declaration folded into seam f as a
+schema-richness check for device-facing tools; iOS/Android's manifest-plus-
+runtime-prompt split and the W3C Permissions API's dead `revoke()` folded
+into seam j as prior art for capability risk tiers and the revocation
+question); the proposed seam-walk order renumbered; every stray "eleven"
+became "ten". msi-steps.md: 1.2 checked off with a retired annotation, phase
+3.1's profile count corrected.
+
+Side discussion worth keeping: what "profile" actually means, since Clarke
+asked directly whether it's just POSIX's word for "piece." It isn't. A piece
+is anatomy.md's structural concept (what a part of the system is); a profile
+is the conformance bundle POSIX would call an option group, the seam-sides an
+implementation must satisfy to count as compliant. Most pieces get exactly
+one profile, but not all: Tools has real MSI content (§4 pins an MCP version)
+but, per seam f's current unwalked state, nothing additive layered on top of
+raw MCP, so there's no separate profile to bundle yet, provisional, not
+settled, pending step 2.2. Skills goes further, it isn't even a piece: no
+separate running component exists anywhere, SKILL.md files just live inside
+the identity's data and the Harness reads them directly. The identity itself
+is the inverse case, not under-defined but the most detailed thing in the
+whole document (§1, §2, seam m is called the flagship seam precisely because
+it's memory provider's route to that data); its conformance target is a
+schema, not a profile, because it's data, not swappable software. Tools stays
+a piece regardless of its profile status, because it's a running service in
+the same architectural category as Model endpoints, Memory providers, and
+Sandboxes (chosen fresh per run, its own box in the diagram's SERVICES row),
+unlike Skills which never rises to piece status at all. Recorded here rather
+than in research-plan.md because it's a concept clarification, not a new
+finding or open question.
+
+**To resume:** next unchecked step is 1.3, Agent runtime (Harness). No
+special phrasing needed, msi-steps.md's own session-start instructions
+already cover it.
+
+## 2026-07-11 — Window (Client) piece pass landed; msi-steps.md rewritten to research-first; Peripheral (1.2) opened, prior art gathered mid-session
+
+Long single session, phase 1 of msi-steps.md. Also found, unrelated, at
+session start: `interoperability.md` sitting modified in the working tree,
+reformatted by an editor (hard-wrapped paragraphs collapsed, relative links
+rewritten to absolute `file:///home/clarkehines/...` paths). Flagged to
+Clarke; confirmed intentional, left untouched.
+
+**Window (Client), 1.1, done.** Opened with the anatomy.md prose read aloud
+and two questions (does a window's "never a separate copy" claim need to say
+anything about caching credentials; what does the thin-device-vs-machine
+distinction actually imply). Clarke redirected before answering either:
+define the piece properly first, and check real prior art before guessing.
+That redirect turned out to be the right call and reshaped the whole
+session, see the process-rewrite entry below.
+
+Checked real prior art rather than reasoning from memory: OpenClaw's Gateway
+(session resolution + dispatch to an ephemeral per-message Agent Runtime,
+channel adapters hold no state of their own, close structural match to
+Mojo's own Router/Runs split) and its Command Queue (serializes messages per
+session, a real open question Mojo hasn't answered — what happens when two
+windows address one live run at once); Hermes-agent's "persistent session"
+framing versus its actual hibernate/wake-on-demand mechanism (closer to
+ephemeral-plus-store than the marketing suggests); Letta's agent/
+conversation/session split (durable memory server-side, session as a
+disposable client-side connection holding only transient turn state — the
+closest match found, arrived at independently); Khoj, which proved two
+things at once: self-hosted mode is structurally close to Mojo's own
+single-machine shape, and its Obsidian plugin is real production precedent
+for a non-conversational, direct-identity-editing window. Also checked
+Matrix's device model + `/sync`, MIME's `multipart/alternative`, Kitty's
+graphics-protocol capability query, and real-time voice-agent architecture
+(Twilio-style telephony bridges, VAD-driven barge-in) to understand why a
+phone-call window is a genuinely different transport shape from a
+terminal's.
+
+Landed definition: a window is a pure access surface, holds no session of
+its own, store-shaped between runs (git/IMAP-shaped, not a live process to
+attach to), live only for the duration of a run addressed to it, and does
+not require an agent runtime or conversation to qualify — a direct identity
+editor counts too.
+
+Side question answered along the way: does "feels continuously alive"
+(Jarvis knowing he's been talking to Tony) require an actual architecture
+change, a runtime that never sleeps? No — traced this to a memory-quality
+problem, not a run-model problem. Letta's "sleep-time compute" (memory
+consolidated during idle periods by a background run, not a live foreground
+agent) is real precedent that this is the right shape, and it's what seam
+g's existing "downtime maintenance is just a run" line was already
+anticipating. Landed as a finding on seam i: a run's starting fragment must
+be able to carry enough recent context for continuity to work; how much and
+how it's assembled is m/s's business.
+
+Adopted the **minimal-core rule**: MSI-1's mandatory core per seam is the
+smallest set of obligations that's actually correct, not the most capable
+one; anything additive (real-time streaming for windows, specifically) is a
+named, explicitly deferred extension point. Real-time/continuous-stream
+windows (voice, phone, eventually video) were on the table as a possible
+seam-c extension and got deliberately cut from MSI-1 scope rather than
+designed, per this rule.
+
+Two real corrections from Clarke on how piece prose should read, now baked
+into msi-steps.md so they don't have to be relearned per piece: never define
+a piece by what it isn't or by contrast with a sibling (that content belongs
+in the sibling's own prose — the wake-word/Peripheral boundary got cut from
+Window's prose for exactly this reason, to be written into Peripheral's
+prose instead when its own turn comes); never restate the system-wide
+"every piece is a swappable implementation" invariant per piece, it's
+already said once at the top of the document.
+
+Edits made: anatomy.md's Window prose rewritten; research-plan.md gained the
+minimal-core working rule, seam c's row rewritten with the prior art above
+plus the open Command Queue question, seam g's row gained the Letta
+sleep-time-compute citation, seam i's row gained the continuity finding;
+Window's Pieces-table status flipped to Covered; msi-steps.md's 1.1 checked.
+
+**Process rewrite.** msi-steps.md's phase-1 procedure got reordered to match
+what actually worked: check real prior art first, only then write or fix the
+piece's prose (as the abstract contract any compliant implementation must
+satisfy, never as a description of how one existing system happens to
+behave), then confirm seam-sides against that same prior art, then
+gap-hunt, then flip status. Also corrected on a first pass at this rewrite:
+don't hardcode example systems (Matrix/MIME/IMAP were Window's finds, not a
+template for every piece); anatomy.html sync moved from per-piece to once,
+at phase 1's close (step 1.13).
+
+**Peripheral, 1.2, opened, not landed.** Current anatomy.md prose flagged
+for the same sibling-comparison problem Window's had (the "a phone is
+usually both a window and a peripheral host... two different jobs"
+sentence); to be cut and replaced once Peripheral gets its own proper pass,
+with the wake-word/ambient-sensing example folded in as a native example of
+what a peripheral senses through, grounded in Peripheral's own research
+rather than carried over from the Window conversation. Seam o remains the
+only seam-side. Prior-art research was fired off but interrupted before
+synthesis or write-up, so nothing is filed into research-plan.md yet,
+deliberately — raw material for the next session, not yet reviewed with
+Clarke:
+
+- iOS's permission model: declared via `Info.plist` usage-description
+  strings, granted through runtime prompts (Apple's own docs; OWASP MASTG's
+  note contrasting this with Android's approach).
+- Android's permission model: declared in the manifest; "dangerous"
+  permission groups additionally require a runtime prompt, "normal" ones
+  don't.
+- The Web Permissions API (W3C spec, MDN, Chrome docs): query/request model
+  for capabilities like camera and geolocation. Notable real-world dead end
+  worth flagging for seam j as much as o: a programmatic `revoke()` was
+  proposed and then removed/disabled by default — a real, shipped standard
+  that never actually solved revocation.
+- Matter/HomeKit: devices declare capabilities as "clusters"/
+  "characteristics" — the closest real structured-capability-declaration
+  precedent for what "a peripheral declares what it offers" should
+  mechanically look like.
+- OpenClaw: its own docs literally use the word "peripherals" for
+  device-level capabilities, and separately grants full computer-use
+  (browser control, desktop control, OS-level access) through what looks
+  like its general tool-calling path rather than a separate contract — real
+  evidence worth checking properly next session for whether Peripheral
+  should stay its own seam or collapse into Tools/MCP, the same kind of
+  question s once weighed against f.
+
+**To resume:** msi-steps.md's own session-start instructions already say to
+read the last devlog entry then find the first unchecked step, so no special
+phrasing is needed next time, "let's continue the anatomy piece pass" (or
+similar) is enough. Lands on 1.2, mid-research, not mid-decision: the prior
+art above needs synthesizing with Clarke before anatomy.md's Peripheral
+prose gets touched.
+
 ## 2026-07-11 — "Jarvis" split into persona vs. category term, "digital counterpart" adopted, why-nobody's-building-this landed in vision
 
 Also not a research session. Clarke brought back a conversation with a

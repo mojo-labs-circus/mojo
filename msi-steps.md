@@ -49,19 +49,33 @@ marked landed on the model's say-so alone.*
 
 ## Phase 1 — piece pass
 
-For each piece, work through it with Clarke: (1) read its prose in anatomy.md
-out loud together and fix what's unclear or wrong, mirroring any change in
-anatomy.html; (2) confirm its seam-sides in research-plan.md's Pieces table
-are right and complete; (3) hunt gaps by asking Clarke "what would a builder
-of this piece still not know," recording each gap as a question in the right
-seam's tracker row; (4) flip its Pieces-table Status once Clarke agrees it's
-covered. A piece pass that finds nothing new is a pass, not a failure.
+For each piece, work through it with Clarke, in this order: (1) go find and
+check real prior art relevant to this specific piece — how existing
+digital-counterpart systems and adjacent standards actually shape it and the
+seams around it. Same discipline POSIX used against real Unix systems:
+nothing here is being invented from nothing, it's being standardized. (2)
+Only then define or fix the piece's prose in anatomy.md, grounded in what
+that prior art showed but written as the abstract contract any compliant
+implementation must satisfy, never as a description of how one particular
+existing system happens to do it. Piece prose says what a piece IS, on its
+own terms: never define it by what it isn't or by contrast with a sibling
+piece (that content belongs in the sibling's own prose instead), and never
+restate the system-wide invariant that every piece is a swappable
+implementation, that's said once, at the top of the document, not per
+piece. (3) Confirm its seam-sides in research-plan.md's Pieces table are
+right and complete against the same prior art. (4) Hunt gaps by asking
+Clarke "what would a builder of this piece still not know," recording each
+gap as a question in the right seam's tracker row. (5) Flip its
+Pieces-table Status once Clarke agrees it's covered. A piece pass that
+finds nothing new is a pass, not a failure. anatomy.html is brought back in
+sync once, at phase 1's close (step 1.13), not per piece.
 
-- [ ] 1.1 Window (Client)
-- [ ] 1.2 Peripheral
-- [ ] 1.3 Agent runtime (Harness)
-- [ ] 1.4 Model (Model endpoint)
-- [ ] 1.5 Tools (consumed format)
+- [x] 1.1 Client
+- [x] 1.2 Peripheral (retired: collapsed into Tools, no piece, no profile,
+      no seam; see research-plan.md's Pieces table)
+- [x] 1.3 Harness
+- [x] 1.4 Model endpoint
+- [x] 1.5 Tools (no profile)
 - [ ] 1.6 Memory provider
 - [ ] 1.7 Sandbox
 - [ ] 1.8 Router
@@ -70,8 +84,9 @@ covered. A piece pass that finds nothing new is a pass, not a failure.
 - [ ] 1.11 Provenance
 - [ ] 1.12 Fleet manager
 - [ ] 1.13 Close phase 1: read anatomy.md end to end once for coherence,
-      confirm every seam row holds the questions phase 1 raised, update the
-      "Currently on" line to phase 2.
+      confirm every seam row holds the questions phase 1 raised, sync
+      anatomy.html to match anatomy.md, update the "Currently on" line to
+      phase 2.
 
 ## Phase 2 — seam walk
 
@@ -107,7 +122,7 @@ target section, sections filled in as their seams land.
 - [ ] 2.13 Seam q (sandbox) → §3.
 - [ ] 2.14 Seam r (content trust) → §3.
 - [ ] 2.15 Seam o (peripherals) → §3. Prior art still to gather.
-- [ ] 2.16 Seam c (window contract) → §3.
+- [ ] 2.16 Seam c (client contract) → §3.
 - [ ] 2.17 Seam b (proactive delivery) → §3.
 - [ ] 2.18 Seam k (federation) → §3. Hardest distributed seam; expect
       multiple sessions. Revisit 2.4's A2A-composition flag.
@@ -115,7 +130,7 @@ target section, sections filled in as their seams land.
 
 ## Phase 3 — assembly
 
-- [ ] 3.1 Write §0: the eleven conformance profiles, each as the list of
+- [ ] 3.1 Write §0: the ten conformance profiles, each as the list of
       seam-side obligations that actually landed in §1–§4.
 - [ ] 3.2 Cross-seam contradiction check: walk every pair of seams that
       share a piece, confirm their obligations don't conflict.

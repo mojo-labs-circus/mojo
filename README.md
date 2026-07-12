@@ -6,7 +6,7 @@ made of and every seam between them, so that the system's identity (a digital
 counterpart: your memory, your permissions, your assistant's character, yours
 alone, as plain portable data) survives any change of the pieces underneath it.
 Swap the
-agent runtime, the model, the memory provider, even the kernel, and nothing
+harness, the model, the memory provider, even the kernel, and nothing
 that matters moves. Anyone can build a better implementation of any piece; the
 owner runs whichever they want. Mojo builds its own system as the proof,
 assembled from existing parts around the two pieces nobody else has an
@@ -41,7 +41,7 @@ nothing covers (the identity's data shape, the enforcement contract), and leave
 the market's problems deliberately open.
 
 The first Mojo system gets assembled once the standard covers every piece. A
-distro in the honest sense: existing compliant parts (an agent runtime someone
+distro in the honest sense: existing compliant parts (a harness someone
 else built, models someone else trained, MCP tools, SKILL.md skills) stitched
 around Mojo's own kernel and memory layer, doubling as the standard's test
 suite. Anything that speaks the standard can plug in.

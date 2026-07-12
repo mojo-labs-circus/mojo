@@ -95,7 +95,7 @@ The standard doesn't invent what already exists. Where the industry has a real,
 working answer, the MSI adopts it: MCP for tools, SKILL.md for skills, the
 already-converged model wire format, A2A for talking to agents outside your
 system. Where the market should compete, it deliberately leaves the inside
-open (how an agent runtime plans, how it manages its context), the same way
+open (how a harness plans, how it manages its context), the same way
 POSIX never standardized a scheduler's internals, only what a process must
 expose. It defines only what nothing existing covers: the shape of the identity
 data, and the enforcement boundary that protects it. Even there, most of the
@@ -126,7 +126,7 @@ first and crude on purpose: proof the seams hold, not the best version of
 anything.
 
 The first Mojo system, then, is a distro in the honest Linux sense: assembled
-from existing parts that already speak the adopted standards (an agent runtime
+from existing parts that already speak the adopted standards (a harness
 someone else built, models someone else trained, tools someone else wrote)
 around the kernel and the memory layer that make them one system. That's not a
 shortcut. It's the proof. Every seam in the standard gets tested by whether
