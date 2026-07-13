@@ -105,30 +105,37 @@ genuinely new is thin and specific: the permissions travelling with the data,
 provenance, and the rule that anything a session learns gets written back in
 the shared shape instead of staying trapped in one product's private buffer.
 
-Mojo builds the first implementation of exactly those two pieces, the kernel
-and the memory layer, because they're the two seams where no accepted standard
-exists to adopt, and nobody with the resources to build them well has any
-incentive to. A neutral standard removes the moat, and nobody who profits from
-the moat funds its removal. The kernel is the system's enforcement layer. Every
-consequential action any plugged-in agent, tool, or model takes is checked
-against what the owner allowed, and recorded. The record matters as much as the
-check: "what did my AI do, and who allowed it" always has an answer. For a
-person that's trust. For any organisation it's the difference between an AI
-system you can adopt and one you can't, because auditability is what makes
-accountability real rather than promised. Each machine runs its own kernel
-instance, so enforcement keeps working offline, and all of an owner's machines
-answer to one shared policy. The kernel is not singular in the world either.
-The enforcement contract is part of the standard, Mojo's kernel is only the
-first reference, and someone smarter than me can and should build a better one.
-The same goes for the memory layer. Every piece Mojo builds is designed to be
-outcompeted through the same contracts it publishes. Our implementations are
-first and crude on purpose: proof the seams hold, not the best version of
-anything.
+Mojo builds the first reference implementation of every piece that isn't
+already an adopted protocol, the kernel, the memory layer, the router, the
+sandbox, the credential broker, provenance, the fleet manager, all of it, not
+because nothing like them exists. Real enforcement logic, real memory stores,
+real schedulers, real sandboxes already run today, just buried inside
+monolithic products, never factored out as their own swappable piece behind a
+published contract. Nobody who profits from keeping it buried has any
+incentive to publish the seam. Those buried implementations are exactly what
+the reference implementations get built against: codified, not invented from
+nothing, the same discipline POSIX used against real Unix systems. The kernel
+carries the most weight of any of them: it's the system's enforcement layer.
+Every consequential action any plugged-in agent, tool, or model takes is
+checked against what the owner allowed, and recorded. The record matters as
+much as the check: "what did my AI do, and who allowed it" always has an
+answer. For a person that's trust. For any organisation it's the difference
+between an AI system you can adopt and one you can't, because auditability is
+what makes accountability real rather than promised. Each machine runs its
+own kernel instance, so enforcement keeps working offline, and all of an
+owner's machines answer to one shared policy. None of these pieces are
+singular in the world either. Every one of their contracts is part of the
+standard, Mojo's own version of each is only the first reference, and someone
+smarter than me can and should build a better one. Every piece Mojo builds is
+designed to be outcompeted through the same contracts it publishes. Our
+implementations are first and crude on purpose: proof the seams hold, not the
+best version of anything.
 
 The first Mojo system, then, is a distro in the honest Linux sense: assembled
 from existing parts that already speak the adopted standards (a harness
 someone else built, models someone else trained, tools someone else wrote)
-around the kernel and the memory layer that make them one system. That's not a
+around the pieces Mojo had to build first, because nothing else yet speaks
+their contracts, that make them one system. That's not a
 shortcut. It's the proof. Every seam in the standard gets tested by whether
 something real, built by someone who has never heard of Mojo, actually plugs
 into it. The MSI earns its authority from the running system, never from being

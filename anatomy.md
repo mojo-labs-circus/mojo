@@ -48,11 +48,17 @@ much as the piece list:
 - **Runs are ephemeral.** A run is one harness working one task. It is
   killable, several can be live at once, and each one, sub-runs included,
   spawns with its own selection of services.
-- **Services are plural.** Model endpoints, tools, memory providers, sandboxes.
-  Several of each kind can serve one machine at the same time, and which ones a
-  run uses is chosen fresh for every run. Whether a service is a long-running
-  process or started on demand is an implementation choice; the binding is what
-  is per-run.
+- **Services are plural.** Model endpoints, tools, memory providers,
+  sandboxes. Several of each kind can serve one machine at once, and a run is
+  granted a set of each, not handed one: a harness reaches for whichever
+  instance a given step actually needs, at whatever granularity the task
+  calls for, not fixed once for the whole run. A service decides nothing
+  itself, it's the thing chosen among; whether a given pick actually falls
+  inside what the run was granted is checked the same way every other
+  consequential action is, through the kernel. Whether a service is a
+  long-running process or started on demand is an implementation choice;
+  what's standardized is the grant, made fresh per run, and the check, made
+  per action.
 - **System control is singular.** Router, kernel, credential broker,
   provenance, fleet manager. Exactly one live instance of each per machine.
   Swapping one is an owner decision, never a per-run choice.
@@ -62,6 +68,13 @@ fact that gates something consequential (a permission, a secret's scope, a
 trust tag, who is in the fleet), the piece is singular, because the
 disagreement is itself the hole. When several readings of the same data are
 safe at once, the piece is plural, and implementations compete side by side.
+
+A second rule sits inside the first: among the singular pieces, only the
+kernel writes. Router, the credential broker, provenance, and the fleet
+manager all read the data to do their jobs; none of them author it. The
+kernel is the one piece that grants, narrows, and revokes what's allowed, and
+records what happened, so every change to what the data permits has exactly
+one path in and one name attached to it.
 
 ## The map
 
@@ -90,8 +103,8 @@ safe at once, the piece is plural, and implementations compete side by side.
   │     ↕ bindings, chosen fresh for every run and sub-run:        │
   │       (e) model · (f) tools · (s) memory · (q) sandbox         │
   │                                                                │
-  │  SERVICES: plural. Several of each kind can serve one          │
-  │  machine at once; which ones a run uses is the router's pick   │
+  │  SERVICES: plural. A run is granted a set, not one;            │
+  │  which instance an action uses is resolved per action          │
   │  ┌────────────┐ ┌─────────┐ ┌────────────┐ ┌────────────┐      │
   │  │ MODELS:    │ │ TOOLS:  │ │ MEMORY     │ │ SANDBOXES: │      │
   │  │ vLLM,      │ │ MCP     │ │ PROVIDERS: │ │ where a    │      │
@@ -171,64 +184,67 @@ model or a sandbox: skills aren't chosen per run, they're just there.
 runs: a self-hosted server (vLLM, Ollama, llama.cpp) on hardware the owner
 controls, or a vendor's hosted API. Any endpoint speaking the standard wire
 shape is interchangeable. Endpoints are modality-typed: chat, embedding,
-image, and speech are separate endpoints, separately swappable, and a harness
-may use different endpoints for different steps of the same run, so the best
-or cheapest model for each job is always in reach.
+image, and speech are separate kinds of endpoint, each with its own grant,
+not one roster spanning every modality.
 
 **Tools** *(service; no profile)*. Anything a harness calls out to, software
 or physical, in the same shape: a search API and a camera are both just an
-MCP server. Several independent servers can serve one machine at once, the
-same way several model endpoints can, but a run isn't pointed at one the way
-it's pointed at one model: a harness needs several tool capabilities live at
-once, so what a run is handed is a roster, a subset of the machine's
-available servers assembled for that run, not a single pick. What a tool may
-actually touch is decided by the kernel, not by the tool protocol.
+MCP server. What a tool may actually touch is decided by the kernel, not by
+the tool protocol.
 
-**Memory provider** *(service)*. The software that serves the data: retrieval,
-indexing, search, the views a harness works from. Providers are plural in the strongest sense: because the data stays
-in the standard shape, several providers can serve the same identity at the
-same time, a vector-heavy one and a grep-style one side by side, and a run is
-pointed at whichever suits its task. That works because of one strict rule:
+**Memory provider** *(service)*. The standardized front door onto the data: a
+run reads and writes through whichever provider it's handed, never touching
+the data directly. What it returns, and how, is where the real engineering
+lives: retrieval, indexing, search, ranking, whatever view a harness needs.
+Providers are plural in the strongest sense: because the data stays in the
+standard shape underneath, several can serve the same identity at once, a
+vector-heavy one and a grep-style one side by side, different views and
+different scopings over the very same data, not just different instances of
+the same view. That plurality holds because of one strict rule:
 providers derive, they never own. Anything a provider builds from the data
-(indexes, embeddings) must be rebuildable from the data alone, and writes land
-in the data's standard shape, where concurrent writes reconcile, never inside
-any one provider's private state. The relationship is Obsidian and your vault.
-Delete the app, keep everything. What a run asks of a provider and what it
-gets back is its own seam (s), so a harness can talk to whichever provider it
-is handed; whatever path a write takes, it lands in the data's shape, which
-is m's business.
+(indexes, embeddings) must be rebuildable from the data alone, and any write
+it accepts lands in the data's standard shape, where concurrent writes
+reconcile, never inside any one provider's private state. The relationship is
+Obsidian and your vault: delete the app, keep everything. What a run asks of
+a provider and what it gets back is its own seam (s); whatever path a write
+takes, it lands in the data's shape, which is m's business.
 
 **Sandbox** *(service)*. Where a permitted action
 actually executes: a container, an isolated process, another of the owner's
-machines, a remote service. Placement, not permission. Which actions are
-allowed at all is the kernel's decision; where an allowed action runs, and what
-it can see while running, is the sandbox's.
+machines, a remote service. Placement, not permission: a sandbox is the
+boundary an action runs inside and what it can see while there, it decides
+nothing itself. Which actions are allowed at all, and whether a given
+placement was actually one the run was granted, stays the kernel's call
+throughout.
 
 **Router** *(system control)*. Always on. When nothing is running, the router
-is what watches the triggers: the clock, outside events, idle time. When one
-fires, or the owner asks for something, it assembles the run: given the task,
-the available pieces, and the owner's constraints and budget, it picks which
-harness, which model endpoint, which tool roster, which memory provider, which sandbox,
-on which machine. Every binding is chosen per run, and
-a run can spawn sub-runs, each of which gets its own selection, recursively.
+is what watches the triggers: the clock, outside events, idle time, an
+owner's direct request. When one fires, it assembles the run: given the task,
+the available pieces, and the owner's constraints and budget, it picks the
+harness and, on which machine, grants it a set of each service (model
+endpoint, tools, memory provider, sandbox) to draw from. Each machine runs
+its own router so triggers keep firing and runs keep assembling while
+offline; keeping several machines' routers from stepping on the same trigger
+is the fleet manager's job, not the router's own.
 Routers compete on selection quality. Hard limits are the owner's policy data,
 which a router obeys. They are never properties of the router itself.
 
 **Kernel** *(system control)*. The enforcement layer. Every consequential
-action (reading the data, writing it back, touching a tool that reaches the
-outside world) passes through here and is checked against what the owner
-allowed. It grants, narrows, and revokes permissions, and records what
+action any other piece in the system takes (reading the data, writing it
+back, touching a tool that reaches the outside world) passes through here
+and is checked against what the owner allowed. It grants, narrows, and revokes permissions, and records what
 happened, so "what did it do, and who allowed it" always has an answer. Each
 machine runs its own kernel instance so enforcement keeps working offline, but
 all of an owner's machines answer to one shared policy.
 
-**Credential broker** *(system control)*. Custody of the owner's secrets: API
-keys, tokens, passwords. It stores them, scopes them, and injects them into
-the specific call that needs them, so a real secret never sits in a model's
-context or a harness's hands. The kernel decides whether an action is
-allowed; the broker makes sure the secret reaches only that action. One live
-broker per machine: custody is exactly the kind of fact two instances must
-never disagree about.
+**Credential broker** *(system control)*. The mediator between wherever the
+owner's secrets actually live (an OS keychain, a vault, a hardware token,
+whatever the owner picked) and the specific call that needs one. It doesn't
+own the storage; it scopes and injects, so a real secret never sits in a
+model's context, a harness's hands, or a sandboxed action's own view. The
+kernel decides whether an action is allowed; the broker makes sure the secret
+reaches only that action. One live broker per machine: custody is exactly the
+kind of fact two instances must never disagree about.
 
 **Provenance** *(system control)*. Trust-tags content before it reaches a
 run: where it came from, whether the owner wrote it, whether it arrived from
@@ -244,10 +260,9 @@ trusted, and coordinates the set so one identity stays coherent across all of
 it: sync, conflict, partition, and who is driving a live task. The kernel
 enforces on one machine; the fleet manager is what makes N machines answer as
 one assistant instead of several that share notes. One live instance per
-machine, the same as every other system-control piece: two fleet managers on
-the same machine disagreeing about who else is in the fleet is exactly the
-kind of fact that can't have two answers, and each machine still needs its
-own instance so the fleet stays coherent even when one machine is offline.
+machine, the same as every other system-control piece: each machine still
+needs its own instance so the fleet stays coherent even when one machine is
+offline.
 
 **The identity** *(not a piece. The data, and the only thing never swapped)*.
 Everything that makes the assistant this assistant: its memory of the owner,

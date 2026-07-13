@@ -33,127 +33,119 @@
     background:var(--ground); color:var(--ink); font-family:var(--sans);
     line-height:1.5; margin:0; padding:2.5rem 1.25rem 5rem;
   }
-  main{max-width:1080px; margin:0 auto}
+  main{max-width:1160px; margin:0 auto}
   h1{font-size:1.9rem; font-weight:750; letter-spacing:-.02em; margin:0 0 .3rem; text-wrap:balance}
-  .sub{color:var(--muted); max-width:66ch; margin:0 0 1rem; font-size:.95rem}
-  .thesis{
-    border-left:3px solid var(--design); padding:.35rem 0 .35rem 1rem; margin:0 0 1.8rem;
-    max-width:66ch; font-size:.98rem;
-  }
+  .term{border-left:3px solid var(--line-strong); padding:.35rem 0 .35rem 1rem; margin:0 0 1rem; font-size:.92rem; color:var(--muted)}
+  .term strong{color:var(--ink); font-weight:700}
+  .sub{color:var(--muted); margin:0 0 1rem; font-size:.95rem}
+  .thesis{border-left:3px solid var(--design); padding:.35rem 0 .35rem 1rem; margin:0 0 2rem; font-size:.98rem}
   .thesis strong{font-weight:700}
 
-  .legend{display:flex; flex-wrap:wrap; gap:.6rem 1.4rem; margin:0 0 2rem; font-size:.8rem; color:var(--muted)}
-  .legend span{display:inline-flex; align-items:center; gap:.45rem}
-  .dot{width:.65rem; height:.65rem; border-radius:2px; flex:none}
-  .dot.design{background:var(--design)} .dot.adopt{background:var(--adopt)}
-  .dot.open{background:transparent; border:1.5px dashed var(--open)}
+  .lifecycles{display:grid; grid-template-columns:repeat(4,1fr); gap:.7rem; margin:0 0 1rem}
+  .lifecycles .life{border:1.5px solid var(--line-strong); border-radius:6px; background:var(--panel); padding:.65rem .8rem}
+  .lifecycles .life h3{font-size:.8rem; margin:0 0 .2rem; font-weight:700}
+  .lifecycles .life p{margin:0; font-size:.75rem; color:var(--muted)}
+  @media (max-width:720px){ .lifecycles{grid-template-columns:1fr 1fr} }
 
-  .diagram{display:flex; flex-direction:column; align-items:stretch}
-  .band{
-    background:var(--panel); border:1.5px solid var(--line-strong); border-radius:6px;
-    padding:.9rem 1.1rem; position:relative;
-  }
-  .eyebrow{
-    font-family:var(--mono); font-size:.62rem; letter-spacing:.14em; text-transform:uppercase;
-    color:var(--muted); display:block; margin-bottom:.15rem;
-  }
-  .band h2{font-size:1.02rem; font-weight:700; margin:0; letter-spacing:-.01em}
-  .band p{margin:.25rem 0 0; font-size:.83rem; color:var(--muted); max-width:72ch}
-  .tag{
-    position:absolute; top:.7rem; right:.9rem; font-family:var(--mono); font-size:.62rem;
-    letter-spacing:.08em; text-transform:uppercase; color:var(--muted);
-  }
+  .rules{display:grid; grid-template-columns:1fr 1fr; gap:.8rem; margin:0 0 2.2rem}
+  .rules .rule{border:1.5px solid var(--line-strong); border-radius:6px; background:var(--panel); padding:.75rem .9rem}
+  .rules .rule h3{font-size:.82rem; margin:0 0 .3rem; font-weight:700}
+  .rules .rule p{margin:0; font-size:.78rem; color:var(--muted)}
+  @media (max-width:720px){ .rules{grid-template-columns:1fr} }
 
-  .seams{display:flex; justify-content:center; align-items:flex-start; gap:1.2rem; padding:.35rem 0; flex-wrap:wrap}
-  .seam{display:flex; flex-direction:column; align-items:center; text-align:center}
-  .seam::before,.seam::after{content:""; width:1.5px; height:.8rem; background:var(--line-strong)}
-  .chip{
-    border:1.5px solid var(--line-strong); border-radius:5px; background:var(--panel);
-    padding:.35rem .65rem; font-size:.74rem; max-width:16rem;
+  /* ---- the graph ---- */
+  #graph{position:relative; display:flex; flex-direction:column; gap:.9rem; align-items:stretch}
+  svg.edges-layer{position:absolute; inset:0; width:100%; height:100%; z-index:3; pointer-events:none}
+  .edge-line{opacity:0; transition:opacity .12s ease}
+  #edge-labels{position:absolute; inset:0; z-index:4; pointer-events:none}
+  .edge-tag{
+    position:absolute; opacity:0; transform:translate(-50%,-50%); pointer-events:none; text-decoration:none;
+    font-family:var(--mono); font-weight:700; font-size:.66rem; line-height:1;
+    padding:.22rem .4rem; border-radius:99px; color:var(--panel);
+    border:1.5px solid; white-space:nowrap; transition:opacity .12s ease;
   }
-  .chip .id{
-    font-family:var(--mono); font-weight:700; font-size:.72rem; margin-right:.35rem;
-    padding:.05rem .3rem; border-radius:3px; color:var(--panel);
-  }
-  .chip.design{border-color:var(--design)} .chip.design .id{background:var(--design)}
-  .chip.adopt{border-color:var(--adopt)} .chip.adopt .id{background:var(--adopt)}
+  .edge-tag.design{border-color:var(--design); background:var(--design)}
+  .edge-tag.adopt{border-color:var(--adopt); background:var(--adopt)}
 
-  .owner{border-width:2px; text-align:center}
-  .owner h2{font-size:1.1rem}
-  .windows{display:flex; gap:.6rem; justify-content:center; flex-wrap:wrap; margin-top:.6rem}
-  .win{
-    border:1px solid var(--line); border-radius:4px; padding:.3rem .7rem;
-    font-size:.78rem; font-family:var(--mono); color:var(--muted); background:var(--ground);
+  .grow{display:flex; justify-content:center; gap:.7rem; flex-wrap:wrap; position:relative; z-index:2}
+  .grow.wide{justify-content:stretch}
+  .grow.wide > .gnode{flex:1}
+
+  a.gnode{
+    display:block; position:relative; z-index:2; color:inherit; text-decoration:none;
+    border:1.5px solid var(--line-strong); border-radius:7px; background:var(--panel);
+    padding:.55rem .75rem; min-width:9.5rem; max-width:15rem;
   }
+  a.gnode:hover, a.gnode:focus-visible{border-color:var(--design)}
+  a.gnode.related{border-color:var(--design); box-shadow:0 0 0 2px color-mix(in srgb, var(--design) 30%, transparent)}
+  .gnode .geyebrow{
+    font-family:var(--mono); font-size:.6rem; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--muted); display:block; margin-bottom:.1rem;
+  }
+  .gnode h3{font-size:.86rem; margin:0; font-weight:700}
+  .gnode p{margin:.2rem 0 0; font-size:.72rem; color:var(--muted)}
+  .gnode.owner{text-align:center; border-width:2px; margin:0 auto; max-width:24rem}
+  .gnode.identity{max-width:none; border:2px solid var(--design); background:color-mix(in srgb, var(--design) 8%, var(--panel))}
+  .gnode.host{max-width:none; text-align:center; border-style:dashed; font-family:var(--mono); font-size:.72rem; color:var(--muted); background:transparent}
+  .gnode.host h3{font-size:.72rem; font-weight:600; display:inline}
+  .node-tag{
+    position:absolute; opacity:0; top:-.55rem; right:.6rem; font-family:var(--mono); font-weight:700; font-size:.62rem;
+    padding:.1rem .35rem; border-radius:99px; text-decoration:none; border:1.5px solid; background:var(--panel);
+    pointer-events:none; transition:opacity .12s ease; z-index:4;
+  }
+  .node-tag.design{border-color:var(--design); color:var(--design)}
 
   .machine{
-    border:2px solid var(--ink); border-radius:10px; padding:1.4rem 1.2rem 1.2rem; position:relative;
-    background:color-mix(in srgb, var(--panel) 55%, var(--ground));
-    display:flex; flex-direction:column;
+    border:2px solid var(--ink); border-radius:10px; padding:1.5rem 1.1rem 1.1rem; position:relative;
+    display:flex; flex-direction:column; gap:.7rem;
   }
   .machine > .frame-label{
     position:absolute; top:-.8rem; left:1.2rem; background:var(--ink); color:var(--ground);
     font-family:var(--mono); font-size:.68rem; letter-spacing:.12em; text-transform:uppercase;
-    padding:.2rem .7rem; border-radius:4px;
+    padding:.2rem .7rem; border-radius:4px; z-index:5;
   }
+  .region-label{
+    font-family:var(--mono); font-size:.6rem; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--muted); text-align:center;
+  }
+  .hostrow{display:flex; justify-content:center}
 
-  .runtime{
-    border:1.5px dashed var(--line-strong); border-radius:8px; padding:1rem 1rem 1.1rem; position:relative;
+  @media (max-width:760px){
+    svg.edges-layer, #edge-labels{display:none}
+    .mobile-note{display:block !important}
   }
-  .runtime > .region-label{
-    position:absolute; top:-.65rem; left:.9rem; background:var(--ground);
-    font-family:var(--mono); font-size:.62rem; letter-spacing:.12em; text-transform:uppercase;
-    color:var(--muted); padding:0 .5rem;
-  }
-  .mini{border:1.5px solid var(--line-strong); border-radius:6px; background:var(--panel); padding:.6rem .8rem; position:relative}
-  .mini h3{font-size:.85rem; margin:0; font-weight:700}
-  .mini p{margin:.15rem 0 0; font-size:.74rem; color:var(--muted)}
-  .mini .tag{top:.55rem; right:.7rem}
-  .harness{border:1.5px solid var(--line-strong); border-radius:6px; background:var(--panel); padding:.8rem .9rem; position:relative}
-  .harness h3{font-size:.95rem; margin:0; font-weight:700}
-  .harness > p{margin:.2rem 0 .7rem; font-size:.78rem; color:var(--muted)}
-  .loop-open{
-    border:1.5px dashed var(--open); border-radius:5px; margin-top:.6rem; padding:.45rem .7rem;
-    font-size:.72rem; color:var(--muted);
-  }
+  .mobile-note{display:none; font-size:.78rem; color:var(--muted); text-align:center; margin:-.3rem 0 .5rem}
 
-  .kernel{
-    background:var(--kernel-bg); color:var(--kernel-ink); border:none; border-radius:6px;
-    padding:.95rem 1.1rem;
+  /* ---- piece detail cards ---- */
+  .pieces-grid{display:grid; grid-template-columns:1fr 1fr; gap:1rem}
+  @media (max-width:760px){ .pieces-grid{grid-template-columns:1fr} }
+  .piece-card{border:1.5px solid var(--line-strong); border-radius:8px; background:var(--panel); padding:1rem 1.1rem; scroll-margin-top:1.5rem}
+  .piece-card.wide{grid-column:1 / -1}
+  .piece-card.identity-card{border-color:var(--design); background:color-mix(in srgb, var(--design) 6%, var(--panel))}
+  .piece-eyebrow{
+    font-family:var(--mono); font-size:.64rem; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--muted); display:block; margin-bottom:.2rem;
   }
-  .kernel .eyebrow{color:color-mix(in srgb, var(--kernel-ink) 65%, transparent)}
-  .kernel p{color:color-mix(in srgb, var(--kernel-ink) 75%, transparent)}
-  .kernel .tag{color:color-mix(in srgb, var(--kernel-ink) 60%, transparent)}
-
-  .identity{
-    border:2px solid var(--design); background:color-mix(in srgb, var(--design) 8%, var(--panel));
+  .piece-card h3{font-size:1.02rem; margin:0 0 .35rem; font-weight:700}
+  .piece-card p{margin:0 0 .5rem; font-size:.86rem; color:var(--muted)}
+  .piece-card p:last-of-type{margin-bottom:0}
+  .seam-tags{display:flex; flex-wrap:wrap; gap:.35rem; margin-top:.7rem; padding-top:.6rem; border-top:1px solid var(--line)}
+  .seam-tags span{font-family:var(--mono); font-size:.62rem; color:var(--muted); margin-right:.2rem}
+  .seam-tags a{
+    font-family:var(--mono); font-weight:700; font-size:.66rem; text-decoration:none;
+    padding:.12rem .4rem; border-radius:99px; border:1.5px solid var(--design); color:var(--design);
   }
-  .identity .prims{
-    margin-top:.6rem; padding-top:.55rem; border-top:1px solid color-mix(in srgb, var(--design) 30%, transparent);
-    font-size:.74rem; color:var(--muted);
-  }
-
-  .hostos{
-    margin-top:.9rem; border:1px solid var(--line); border-radius:5px; background:var(--ground);
-    padding:.5rem .9rem; font-size:.74rem; color:var(--muted); text-align:center;
-    font-family:var(--mono);
-  }
-
-  .outward{display:grid; grid-template-columns:1fr 1fr; gap:1.2rem}
-  .out-box{border:1.5px solid var(--line-strong); border-radius:6px; background:var(--panel); padding:.7rem .9rem}
-  .out-box h3{font-size:.9rem; margin:0; font-weight:700}
-  .out-box p{margin:.15rem 0 0; font-size:.75rem; color:var(--muted)}
 
   section{margin-top:3rem}
   section h2{font-size:1.25rem; font-weight:750; letter-spacing:-.015em; margin:0 0 .3rem}
-  section > p{color:var(--muted); font-size:.9rem; max-width:68ch; margin:0 0 1.1rem}
+  section > p{color:var(--muted); font-size:.9rem; margin:0 0 1.1rem}
 
   .split{display:grid; grid-template-columns:1fr 1fr; gap:1rem}
   .splitcard{border:1.5px solid var(--line-strong); border-radius:6px; padding:.8rem 1rem; background:var(--panel)}
   .splitcard.keeps{border-color:var(--design); background:color-mix(in srgb, var(--design) 6%, var(--panel))}
   .splitcard h3{font-size:.9rem; margin:0 0 .3rem; font-weight:700}
   .splitcard p{margin:0; font-size:.8rem; color:var(--muted)}
-  @media (max-width:720px){ .split{grid-template-columns:1fr} .outward{grid-template-columns:1fr} }
+  @media (max-width:720px){ .split{grid-template-columns:1fr} }
 
   .tablewrap{overflow-x:auto; border:1px solid var(--line); border-radius:6px}
   table{border-collapse:collapse; width:100%; font-size:.8rem; min-width:46rem}
@@ -164,228 +156,290 @@
   }
   td{padding:.5rem .8rem; border-bottom:1px solid var(--line); background:var(--panel); vertical-align:top}
   tr:last-child td{border-bottom:none}
+  tr:target td{background:color-mix(in srgb, var(--design) 14%, var(--panel))}
   td.id{font-family:var(--mono); font-weight:700; white-space:nowrap}
   td .treat{display:inline-flex; align-items:center; gap:.35rem; white-space:nowrap}
+  td .dot{width:.65rem; height:.65rem; border-radius:2px; display:inline-block; flex:none}
+  td .dot.design{background:var(--design)} td .dot.adopt{background:var(--adopt)}
   footer{margin-top:3rem; color:var(--muted); font-size:.75rem; font-family:var(--mono)}
   a{color:var(--design)}
-  @media (prefers-reduced-motion: no-preference){ .chip{transition:transform .12s ease} .chip:hover{transform:translateY(-1px)} }
 </style>
 
 <main>
   <h1>Anatomy of a Mojo system</h1>
-  <p class="sub">A Mojo system is a personal AI. A Jarvis: always on, remembers you, reachable from every device you own, and yours. It is assembled from swappable pieces the way a Linux system is: distributions, desktops, and shells compete and get replaced, while your home directory stays yours. The <strong>Mojo System Interface (MSI)</strong> is the standard that defines each piece and each seam between pieces, so that anyone can build a better implementation of any piece and you can run whichever you want.</p>
-  <p class="thesis"><strong>One rule underneath everything:</strong> every box below is a replaceable implementation, except one. Your data. The data is the heart and soul of the system: package it up, drop it into a different assembly of pieces, and it is still the same assistant, the way dotfiles make any machine yours.</p>
+  <p class="term"><strong>Digital counterpart</strong>: a persistent AI system that maintains one continuous identity, memory, and set of permissions with its owner across time, devices, interfaces, and implementations. The term this map and the MSI are written against, the same way POSIX had to define &ldquo;operating system&rdquo; before it could define anything else.</p>
+  <p class="sub">A Mojo system is one: always on, remembers you, reachable from every device you own, and yours. It is assembled from swappable pieces the way a Linux system is: distributions, desktops, and shells compete and get replaced, while your home directory stays yours. The <strong>Mojo System Interface (MSI)</strong> is the standard that defines each piece and each seam between pieces, so that anyone can build a better implementation of any piece and you can run whichever you want.</p>
+  <p class="thesis"><strong>One rule underneath everything:</strong> every piece below is a replaceable implementation, except one. Your data. The data is the heart and soul of the system: package it up, drop it into a different assembly of pieces, and it is still the same assistant, the way dotfiles make any machine yours.</p>
 
-  <div class="legend">
-    <span><span class="dot design"></span>Defined by the MSI: the standard's own work</span>
-    <span><span class="dot adopt"></span>Adopted: an existing standard, consumed as-is</span>
-    <span><span class="dot open"></span>Deliberately not standardized: implementations compete here</span>
+  <div class="lifecycles">
+    <div class="life">
+      <h3>Reach</h3>
+      <p>The owner's reach, not any one machine's. Clients: terminal, phone, voice, watch. Many run at once; there's no &ldquo;exactly one&rdquo; here.</p>
+    </div>
+    <div class="life">
+      <h3>Runs</h3>
+      <p>Ephemeral. One harness working one task, killable, several live at once, each with its own service picks.</p>
+    </div>
+    <div class="life">
+      <h3>Services</h3>
+      <p>Plural. Models, tools, memory providers, sandboxes. A run is granted a set of each, not handed one.</p>
+    </div>
+    <div class="life">
+      <h3>System control</h3>
+      <p>Singular. Router, kernel, broker, provenance, fleet manager. Exactly one live instance of each per machine.</p>
+    </div>
   </div>
 
-  <div class="diagram">
-
-    <div class="band owner">
-      <span class="eyebrow">A human</span>
-      <h2>The Owner</h2>
-      <p style="margin-inline:auto">One person. Inside the system they are represented by a verifiable credential, something key-pair or DID-shaped, so any piece can check that &ldquo;the owner said so&rdquo; actually means the owner said so. Every permission in the system bottoms out here.</p>
+  <div class="rules">
+    <div class="rule">
+      <h3>Disagreement decides who's singular</h3>
+      <p>When two live instances could disagree about a fact that gates something consequential (a permission, a secret's scope, a trust tag, who's in the fleet), the piece is singular: the disagreement is itself the hole. When several readings of the same data are safe at once, the piece is plural and implementations compete side by side.</p>
     </div>
-
-    <div class="seams">
-      <div class="seam">
-        <div class="chip design"><span class="id">a</span>Owner verification: how any surface proves the human behind it is the owner</div>
-      </div>
-      <div class="seam">
-        <div class="chip design"><span class="id">b</span>Proactive delivery: how the system reaches the owner unprompted</div>
-      </div>
+    <div class="rule">
+      <h3>Only the kernel writes policy</h3>
+      <p>Among the singular system-control pieces, only the kernel writes: it grants, narrows, and revokes what's allowed, and records what happened. Router, the credential broker, provenance, and the fleet manager only read the data to do their jobs. This is about the permission trail specifically, not content: memory providers write ordinary data constantly, through a completely different, normal path.</p>
     </div>
+  </div>
 
-    <div class="band">
-      <span class="eyebrow">Swappable piece, profile: Client</span>
-      <h2>Windows</h2>
-      <p>Every surface the owner talks through. Each is a window into the same one assistant, never a separate copy of it. A window can run on one of the owner&rsquo;s machines (a terminal, a desktop app) or on a thin device that runs nothing else (a phone app, a watch). Windows are implementations too: anyone can build one, and an owner can use any mix at once.</p>
-      <div class="windows">
-        <span class="win">terminal, on a machine</span><span class="win">phone, thin</span><span class="win">voice</span><span class="win">watch, thin</span><span class="win">&hellip;any window</span>
+  <section style="margin-top:0">
+    <h2>The map</h2>
+    <p>Every piece the MSI defines, laid out by the four lifecycles above: reach, then the run, then services, then system control, then the data underneath all of it. Hover or focus a piece to reveal the seams touching it, hidden otherwise so the map reads clean at rest. Kernel (seam j) and the credential broker (seam p) touch nearly everything in their reach, hover them to see the full fan-out. Click a piece for its full description below, or a revealed seam letter to jump to its row in the ledger.</p>
+    <p class="mobile-note">Hover interactions need a mouse. The full connection list is in the seam ledger below.</p>
+
+    <div id="graph">
+      <svg class="edges-layer" id="edges-svg"></svg>
+      <div id="edge-labels"></div>
+
+      <a class="gnode owner" id="owner" href="#piece-owner">
+        <span class="geyebrow">a human</span>
+        <h3>The Owner</h3>
+        <p>Verified by a key-pair or DID-shaped credential. Every permission bottoms out here.</p>
+      </a>
+
+      <div class="grow">
+        <a class="gnode" id="client" href="#piece-client">
+          <span class="geyebrow">reach</span>
+          <h3>Client</h3>
+          <p>Every surface the owner talks through, or touches the data straight through.</p>
+        </a>
       </div>
-    </div>
 
-    <div class="band" style="margin-top:.6rem">
-      <span class="eyebrow">Swappable piece, profile: Peripheral</span>
-      <h2>Peripherals</h2>
-      <p>Every capability the system senses or acts through on the owner&rsquo;s devices: camera, location, contacts, notifications, screen control. A phone is usually both a window and a peripheral host, but talking through a device and commanding it are two different jobs with two different contracts. A peripheral declares what it offers; every invocation of one is a consequential action and goes through the kernel.</p>
-      <div class="windows">
-        <span class="win">camera</span><span class="win">location</span><span class="win">contacts</span><span class="win">notifications</span><span class="win">screen control</span><span class="win">&hellip;any capability</span>
-      </div>
-    </div>
+      <div class="machine">
+        <span class="frame-label">One of the owner's machines: laptop &middot; desktop &middot; server</span>
 
-    <div class="seams">
-      <div class="seam">
-        <div class="chip design"><span class="id">c</span>Client contract: what a window is handed, what it may cache, what it must never hold on its own</div>
-      </div>
-      <div class="seam">
-        <div class="chip design"><span class="id">o</span>Peripheral contract: what a capability declares, how it is invoked, every invocation kernel-checked</div>
-      </div>
-    </div>
-
-    <div class="machine">
-      <span class="frame-label">One of the owner's machines: laptop · desktop · server</span>
-
-      <div class="runtime">
-        <span class="region-label">Runs: ephemeral. One agent runtime working one task, killable, several live at once</span>
-        <div class="harness">
-          <span class="eyebrow">Swappable piece, profile: Harness</span>
-          <h3>Agent runtime</h3>
-          <p>The loop that does the thinking and acting: an existing agent runtime, adopted whole. The one piece that is born and dies with the run itself. The MSI defines only how it connects, what it is handed and what it owes back. Its insides are its own business.</p>
-          <div class="loop-open">The runtime&rsquo;s internals (how it plans, manages context, retries) are deliberately not standardized. Runtimes compete there; the MSI only pins the connections. It reads Skills (SKILL.md) straight from the identity the same way it reads any other data, not as a per-run binding like the services below &mdash; skills aren&rsquo;t chosen per run, they&rsquo;re just there.</div>
-        </div>
-        <div class="seams" style="padding-top:.9rem">
-          <div class="seam">
-            <div class="chip adopt"><span class="id">h</span>Skill format: SKILL.md</div>
+        <div class="region-label">the run &middot; ephemeral, one task</div>
+        <div class="grow">
+          <div style="position:relative">
+            <a class="gnode" id="harness" href="#piece-harness">
+              <span class="geyebrow">the run</span>
+              <h3>Harness</h3>
+              <p>The think-act loop for one task. Born and dies with the run.</p>
+            </a>
           </div>
         </div>
-      </div>
 
-      <div class="seams">
-        <div class="seam">
-          <div class="chip adopt"><span class="id">e</span>Model wire contract: the OpenAI-compatible baseline all local servers already speak, plus declared optional capabilities</div>
-        </div>
-        <div class="seam">
-          <div class="chip adopt"><span class="id">f</span>Tool protocol: MCP</div>
-        </div>
-        <div class="seam">
-          <div class="chip design"><span class="id">s</span>Memory access: what a run asks of a provider and what every compliant provider must accept and return</div>
-        </div>
-        <div class="seam">
-          <div class="chip design"><span class="id">q</span>Sandbox contract: where an allowed action executes and what it can see while running</div>
-        </div>
-      </div>
-
-      <div class="runtime">
-        <span class="region-label">Services: plural. Several of each kind can serve one machine at once; which ones a run uses is the router&rsquo;s pick</span>
-        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(13rem,1fr)); gap:.8rem">
-          <div class="mini">
-            <span class="eyebrow">Swappable piece, profile: Model endpoint</span>
-            <h3>Models</h3>
-            <p>Local or self-hosted model servers such as vLLM, Ollama, or llama.cpp. Any endpoint speaking the standard wire shape is interchangeable. Endpoints are modality-typed (chat, embedding, image, speech), separately swappable, and a runtime may use different endpoints for different steps of the same run.</p>
-          </div>
-          <div class="mini">
-            <span class="eyebrow">Consumed format</span>
+        <div class="region-label">services, plural</div>
+        <div class="grow">
+          <a class="gnode" id="model-endpoint" href="#piece-model-endpoint">
+            <span class="geyebrow">service</span>
+            <h3>Model endpoint</h3>
+            <p>Wherever inference runs, self-hosted or vendor-hosted.</p>
+          </a>
+          <a class="gnode" id="tools" href="#piece-tools">
+            <span class="geyebrow">service, no profile</span>
             <h3>Tools</h3>
-            <p>MCP servers. What a tool may actually touch is decided by the kernel, not by the tool protocol.</p>
+            <p>Anything a harness calls out to. One MCP server each.</p>
+          </a>
+          <a class="gnode" id="memory-provider" href="#piece-memory-provider">
+            <span class="geyebrow">service</span>
+            <h3>Memory provider</h3>
+            <p>The front door onto the data. Derives, never owns.</p>
+          </a>
+          <a class="gnode" id="sandbox" href="#piece-sandbox">
+            <span class="geyebrow">service</span>
+            <h3>Sandbox</h3>
+            <p>Where a permitted action actually executes.</p>
+          </a>
+        </div>
+
+        <div class="region-label">system control, singular</div>
+        <div class="grow">
+          <div style="position:relative">
+            <a class="gnode" id="router" href="#piece-router">
+              <span class="geyebrow">system control</span>
+              <h3>Router</h3>
+              <p>Always on. Watches triggers, assembles every run.</p>
+            </a>
+            <a class="node-tag design" href="#seam-g" title="Seam g: a trigger fires a run">g</a>
           </div>
-          <div class="mini">
-            <span class="eyebrow">Swappable piece, profile: Memory Provider</span>
-            <h3>Memory providers</h3>
-            <p>The software that serves the data: retrieval, indexing, search, the views a runtime works from. Because the data stays in the standard shape, several providers can serve the same identity at once, a vector-heavy one beside a grep-style one, and a run is pointed at whichever suits its task. Providers derive, they never own: anything built from the data must be rebuildable from the data alone. The relationship is Obsidian and your vault. Delete the app, keep everything. What a run asks of a provider and what it gets back is its own seam (s); whatever path a write takes, it lands in the data&rsquo;s shape, which is m&rsquo;s business.</p>
-          </div>
-          <div class="mini">
-            <span class="eyebrow">Swappable piece, profile: Sandbox</span>
-            <h3>Sandboxes</h3>
-            <p>Where a permitted action actually executes: a container, an isolated process, another of the owner&rsquo;s machines, a remote service. Placement, not permission. Which actions are allowed at all is the kernel&rsquo;s decision; where an allowed action runs, and what it can see while running, is the sandbox&rsquo;s.</p>
-          </div>
+          <a class="gnode" id="kernel" href="#piece-kernel">
+            <span class="geyebrow">system control</span>
+            <h3>Kernel</h3>
+            <p>Checks every consequential action, grants, narrows, revokes.</p>
+          </a>
+          <a class="gnode" id="credential-broker" href="#piece-credential-broker">
+            <span class="geyebrow">system control</span>
+            <h3>Credential broker</h3>
+            <p>Custody of secrets. Scopes and injects, never stores for the caller.</p>
+          </a>
+          <a class="gnode" id="provenance" href="#piece-provenance">
+            <span class="geyebrow">system control</span>
+            <h3>Provenance</h3>
+            <p>Trust-tags content before it reaches a run.</p>
+          </a>
+          <a class="gnode" id="fleet-manager" href="#piece-fleet-manager">
+            <span class="geyebrow">system control</span>
+            <h3>Fleet manager</h3>
+            <p>Keeps the owner's machines one system.</p>
+          </a>
+        </div>
+
+        <div class="grow wide">
+          <a class="gnode identity" id="identity" href="#piece-identity">
+            <span class="geyebrow">not a piece &middot; the data &middot; never swapped</span>
+            <h3>The identity</h3>
+            <p>Memory, personas, skills, policies, provenance. Portable, yours.</p>
+          </a>
+        </div>
+
+        <div class="hostrow">
+          <a class="gnode host" id="host-os" href="#piece-host-os">
+            <h3>Host OS</h3> &middot; any Linux distribution, macOS later &middot; ordinary userspace above
+          </a>
         </div>
       </div>
 
-      <div class="runtime" style="margin-top:.8rem">
-        <span class="region-label">System control: singular. Exactly one live instance of each per machine, swapped by the owner, never per run</span>
-        <div class="mini">
-          <span class="eyebrow">Swappable piece, profile: Router</span>
-          <h3>Router</h3>
-          <p>Always on. When nothing is running, the router is what watches the triggers: the clock, outside events, idle time. When one fires, or the owner asks for something, it assembles the run: which agent runtime, which model, which memory provider, which sandbox, on which machine, within the owner&rsquo;s constraints and budget. Every binding is chosen per run, and sub-runs get their own selection, recursively. Routers compete on selection quality. Hard limits are the owner&rsquo;s policy data, which a router obeys. They are never properties of the router itself.</p>
-        </div>
-
-        <div class="seams">
-          <div class="seam">
-            <div class="chip design"><span class="id">d</span>Routing contract: task + roster + constraints in, selection out</div>
-          </div>
-          <div class="seam">
-            <div class="chip design"><span class="id">g</span>Triggered runs: how a run fires from the clock, an outside event, or idle time; downtime memory maintenance is just a run; triggers themselves are data</div>
-          </div>
-        </div>
-
-      <div class="band kernel">
-        <span class="eyebrow">Swappable piece, profile: Kernel</span>
-        <h2>Kernel</h2>
-        <span class="tag">enforcement</span>
-        <p>The enforcement layer. Every consequential action (reading the data, writing it back, touching a tool or a peripheral that reaches the outside world) passes through here and is checked against what the owner allowed. It grants, narrows, and revokes permissions, and records what happened. Each machine runs its own kernel instance so enforcement keeps working offline, but all of an owner&rsquo;s machines answer to one shared policy. Like every other piece, the kernel is swappable: the MSI pins the contract precisely so that better kernels can replace any given one.</p>
-      </div>
-
-      <div class="seams">
-        <div class="seam">
-          <div class="chip design"><span class="id">i</span>Run contract: what a runtime is handed (identity fragment, capabilities, task), what it owes back (its learnings, written into the data&rsquo;s shape), and how a live run is interrupted or killed</div>
-        </div>
-        <div class="seam">
-          <div class="chip design"><span class="id">j</span>Enforcement contract: the permission model, granting, narrowing, revoking, auditing</div>
-        </div>
-      </div>
-
-      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(13rem,1fr)); gap:.8rem">
-        <div class="mini">
-          <span class="eyebrow">Swappable piece, profile: Credential Broker</span>
-          <h3>Credential broker</h3>
-          <p>Custody of the owner&rsquo;s secrets: API keys, tokens, passwords. It stores them, scopes them, and injects them into the specific call that needs them, so a real secret never sits in a model&rsquo;s context or a runtime&rsquo;s hands. The kernel decides whether an action is allowed; the broker makes sure the secret reaches only that action. Custody is exactly the kind of fact two live instances must never disagree about.</p>
-        </div>
-        <div class="mini">
-          <span class="eyebrow">Swappable piece, profile: Provenance</span>
-          <h3>Provenance</h3>
-          <p>Trust-tags content before it reaches a run: where it came from, whether the owner wrote it, whether it arrived from the open web. A runtime and a kernel can then treat a stranger&rsquo;s words differently from the owner&rsquo;s. One live instance per machine: if a run could pick its own tagger, untrusted content could be laundered through the laxest one.</p>
-        </div>
-        <div class="mini">
-          <span class="eyebrow">Swappable piece, profile: Fleet Manager</span>
-          <h3>Fleet manager</h3>
-          <p>Keeps the owner&rsquo;s machines one system. It admits a new machine into the set, revokes one no longer trusted, and coordinates the machines so one identity stays coherent across all of them: sync, conflict, partition, who&rsquo;s driving a live task. The kernel enforces on one machine; the fleet manager makes N machines answer as one assistant.</p>
-        </div>
-      </div>
-
-      <div class="seams">
-        <div class="seam">
-          <div class="chip design"><span class="id">p</span>Secret custody: secrets stored, scoped, and injected into exactly the call that needs them, never into model context</div>
-        </div>
-        <div class="seam">
-          <div class="chip design"><span class="id">r</span>Content trust: how external content is trust-tagged before it reaches the model</div>
-        </div>
-      </div>
-      </div>
-
-      <div class="seams">
-        <div class="seam">
-          <div class="chip design"><span class="id">m</span>Data shape: several providers can serve the same data at once; providers derive, never own. Writes land in the data&rsquo;s standard shape and reconcile there</div>
-        </div>
-      </div>
-
-      <div class="band identity">
-        <span class="eyebrow">Not a piece: the data. The only thing never swapped</span>
-        <h2>The identity</h2>
-        <span class="tag">portable · yours</span>
-        <p>Everything that makes the assistant <em>this</em> assistant: its memory of you, its personas, its skills (SKILL.md, learned procedures a runtime reads straight off the data), the owner&rsquo;s policies and budgets, a record of who wrote what under what authority. The memory is one; the personas on top of it can be many &mdash; each a voice plus a scoped view over the same memory, cut by per-unit permissions the data itself carries, so a work persona and a casual persona are two characters reading from one brain, not two brains. Permissions travel with the data itself. Stored as plain files. It can be packaged up and dropped into an entirely different assembly of pieces and it is still the same assistant. This is what makes any Mojo system <em>yours</em>.</p>
-        <div class="prims">Built on a small set of file-like primitives the MSI defines: the equivalent of files and directories in an OS.</div>
-      </div>
-
-      <div class="hostos">HOST OS: any Linux distribution (macOS later). Every piece above, the kernel included, is ordinary software running in OS userspace. No kernel modules, no custom OS.</div>
-    </div>
-
-    <div class="seams">
-      <div class="seam">
-        <div class="chip design"><span class="id">k</span>Federation: machine &#8596; machine, one identity kept coherent across all of them (sync, conflicts, and who&rsquo;s driving a live task)</div>
-      </div>
-      <div class="seam">
-        <div class="chip design"><span class="id">n</span>Machine admission: how a new machine earns its way into the owner&rsquo;s set</div>
-      </div>
-      <div class="seam">
-        <div class="chip adopt"><span class="id">l</span>Agent-to-agent: A2A, for talking to agents outside the owner&rsquo;s system</div>
+      <div class="grow">
+        <a class="gnode" id="other-machines" href="#piece-outward">
+          <span class="geyebrow">outward</span>
+          <h3>The owner's other machines</h3>
+          <p>Same identity, same policy, kept coherent by the fleet manager.</p>
+        </a>
+        <a class="gnode" id="other-agents" href="#piece-outward">
+          <span class="geyebrow">outward</span>
+          <h3>Other people's agents</h3>
+          <p>Different owners, opaque by design. No trust extended.</p>
+        </a>
       </div>
     </div>
+  </section>
 
-    <div class="outward">
-      <div class="out-box">
-        <h3>The owner&rsquo;s other machines</h3>
-        <p>Same identity, same policy. A desktop, a server, a laptop: together they behave as one assistant, not several that happen to share notes.</p>
+  <section>
+    <h2>The pieces</h2>
+    <p>What each box in the map actually is. Every card's seam tags link down to the ledger.</p>
+    <div class="pieces-grid">
+
+      <div class="piece-card wide" id="piece-owner">
+        <span class="piece-eyebrow">a human</span>
+        <h3>The Owner</h3>
+        <p>One person. Inside the system they are represented by a verifiable credential, something key-pair or DID-shaped, so any piece can check that &ldquo;the owner said so&rdquo; actually means the owner said so. Every permission in the system bottoms out here.</p>
+        <div class="seam-tags"><span>seams:</span><a href="#seam-a">a</a></div>
       </div>
-      <div class="out-box">
-        <h3>Other people&rsquo;s agents</h3>
-        <p>Different owners, opaque by design. A2A carries the conversation; nothing about the protocol extends trust. This is also how one person&rsquo;s Jarvis speaks to another&rsquo;s.</p>
+
+      <div class="piece-card" id="piece-client">
+        <span class="piece-eyebrow">reach</span>
+        <h3>Client</h3>
+        <p>The surface through which the owner reaches the one continuous assistant: a conversation (terminal, app, phone call, text), or direct access to the identity itself (a notes app, a file browser, anything that touches the data straight, the way Obsidian touches a vault). Each is a window into the same one identity, never a separate copy of it, and holds no session of its own: between runs nothing is live, a client reads and writes against the identity the way an IMAP client reads a mailbox, live only for the duration of a run addressed to it.</p>
+        <p>A client can run on any reachable device: one of the owner's own machines (a terminal, a desktop app), a thin device that runs nothing else (a phone app, a watch), or hardware the owner is only passing through (a friend's laptop, a work machine). Ownership of the device doesn't matter, since a client holds nothing authoritative locally to begin with.</p>
+        <div class="seam-tags"><span>seams:</span><a href="#seam-a">a</a><a href="#seam-b">b</a><a href="#seam-c">c</a></div>
       </div>
+
+      <div class="piece-card" id="piece-harness">
+        <span class="piece-eyebrow">the run</span>
+        <h3>Harness</h3>
+        <p>The loop that does the thinking and acting: an existing agent runtime, adopted whole rather than invented by the MSI. It is the one piece that is born and dies with the run itself. The MSI defines only how it connects: what it is handed, and what it owes back. Its insides (how it plans, retries, and manages its own live context budget as a run proceeds) are deliberately not standardized; harnesses compete there.</p>
+        <p>It reads Skills (SKILL.md, learned procedures) straight from the identity the same way it reads any other data, not as a per-run binding the way it picks a model or a sandbox: skills aren't chosen per run, they're just there.</p>
+        <div class="seam-tags"><span>seams:</span><a href="#seam-e">e</a><a href="#seam-f">f</a><a href="#seam-h">h</a><a href="#seam-i">i</a><a href="#seam-q">q</a><a href="#seam-s">s</a></div>
+      </div>
+
+      <div class="piece-card" id="piece-model-endpoint">
+        <span class="piece-eyebrow">service</span>
+        <h3>Model endpoint</h3>
+        <p>Wherever inference actually runs: a self-hosted server (vLLM, Ollama, llama.cpp) on hardware the owner controls, or a vendor's hosted API. Any endpoint speaking the standard wire shape is interchangeable. Endpoints are modality-typed: chat, embedding, image, and speech are separate kinds of endpoint, each with its own grant, not one roster spanning every modality.</p>
+        <div class="seam-tags"><span>seams:</span><a href="#seam-e">e</a><a href="#seam-p">p</a></div>
+      </div>
+
+      <div class="piece-card" id="piece-tools">
+        <span class="piece-eyebrow">service, no profile</span>
+        <h3>Tools</h3>
+        <p>Anything a harness calls out to, software or physical, in the same shape: a search API and a camera are both just an MCP server. What a tool may actually touch is decided by the kernel, not by the tool protocol.</p>
+        <div class="seam-tags"><span>seams:</span><a href="#seam-f">f</a><a href="#seam-p">p</a></div>
+      </div>
+
+      <div class="piece-card" id="piece-memory-provider">
+        <span class="piece-eyebrow">service</span>
+        <h3>Memory provider</h3>
+        <p>The standardized front door onto the data: a run reads and writes through whichever provider it's handed, never touching the data directly. What it returns, and how, is where the real engineering lives: retrieval, indexing, search, ranking, whatever view a harness needs. Providers are plural in the strongest sense: because the data stays in the standard shape underneath, several can serve the same identity at once, a vector-heavy one and a grep-style one side by side.</p>
+        <p>That plurality holds because of one strict rule: providers derive, they never own. Anything a provider builds from the data (indexes, embeddings) must be rebuildable from the data alone, and any write it accepts lands in the data's standard shape, where concurrent writes reconcile, never inside any one provider's private state. The relationship is Obsidian and your vault: delete the app, keep everything.</p>
+        <div class="seam-tags"><span>seams:</span><a href="#seam-m">m</a><a href="#seam-p">p</a><a href="#seam-s">s</a></div>
+      </div>
+
+      <div class="piece-card" id="piece-sandbox">
+        <span class="piece-eyebrow">service</span>
+        <h3>Sandbox</h3>
+        <p>Where a permitted action actually executes: a container, an isolated process, another of the owner's machines, a remote service. Placement, not permission: a sandbox is the boundary an action runs inside and what it can see while there, it decides nothing itself. Which actions are allowed at all, and whether a given placement was actually one the run was granted, stays the kernel's call throughout.</p>
+        <div class="seam-tags"><span>seams:</span><a href="#seam-p">p</a><a href="#seam-q">q</a></div>
+      </div>
+
+      <div class="piece-card" id="piece-router">
+        <span class="piece-eyebrow">system control</span>
+        <h3>Router</h3>
+        <p>Always on. When nothing is running, the router is what watches the triggers: the clock, outside events, idle time, an owner's direct request. When one fires, it assembles the run: given the task, the available pieces, and the owner's constraints and budget, it picks the harness and, on which machine, grants it a set of each service to draw from. Each machine runs its own router so triggers keep firing and runs keep assembling while offline; keeping several machines' routers from stepping on the same trigger is the fleet manager's job, not the router's own.</p>
+        <p>Routers compete on selection quality. Hard limits are the owner's policy data, which a router obeys. They are never properties of the router itself.</p>
+        <div class="seam-tags"><span>seams:</span><a href="#seam-d">d</a><a href="#seam-g">g</a></div>
+      </div>
+
+      <div class="piece-card" id="piece-kernel">
+        <span class="piece-eyebrow">system control &middot; enforcement</span>
+        <h3>Kernel</h3>
+        <p>The enforcement layer. Every consequential action any other piece in the system takes (reading the data, writing it back, touching a tool that reaches the outside world) passes through here and is checked against what the owner allowed. It grants, narrows, and revokes permissions, and records what happened, so &ldquo;what did it do, and who allowed it&rdquo; always has an answer. Each machine runs its own kernel instance so enforcement keeps working offline, but all of an owner's machines answer to one shared policy.</p>
+        <div class="seam-tags"><span>seams:</span><a href="#seam-i">i</a><a href="#seam-j">j</a><a href="#seam-q">q</a></div>
+      </div>
+
+      <div class="piece-card" id="piece-credential-broker">
+        <span class="piece-eyebrow">system control</span>
+        <h3>Credential broker</h3>
+        <p>The mediator between wherever the owner's secrets actually live (an OS keychain, a vault, a hardware token, whatever the owner picked) and the specific call that needs one. It doesn't own the storage; it scopes and injects, so a real secret never sits in a model's context, a harness's hands, or a sandboxed action's own view. The kernel decides whether an action is allowed; the broker makes sure the secret reaches only that action. One live broker per machine: custody is exactly the kind of fact two instances must never disagree about.</p>
+        <div class="seam-tags"><span>seams:</span><a href="#seam-p">p</a></div>
+      </div>
+
+      <div class="piece-card" id="piece-provenance">
+        <span class="piece-eyebrow">system control</span>
+        <h3>Provenance</h3>
+        <p>Trust-tags content before it reaches a run: where it came from, whether the owner wrote it, whether it arrived from the open web. A harness and a kernel can then treat a stranger's words differently from the owner's, instead of feeding everything to the model as if it were equally trusted. One live instance per machine: if a run could pick its own tagger, untrusted content could be laundered through the laxest one.</p>
+        <div class="seam-tags"><span>seams:</span><a href="#seam-r">r</a></div>
+      </div>
+
+      <div class="piece-card" id="piece-fleet-manager">
+        <span class="piece-eyebrow">system control</span>
+        <h3>Fleet manager</h3>
+        <p>Keeps the owner's machines one system. It admits a new machine into the owner's set, revokes one that is no longer trusted, and coordinates the set so one identity stays coherent across all of it: sync, conflict, partition, and who is driving a live task. The kernel enforces on one machine; the fleet manager is what makes N machines answer as one assistant instead of several that share notes. One live instance per machine, the same as every other system-control piece: each machine still needs its own instance so the fleet stays coherent even when one machine is offline.</p>
+        <div class="seam-tags"><span>seams:</span><a href="#seam-k">k</a><a href="#seam-n">n</a></div>
+      </div>
+
+      <div class="piece-card wide identity-card" id="piece-identity">
+        <span class="piece-eyebrow">not a piece &middot; the data &middot; the only thing never swapped</span>
+        <h3>The identity</h3>
+        <p>Everything that makes the assistant <em>this</em> assistant: its memory of the owner, its personas, its skills (SKILL.md, learned procedures a harness reads straight off the data, consumed format), the owner's policies and budgets, a record of who wrote what under what authority. The memory is one; the personas on top of it can be many. Each persona is a voice plus a scoped view over the same memory, cut by per-unit permissions the data itself carries, so a work persona and a casual persona are two characters reading from one brain, not two brains. Permissions travel with the data itself. It's stored as plain files, built on a small set of file-like primitives the MSI defines, the equivalent of files and directories in an OS. It can be packaged up and dropped into an entirely different assembly of pieces and it is still the same assistant. This is what makes any Mojo system yours.</p>
+        <p>Because the data is the one irreplaceable thing in the system, the MSI also has to pin down how it keeps its own history. A bad write, whether from a buggy harness or a wrong conclusion, must be recoverable by rolling the data back, whatever pieces sit above it and whatever host OS sits below.</p>
+        <div class="seam-tags"><span>seams:</span><a href="#seam-h">h</a><a href="#seam-j">j</a><a href="#seam-m">m</a></div>
+      </div>
+
+      <div class="piece-card" id="piece-host-os">
+        <span class="piece-eyebrow">substrate</span>
+        <h3>Host OS</h3>
+        <p>Any Linux distribution (macOS later). Every piece above, the kernel included, is ordinary software running in OS userspace. No kernel modules, no custom OS.</p>
+      </div>
+
+      <div class="piece-card" id="piece-outward">
+        <span class="piece-eyebrow">outward</span>
+        <h3>Outward</h3>
+        <p>The owner's other machines run the same stack and behave as one assistant, not several that happen to share notes. Keeping that true is the fleet manager's job, through the federation and machine-admission seams. Other people's agents are different owners, opaque by design: A2A carries the conversation and nothing about it extends trust. This is also how one person's digital counterpart speaks to another's.</p>
+        <div class="seam-tags"><span>seams:</span><a href="#seam-k">k</a><a href="#seam-n">n</a><a href="#seam-l">l</a></div>
+      </div>
+
     </div>
-  </div>
+  </section>
 
   <section>
     <h2>What survives, what swaps</h2>
@@ -397,43 +451,201 @@
       </div>
       <div class="splitcard">
         <h3>Everything else is owed nothing</h3>
-        <p>A different model thinks differently. A different runtime plans differently. A different window looks different. No piece is owed identical <em>output</em>; only the identity is owed identical <em>data</em>. That freedom is why pieces can compete at all.</p>
+        <p>A different model thinks differently. A different harness plans differently. A different client looks different. No piece is owed identical <em>output</em>; only the identity is owed identical <em>data</em>. That freedom is why pieces can compete at all.</p>
       </div>
     </div>
   </section>
 
   <section>
     <h2>Seam ledger</h2>
-    <p>Every arrow in the diagram and what the MSI must pin down for it. Eleven pieces get conformance profiles (Client, Peripheral, Router, Harness, Model endpoint, Sandbox, Credential Broker, Provenance, Kernel, Memory Provider, Fleet Manager), meaning an implementation is compliant against its profile, never against the whole document. The identity is data, not a piece: nothing to conform, only a shape to keep.</p>
+    <p>Every connection in the map above and what the MSI must pin down for it. Ten pieces get conformance profiles (Client, Router, Harness, Model endpoint, Sandbox, Credential Broker, Provenance, Kernel, Memory Provider, Fleet Manager): an implementation is compliant against its profile, never against the whole document. The identity is data, not a piece: nothing to conform, only a shape to keep.</p>
     <div class="tablewrap">
       <table>
         <thead>
           <tr><th>Seam</th><th>Connects</th><th>What the MSI must pin down</th><th>Posture</th></tr>
         </thead>
         <tbody>
-          <tr><td class="id">a</td><td>Owner &#8596; any window</td><td>How the human is verified as the owner. The login of the system</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
-          <tr><td class="id">b</td><td>System &rarr; owner</td><td>That a compliant window can receive an unsolicited delivery; urgency policy is the owner&rsquo;s data</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
-          <tr><td class="id">c</td><td>Window &#8596; system</td><td>What a window is handed, may cache, must never hold authoritatively</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
-          <tr><td class="id">d</td><td>Task &rarr; a run&rsquo;s assembly</td><td>Inputs (task, roster, constraints, budget) and output (a full piece-set for a run, chosen again for every sub-run); selection quality is competitive</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
-          <tr><td class="id">e</td><td>Runtime &#8596; model server</td><td>The OpenAI-compatible baseline, plus how optional capabilities (structured output, reasoning traces) are declared rather than assumed; endpoints are modality-typed (chat, embedding, image, speech), never assumed chat-only</td><td><span class="treat"><span class="dot adopt"></span>Adopt + envelope</span></td></tr>
-          <tr><td class="id">f</td><td>Runtime &#8596; tools</td><td>MCP, pinned version; enforcement stays with the kernel, not the protocol</td><td><span class="treat"><span class="dot adopt"></span>Adopt</span></td></tr>
-          <tr><td class="id">g</td><td>A trigger &rarr; a run</td><td>How a run fires with nothing else running: the always-on router watches the clock, outside events, and idle time (downtime maintenance, like consolidating and pruning memory, is just a run); triggers themselves are data</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
-          <tr><td class="id">h</td><td>Skills &rarr; runtime</td><td>SKILL.md as the on-disk shape; skills live in the identity and travel with it</td><td><span class="treat"><span class="dot adopt"></span>Adopt</span></td></tr>
-          <tr><td class="id">i</td><td>Kernel &rarr; runtime</td><td>What a run is handed (identity fragment, permissions, task), what it owes back (learnings, in the data&rsquo;s shape), and how a live run is interrupted or killed</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
-          <tr><td class="id">j</td><td>Kernel &#8596; everything consequential</td><td>The permission model: granting, narrowing, revoking, auditing, and how it works offline</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
-          <tr><td class="id">k</td><td>Machine &#8596; machine</td><td>One identity across N machines: ordering, conflict, partition, and live-task handoff (who&rsquo;s driving); the fleet manager&rsquo;s seam</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
-          <tr><td class="id">l</td><td>System &#8596; outside agents</td><td>A2A, pinned version; talking to strangers, no trust extended</td><td><span class="treat"><span class="dot adopt"></span>Adopt</span></td></tr>
-          <tr><td class="id">m</td><td>Providers &#8596; the data</td><td>The standard data shape; everything derived must be rebuildable from the data alone; how the data keeps history so a bad write can be rolled back; per-unit permissions travel in the data (they are what cuts a persona&rsquo;s view); several providers can serve the same data at once, so concurrent writes reconcile at the data, never inside one provider</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
-          <tr><td class="id">n</td><td>New machine &rarr; owner&rsquo;s set</td><td>How a machine is admitted (hardware attestation is one admissible mechanism) and how its trust is later revoked; the fleet manager&rsquo;s seam</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
-          <tr><td class="id">o</td><td>Runtime &#8596; peripherals</td><td>What a peripheral declares it offers, how it is invoked, and that every invocation is kernel-checked</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
-          <tr><td class="id">p</td><td>Broker &#8596; anything needing a secret</td><td>How secrets are stored, scoped, and injected into exactly the call that needs them, without entering model context; custody, not permission</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
-          <tr><td class="id">q</td><td>Kernel &rarr; sandbox</td><td>Where an allowed action executes and what it can see while running; placement is swappable (local container, host, another machine, remote service)</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
-          <tr><td class="id">r</td><td>External content &rarr; a run</td><td>How content is trust-tagged before it reaches the model: source, authorship, what vouches for it</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
-          <tr><td class="id">s</td><td>Runtime &#8596; memory provider</td><td>What a run asks of a provider (query in, sourced results out) and what every compliant provider must accept and return, so a harness can talk to whichever provider it is handed; whatever path a write takes, it lands in the data&rsquo;s shape, which is m&rsquo;s business</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
+          <tr id="seam-a"><td class="id">a</td><td>Owner &#8596; any client</td><td>How the human is verified as the owner. The login of the system</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
+          <tr id="seam-b"><td class="id">b</td><td>System &rarr; owner</td><td>That a compliant client can receive an unsolicited delivery; urgency policy is the owner&rsquo;s data</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
+          <tr id="seam-c"><td class="id">c</td><td>Client &#8596; system</td><td>What a client is handed, may cache, must never hold authoritatively</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
+          <tr id="seam-d"><td class="id">d</td><td>Task &rarr; a run&rsquo;s assembly</td><td>Inputs (task, roster, constraints, budget) and output (a full piece-set for a run, chosen again for every sub-run); selection quality is competitive</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
+          <tr id="seam-e"><td class="id">e</td><td>Harness &#8596; model endpoint</td><td>The OpenAI-compatible baseline, plus how optional capabilities (structured output, reasoning traces) are declared rather than assumed; endpoints are modality-typed (chat, embedding, image, speech), never assumed chat-only</td><td><span class="treat"><span class="dot adopt"></span>Adopt + envelope</span></td></tr>
+          <tr id="seam-f"><td class="id">f</td><td>Harness &#8596; tools</td><td>MCP, pinned version; enforcement stays with the kernel, not the protocol</td><td><span class="treat"><span class="dot adopt"></span>Adopt</span></td></tr>
+          <tr id="seam-g"><td class="id">g</td><td>A trigger &rarr; a run</td><td>How a run fires with nothing else running: the always-on router watches the clock, outside events, and idle time (downtime maintenance, like consolidating and pruning memory, is just a run); triggers themselves are data</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
+          <tr id="seam-h"><td class="id">h</td><td>Skills &rarr; harness</td><td>SKILL.md as the on-disk shape; skills live in the identity and travel with it</td><td><span class="treat"><span class="dot adopt"></span>Adopt</span></td></tr>
+          <tr id="seam-i"><td class="id">i</td><td>Kernel &rarr; harness</td><td>What a run is handed (identity fragment, permissions, task), what it owes back (learnings, in the data&rsquo;s shape), and how a live run is interrupted or killed</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
+          <tr id="seam-j"><td class="id">j</td><td>Kernel &#8596; everything consequential</td><td>The permission model: granting, narrowing, revoking, auditing, and how it works offline</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
+          <tr id="seam-k"><td class="id">k</td><td>Machine &#8596; machine</td><td>One identity across N machines: ordering, conflict, partition, and live-task handoff (who&rsquo;s driving); the fleet manager&rsquo;s seam</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
+          <tr id="seam-l"><td class="id">l</td><td>System &#8596; outside agents</td><td>A2A, pinned version; talking to strangers, no trust extended</td><td><span class="treat"><span class="dot adopt"></span>Adopt</span></td></tr>
+          <tr id="seam-m"><td class="id">m</td><td>Providers &#8596; the data</td><td>The standard data shape; everything derived must be rebuildable from the data alone; how the data keeps history so a bad write can be rolled back; per-unit permissions travel in the data (they are what cuts a persona&rsquo;s view); several providers can serve the same data at once, so concurrent writes reconcile at the data, never inside one provider</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
+          <tr id="seam-n"><td class="id">n</td><td>New machine &rarr; owner&rsquo;s set</td><td>How a machine is admitted (hardware attestation is one admissible mechanism) and how its trust is later revoked; the fleet manager&rsquo;s seam</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
+          <tr id="seam-p"><td class="id">p</td><td>Broker &#8596; anything needing a secret</td><td>How secrets are stored, scoped, and injected into exactly the call that needs them, without entering model context; custody, not permission</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
+          <tr id="seam-q"><td class="id">q</td><td>Kernel &rarr; sandbox, harness &rarr; sandbox</td><td>Where an allowed action executes and what it can see while running; placement is swappable (local container, host, another machine, remote service); the harness is what actually executes inside whatever the kernel authorized</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
+          <tr id="seam-r"><td class="id">r</td><td>External content &rarr; a run</td><td>How content is trust-tagged before it reaches the model: source, authorship, what vouches for it</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
+          <tr id="seam-s"><td class="id">s</td><td>Harness &#8596; memory provider</td><td>What a run asks of a provider (query in, sourced results out) and what every compliant provider must accept and return, so a harness can talk to whichever provider it is handed; whatever path a write takes, it lands in the data&rsquo;s shape, which is m&rsquo;s business</td><td><span class="treat"><span class="dot design"></span>MSI</span></td></tr>
         </tbody>
       </table>
     </div>
   </section>
 
-  <footer>Mojo project · visual companion to anatomy.md (the source of truth) · 2026-07-10 · a working map, not a finished design</footer>
+  <footer>Mojo project &middot; visual companion to anatomy.md (the source of truth) &middot; 2026-07-13 &middot; a working map, not a finished design</footer>
 </main>
+
+<script>
+(function(){
+  var graph = document.getElementById('graph');
+  var svg = document.getElementById('edges-svg');
+  var labelLayer = document.getElementById('edge-labels');
+  if(!graph || !svg) return;
+  var NS = 'http://www.w3.org/2000/svg';
+
+  var edges = [
+    {from:'owner', to:'client', seams:['a','b'], posture:'design', dir:'both'},
+    {from:'client', to:'router', seams:['c'], posture:'design', dir:'both'},
+    {from:'router', to:'harness', seams:['d'], posture:'design', dir:'to'},
+    {from:'harness', to:'model-endpoint', seams:['e'], posture:'adopt', dir:'both'},
+    {from:'harness', to:'tools', seams:['f'], posture:'adopt', dir:'both'},
+    {from:'identity', to:'harness', seams:['h'], posture:'adopt', dir:'to'},
+    {from:'kernel', to:'harness', seams:['i','j'], posture:'design', dir:'to'},
+    {from:'kernel', to:'router', seams:['j'], posture:'design', dir:'to'},
+    {from:'kernel', to:'provenance', seams:['j'], posture:'design', dir:'to'},
+    {from:'kernel', to:'credential-broker', seams:['j'], posture:'design', dir:'to'},
+    {from:'kernel', to:'fleet-manager', seams:['j'], posture:'design', dir:'to'},
+    {from:'kernel', to:'model-endpoint', seams:['j'], posture:'design', dir:'to'},
+    {from:'kernel', to:'tools', seams:['j'], posture:'design', dir:'to'},
+    {from:'kernel', to:'memory-provider', seams:['j'], posture:'design', dir:'to'},
+    {from:'kernel', to:'sandbox', seams:['j','q'], posture:'design', dir:'to'},
+    {from:'kernel', to:'identity', seams:['j'], posture:'design', dir:'to'},
+    {from:'fleet-manager', to:'other-machines', seams:['k','n'], posture:'design', dir:'both'},
+    {from:'harness', to:'other-agents', seams:['l'], posture:'adopt', dir:'both'},
+    {from:'memory-provider', to:'identity', seams:['m'], posture:'design', dir:'both'},
+    {from:'harness', to:'sandbox', seams:['q'], posture:'design', dir:'both'},
+    {from:'credential-broker', to:'model-endpoint', seams:['p'], posture:'design', dir:'to'},
+    {from:'credential-broker', to:'tools', seams:['p'], posture:'design', dir:'to'},
+    {from:'credential-broker', to:'memory-provider', seams:['p'], posture:'design', dir:'to'},
+    {from:'credential-broker', to:'sandbox', seams:['p'], posture:'design', dir:'to'},
+    {from:'provenance', to:'harness', seams:['r'], posture:'design', dir:'to'},
+    {from:'harness', to:'memory-provider', seams:['s'], posture:'design', dir:'both'}
+  ];
+
+  function rectIn(el){
+    var r = el.getBoundingClientRect();
+    var g = graph.getBoundingClientRect();
+    var left = r.left - g.left, top = r.top - g.top;
+    return {left:left, top:top, width:r.width, height:r.height, cx:left + r.width/2, cy:top + r.height/2};
+  }
+
+  function anchor(rect, dx, dy){
+    if(dx === 0 && dy === 0) return {x:rect.cx, y:rect.cy};
+    var hw = rect.width/2, hh = rect.height/2;
+    var sx = dx !== 0 ? Math.abs(hw/dx) : Infinity;
+    var sy = dy !== 0 ? Math.abs(hh/dy) : Infinity;
+    var s = Math.min(sx, sy);
+    return {x:rect.cx + dx*s, y:rect.cy + dy*s};
+  }
+
+  function draw(){
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+    while(labelLayer.firstChild) labelLayer.removeChild(labelLayer.firstChild);
+
+    var w = graph.scrollWidth, h = graph.scrollHeight;
+    svg.setAttribute('width', w);
+    svg.setAttribute('height', h);
+    svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
+
+    var defs = document.createElementNS(NS, 'defs');
+    ['design','adopt'].forEach(function(cls){
+      var m = document.createElementNS(NS, 'marker');
+      m.setAttribute('id', 'arrow-' + cls);
+      m.setAttribute('viewBox', '0 0 10 10');
+      m.setAttribute('refX', '8'); m.setAttribute('refY', '5');
+      m.setAttribute('markerWidth', '6.5'); m.setAttribute('markerHeight', '6.5');
+      m.setAttribute('orient', 'auto-start-reverse');
+      var p = document.createElementNS(NS, 'path');
+      p.setAttribute('d', 'M0,0 L10,5 L0,10 z');
+      p.setAttribute('fill', cls === 'design' ? 'var(--design)' : 'var(--adopt)');
+      m.appendChild(p);
+      defs.appendChild(m);
+    });
+    svg.appendChild(defs);
+
+    edges.forEach(function(e){
+      var fromEl = document.getElementById(e.from);
+      var toEl = document.getElementById(e.to);
+      if(!fromEl || !toEl) return;
+      var rf = rectIn(fromEl), rt = rectIn(toEl);
+      var dx = rt.cx - rf.cx, dy = rt.cy - rf.cy;
+      var p1 = anchor(rf, dx, dy), p2 = anchor(rt, -dx, -dy);
+
+      var path = document.createElementNS(NS, 'path');
+      path.setAttribute('d', 'M' + p1.x + ',' + p1.y + ' L' + p2.x + ',' + p2.y);
+      path.setAttribute('stroke', e.posture === 'design' ? 'var(--design)' : 'var(--adopt)');
+      path.setAttribute('stroke-width', '1.75');
+      path.setAttribute('fill', 'none');
+      path.setAttribute('marker-end', 'url(#arrow-' + e.posture + ')');
+      if(e.dir === 'both') path.setAttribute('marker-start', 'url(#arrow-' + e.posture + ')');
+      path.setAttribute('class', 'edge-line');
+      path.dataset.from = e.from; path.dataset.to = e.to;
+      svg.appendChild(path);
+
+      var mx = (p1.x + p2.x) / 2, my = (p1.y + p2.y) / 2;
+      var label = document.createElement('a');
+      label.href = '#seam-' + e.seams[0];
+      label.className = 'edge-tag ' + e.posture;
+      label.textContent = e.seams.join('·');
+      label.title = 'Seam ' + e.seams.join(', ') + ': ' + fromEl.querySelector('h3').textContent + ' ↔ ' + toEl.querySelector('h3').textContent;
+      label.style.left = mx + 'px';
+      label.style.top = my + 'px';
+      label.dataset.from = e.from; label.dataset.to = e.to;
+      label.addEventListener('mouseenter', holdOpen);
+      label.addEventListener('mouseleave', releaseSoon);
+      labelLayer.appendChild(label);
+    });
+  }
+
+  var hideTimer = null;
+  function holdOpen(){ if(hideTimer){ clearTimeout(hideTimer); hideTimer = null; } }
+  function releaseSoon(){ holdOpen(); hideTimer = setTimeout(function(){ highlight(null); }, 200); }
+
+  function highlight(id){
+    var related = {};
+    if(id){
+      related[id] = true;
+      edges.forEach(function(e){
+        if(e.from === id) related[e.to] = true;
+        if(e.to === id) related[e.from] = true;
+      });
+    }
+    document.querySelectorAll('.edge-line, .edge-tag').forEach(function(el){
+      var show = id && (el.dataset.from === id || el.dataset.to === id);
+      el.style.opacity = show ? '1' : '0';
+      el.style.pointerEvents = show ? 'auto' : 'none';
+    });
+    document.querySelectorAll('.node-tag').forEach(function(el){
+      var show = id === 'router';
+      el.style.opacity = show ? '1' : '0';
+      el.style.pointerEvents = show ? 'auto' : 'none';
+    });
+    document.querySelectorAll('.gnode').forEach(function(el){
+      el.classList.toggle('related', !!(id && related[el.id]));
+    });
+  }
+
+  document.querySelectorAll('a.gnode[id]').forEach(function(el){
+    el.addEventListener('mouseenter', function(){ holdOpen(); highlight(el.id); });
+    el.addEventListener('mouseleave', releaseSoon);
+    el.addEventListener('focus', function(){ highlight(el.id); });
+    el.addEventListener('blur', function(){ highlight(null); });
+  });
+
+  var raf = null;
+  function scheduleDraw(){
+    if(raf) cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize', scheduleDraw);
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(scheduleDraw);
+  if(window.ResizeObserver) new ResizeObserver(scheduleDraw).observe(graph);
+  scheduleDraw();
+})();
+</script>

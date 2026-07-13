@@ -6,6 +6,742 @@ where the reasoning trail lives.*
 
 ---
 
+## 2026-07-13 (latest) — Phase 1 closed, anatomy.html rebuilt as a real diagram, seam l turned out to have no owner anywhere, phase 2 (seam pass) drafted then suspended on a bigger question: is a seam even the right unit
+
+Closed phase 1 (step 1.13). Coherence read of anatomy.md end to end: clean,
+no edits needed, no stray peripheral/seam-o references, no em dashes,
+piece count and seam-letter set internally consistent. Two small
+research-plan.md loose ends from the peripheral retirement, unrelated to
+the coherence read itself, fixed in passing: the Closed-comparators
+precedent's stale "Feed c, o" repointed to f (peripheral's real successor),
+and seam p's identity-vs-machine-scoped-custody question, which only lived
+on p's own row, cross-referenced onto k and n's rows too.
+
+Then anatomy.html, which turned into most of the session. First pass just
+caught it up to anatomy.md: cut the whole retired Peripheral band and seam
+o, dropped Jarvis (the persona name, not a public term per
+naming-conventions.md) in favor of what anatomy.md actually says, added
+content anatomy.md had gained since the last sync (the digital-counterpart
+definition, the two system-control invariant rules, the identity's
+rollback/history paragraph, Router's fourth trigger kind, Tools absorbing
+the retired Peripheral's hardware examples), fixed a real content bug where
+the credential broker's html prose still said it "stores" secrets when the
+piece pass had already corrected that to mediates-not-stores.
+
+Clarke's read on that pass: still wrong in ways that mattered more than
+sync. "Swappable piece, profile: X" labels on every box when everything is
+swappable by the same one rule stated once at the top, that's exactly the
+kind of per-piece restatement the piece-pass writing convention already
+forbids in anatomy.md's own prose and I'd reintroduced it in the html.
+Piece names had drifted from what anatomy.md actually calls things
+(Windows/Client, Agent runtime/Harness). The digital-counterpart definition
+needs to come before the sentence that uses the term, not after. And the
+diagram itself, a stack of labeled section dividers with no real lines
+connecting specific boxes, wasn't actually a diagram.
+
+Rebuilt it as a real node-and-edge graph: compact piece cards with stable
+ids, an SVG layer computing actual connector lines from live
+getBoundingClientRect() positions (so it stays correct at any width, not
+hand-placed coordinates), full prose detail moved to cards below the
+diagram. First version tried to route around the crossing-lines problem by
+regrouping pieces spatially (clustering harness next to kernel/router/
+provenance) and by hand-routing long edges through margin lanes and
+same-row arcs. Real bugs surfaced testing it in a real browser (playwright,
+screenshotted, not just trusted): a genuine NaN in the path data from
+`rectIn()` never returning a `.right`/`.bottom` the lane math read, and
+z-index ordering that put lines behind pieces when Clarke wanted them in
+front (lines only show on hover now, so nothing behind them stays hidden).
+
+Bigger catches, both real modeling gaps, not cosmetic: seam q was drawn as
+kernel-to-sandbox only, but Harness's own row in the Pieces table lists q
+among what it owns too ("executes inside"), same shape as its other three
+service seams (e, f, s), so it needed its own line, not just kernel's.
+And seam l (agent-to-agent) had been drawn Harness-to-other-agents by
+analogy to how it calls tools over MCP. Checked against research-plan.md
+for real: l has zero piece attribution anywhere, not itemized on any
+piece's row and not covered by a blanket clause the way j and p each have.
+Every other seam in the diagram traced to something real; l didn't. That's
+what the piece pass exists to prevent and nothing had done the equivalent
+check for seams.
+
+Once Clarke said lines could cross through pieces on hover (since only the
+relevant ones show at all, the earlier margin-routing complexity was
+solving a problem that no longer existed), the diagram simplified a lot:
+dropped the arc/bus routing, went back to the plain four-row categorical
+layout anatomy.md's own map already uses (harness alone, services, system
+control, identity), all edges straight lines, and made j (kernel touches
+everything consequential) and p (broker touches anything needing a secret)
+real fanned-out edges instead of a background-tint zone, since a zone
+had been Clarke's actual complaint, seam p effectively wasn't visible as a
+seam at all.
+
+That led straight into the real thread of the session: seam l's gap meant
+no one had ever checked seam-to-piece attribution the rigorous way the
+piece pass checked pieces. Drafted a new phase 2 (seam pass) for
+msi-steps.md and research-plan.md, renumbering the old phase 2 (seam walk)
+to phase 3 and assembly to phase 4. Worked out what "prior art" even means
+for a seam rather than a piece: for the four adopted seams (e, f, h, l) it's
+the real spec itself, read for which component actually makes the call, not
+analogy. For the MSI-posture seams there's no protocol to check, that's the
+point of MSI posture, but the relationship still exists in every real
+system, just permanently wired rather than swappable, so prior art means
+reading how it's actually built where it's bolted in.
+
+Tested that method on two live questions rather than just stating it.
+Skills scoping (does a run see every skill, or a subset): turned out not to
+be seam h's question at all, h is just the adopted SKILL.md format, full
+stop; which skills a given run can see is an ordinary instance of m's
+per-unit permissions cutting a scoped view, enforced the same way any other
+memory read is. Persona setup and selection (how does the owner define a
+work persona, how does a run end up bound to the right one): setup is an
+ordinary owner-authorized, kernel-written permission change (a, then j,
+landing in m), selection is the router's ordinary assembly job (d, handed
+to the harness as the identity fragment via i), no new mechanism either
+way, though d's row picked up a real candidate finding, persona might need
+to resolve before the rest of the roster since it could gate which
+tools/models are even eligible, not decided, flagged for the real walk.
+Findings recorded on h, m, and d's rows.
+
+Clarke also proposed replacing the vague "walk pairs that plausibly
+interact" missing-seam-hunt step with an actual exhaustive matrix, every
+piece against every piece (13 nodes, Host OS excluded as substrate, roughly
+13x13), checked as a real table in research-plan.md rather than a mental
+pass, so completeness is checkable later instead of trusted.
+
+Then, thinking through why j and p don't fit the piece-pair shape cleanly,
+a bigger question opened: is a seam even the right unit at all? POSIX's
+real precedent, recalled, not yet verified against the actual spec text,
+is that a kernel boundary isn't organized by which piece is on the other
+end, it's one boundary (process to kernel) decomposed into many
+individually named operations (read, write, open...). If that's the right
+model here, q and p might not be separate top-level seams at all, they
+might be two already-half-found named operations under j's one boundary,
+and the current 18-letter list could be the wrong unit entirely. Not
+something to decide on a recollection mid-session, and not something to
+decide in a context this loaded either.
+
+Landed: suspend phase 2 as drafted rather than run it on a possibly-wrong
+assumption. Added a client-mode-switch idea to ideas.md (an explicit way to
+tell a client "you're talking to work-me now" rather than always inferring
+persona) while it was fresh, since it came up discussing persona selection
+and isn't needed yet. Handoff written for a fresh session to check pieces
+against real POSIX structure too (Clarke's bet is they'll hold, but
+asserted, not verified, same as everything else in this project), and to
+actually resolve the seam-shape question against the real spec text before
+any seam work continues.
+
+---
+
+## 2026-07-12 — Fleet manager (1.12) covered: cut a restatement bug in the prose, Letta's Constellation is real precedent and a real counter-example at once, phase 1 down to the close-out step
+
+Piece pass on Fleet manager, seam-sides k and n. Prior art first: OpenClaw has
+no fleet concept at all, two open, unshipped GitHub feature requests confirm
+the gap directly rather than by absence (#47871 node awareness, #38878
+multi-device shared memory). Khoj is a centralized hub, one server, many thin
+clients, not peer machines, consistent with its running role as the
+centralized-cloud-authoritative counter-example everywhere else in this
+tracker. Letta's Remote Environments is the real find: an actual shipped
+product where the same agent moves mid-conversation between machines and its
+memory follows it, exactly the "who's driving" shape anatomy.md's Fleet
+manager paragraph already describes. But it's brokered through Constellation,
+Letta's own external cloud coordination service, which makes it simultaneously
+real precedent that the shape works and a real counter-example to anatomy's
+one-instance-per-machine rule. I initially flagged that as an open question;
+Clarke caught it as already-settled ground, the same per-machine/no-anchor
+scope Router's 2026-07-14 pass already nailed down for the whole
+system-control class, and "Flagship" is retired pre-reset vocabulary, not a
+door to reopen. The distinction that survived: what the rule forecloses is an
+*external* cloud-authoritative single point the way Constellation is; a
+leader-election or primary-designation strategy run among the owner's own
+already-live per-machine instances is still open to implementations, Signal's
+primary-device-among-peers being the closer real precedent than Constellation
+for that internal strategy.
+
+Adjacent real standards landed on k and n's rows: Signal's linked-device
+model (primary device mandatory, others join by scanning its QR code,
+owner-authenticated, no third party approves; revocation induces a key
+ratchet and a newly-linked device doesn't inherit past history — admission
+and revocation are not symmetric operations, a real gap in how the piece's
+prose had been treating them as one clause); Tailscale's device approval (an
+admin approves a new node; deauthorizing and deleting are two distinct,
+differently-final actions; node-key revocation near-instant); Apple
+Continuity/Handoff as the closest real precedent for "who's driving"
+specifically, a lightweight activity-description signal kept architecturally
+separate from bulk data sync (iCloud) — real evidence it's a different kind
+of problem from sync/conflict/partition even though the piece's prose named
+them in one sentence.
+
+The prose fix itself: "two fleet managers on the same machine disagreeing
+about who else is in the fleet is exactly the kind of fact that can't have
+two answers" was a near-verbatim restatement of the general rule already
+stated once at the document's top ("who is in the fleet" is literally that
+section's own example). Cut, replaced with the same offline-resilience
+reasoning Router's and Kernel's paragraphs already give for the identical
+one-instance-per-machine fact. Same bug shape as the restatements Router's
+pass removed 2026-07-14; worth watching for on the remaining pieces.
+
+Two open questions landed on seam n's row rather than resolved here: who
+authorizes a new machine's admission, and whether an admitted machine gets
+the full data immediately or a scoped subset. Real find surfaced while
+routing those: seams k and n together are also the cross-implementation-fleet
+interoperability contract, a machine running one compliant fleet-manager
+implementation joining a fleet whose sibling machines run a different one.
+Clarke's reaction was immediate, real stakes for a future Collective/Armada
+made of independently-built fleets, not something either of us had connected
+before. Gated behind Collectives per the project's own sequencing rule, so it
+went to ideas.md rather than any further work this session.
+
+Phase 1's piece pass is now down to its close-out step, 1.13: read anatomy.md
+end to end for coherence, confirm every seam row holds the questions phase 1
+raised, sync anatomy.html, move the "Currently on" line to phase 2.
+
+---
+
+## 2026-07-12 (later) — Provenance (1.11) covered: prose confirmed as-is, two of three inherited prior-art citations turned out to be real-standard-wrong-fit, the actual working precedent found elsewhere
+
+Piece pass on Provenance, seam-side r. Forked the research (C2PA, Sigstore,
+OpenFang's signing, and whether the digital-counterpart systems have any
+content-trust mechanism at all) to keep the scrape noise out. The prose
+itself needed nothing: "trust-tags content... where it came from... whether
+it arrived from the open web" was already origin-based and mechanism-agnostic,
+a piece pass that finds the prose right the first time.
+
+The real work was in the prior art the row inherited before this pass ever
+checked it. Two of its three citations turned out to be genuine mismatches,
+not weak precedent, wrong subject matter entirely. C2PA, checked against the
+actual spec, tags media authenticity at the point of creation, was this
+image AI-generated, who made it, not whether an agent should trust a piece of
+ingested text; no assertion in a C2PA manifest is even mandatory, so content
+from a bad actor just ships with no manifest at all. Sigstore/SLSA is
+software-supply-chain attestation, this build came from this commit, not
+content trust. Both real, shipped standards, just answering a different
+question than this seam asks. OpenFang's Ed25519 signing, also inherited into
+this row, turned out to be a straightforward miscite: it signs capability and
+identity manifests, tamper-evidence for tools, already correctly credited to
+seam j's row from the Kernel pass, never content.
+
+The real fits came from where the row didn't have citations yet. DeepMind's
+CaMeL (2025) is the load-bearing find: a taint-tracking interpreter that
+attaches unforgeable origin tags to data as it enters the system and gates
+sensitive actions when tainted data reaches them, tag-here/enforce-at-the-gate
+as two cooperating mechanisms, matching this project's own Provenance/Kernel
+split independently. Anthropic's own shipped tool-content containment
+(a classifier inspects tool return values before they enter context) is real,
+current, working precedent for active inspection specifically. OpenAI's
+Instruction Hierarchy, shipped as message-role privilege, confirmed real but
+confirmed insufficient alone: a coarse role can't tell a web search result
+from the owner's own file if both arrive under the same role, necessary
+background, not a full answer. OpenClaw's own issue tracker names this seam's
+exact shape (issue #7707, "Memory Trust Tagging by Source," open,
+unimplemented, source-tiered trust with decay) without having shipped it,
+this project's running pattern again, the digital counterparts recognize the
+problem and haven't built the piece. Hermes, Letta, and Khoj: no mechanism
+found, consistent negative.
+
+Clarke's actual scope call, the substantive decision this session: keep
+MSI-1's mandatory core to mechanical origin-based tagging only, tied to which
+fetch or tool path content crossed in on, and treat active content inspection
+(Anthropic's shape) as a legitimate richer tier implementations can compete
+on, not something invented into the mandatory core. Consistent with his
+standing instruction for this phase: minimal correct core, park real
+questions rather than resolve them here, get the piece prose and seam-sides
+right so MSI-1 and a first, known-inadequate reference implementation can
+actually ship and pull in outside help, depth comes from iteration once
+something real exists. Decay/reassessment policy (OpenClaw's ask) parked the
+same way, owner-policy-data territory, not a seam-mandatory obligation, for
+seam r's real walk to actually settle. C2PA and Sigstore's citations were
+also a small scope decision: kept in the row rather than dropped, honestly
+flagged as checked-and-mismatched, real standards just answering a different
+question, a different case from kernel.chat's outright removal since these
+two actually exist.
+
+No gap without a seam to live in; both real questions landed inside seam r's
+own row, parked for step 2.14. Provenance done for this pass; next unchecked
+step is 1.12, Fleet manager.
+
+## 2026-07-12 — Credential broker (1.10) covered: mediates, doesn't store, matching Memory provider's derive-never-own shape; two distinct real mechanisms found, scoping vs. keeping plaintext out of hands entirely
+
+Piece pass on Credential broker, seam-side p. Forked the research (OS
+keychains/keyrings, HashiCorp Vault, sops/age, `pass`, systemd-creds, plus
+the usual four digital-counterpart systems) to keep the scrape noise out.
+Real finding, the useful kind a piece pass exists to surface: two genuinely
+different mechanisms were hiding under one seam-row line. Scoping/expiry of
+what the secret even is (Vault's dynamic secrets, a fresh uniquely-scoped
+credential minted per lease and auto-revoked; AWS STS's short-lived, scoped
+credential triple) is real and load-bearing for "custody, not permission,"
+but both still hand the live secret back to the caller as an ordinary return
+value. Keeping the plaintext out of the consumer's hands at all is a
+separate, harder property, and the best real precedent for it, Claude Code's
+own sandbox proxy and OpenClaw's sentinel mechanism, independently converged
+on the same shape: the consumer only ever holds an opaque placeholder, and a
+component outside its own memory swaps in the real value only at the
+network/adapter boundary, right as the call leaves. OpenClaw's own docs
+honestly flag theirs as same-process protection only, a real, weaker
+guarantee than Claude Code's cross-process sandbox boundary. Letta adds a
+third variant, redaction in both directions, substituted in and scrubbed
+from tool output on the way back, with secrets bound to agent identity
+rather than machine. Confirmed negative precedent throughout: OS
+keychains/keyrings and sops/age/`pass` all hand plaintext straight back to
+the requester, encrypted-at-rest only, no injection concept, useful as the
+baseline the piece has to go beyond and nothing more. Hermes and Khoj are
+real negatives too, plaintext env vars, no scoping, no broker concept at
+all, the same pattern this project keeps finding for those two systems
+across every system-control piece.
+
+Clarke's catch, and the actual substantive finding of the session: the
+prose said the broker "stores" the secrets, and that's wrong. Every real
+positive precedent (OpenClaw's `SecretRefs`, Claude Code's proxy reading
+from an external vault) treats the broker as a mediator reaching into
+wherever the secret actually lives, an OS keychain, a vault, a hardware
+token, never a second copy of its own. That's exactly the Memory provider
+shape (derives, never owns) landed two piece passes ago, applied to a
+different piece. Rewrote the prose around that: the broker mediates between
+wherever secrets actually live and the specific call that needs one, and
+widened "never sits in a model's context or a harness's hands" to include
+"a sandboxed action's own view," the third real consumer the research
+surfaced.
+
+Also caught myself mid-session conflating phase 1 (piece pass) with phase 2
+(the real seam walk): I opened by asking Clarke to decide whether injection
+needs a declarable strength tier and whether broker custody should be
+identity-scoped rather than machine-scoped, both real seam-p-contract
+questions, but decisions for step 2.12, not this step. Corrected, and both
+landed as open questions in seam p's row instead of forced decisions.
+Credential broker done for this pass; next unchecked step is 1.11,
+Provenance.
+
+## 2026-07-14 (later) — Kernel (1.9) covered: contract + enforcement + placement-authorization confirmed as one honest piece, a self-referential gap in the piece's own prose fixed, OpenFang upgraded to real reference-implementation material
+
+Piece pass on Kernel, seam-sides i (hands the run its contract), j
+(enforcement), q (authorizes placement, doesn't place). j's row already
+carried heavy mechanism-level prior art from the Sandbox and Router passes
+(seL4, AWS IAM/STS, Kubernetes admission webhooks, the OpenRouter/LiteLLM/
+Hermes/OpenClaw budget findings), so this pass's real job was narrower: does
+bundling those three seam-sides into one piece hold up against real systems,
+in the same spirit as Router's trigger/assembly check, and does the piece's
+own prose actually say what it means.
+
+Forked the research to keep the scrape noise out. Verdict: confirmed honest
+bundle. The Linux kernel is the strongest match, verified against real
+mechanism, not just the loose analogy anatomy.md already draws: runc and
+containerd only configure namespaces, cgroups, and seccomp once at process
+launch, via kernel syscalls; every syscall after that is checked in-kernel,
+continuously, via LSM hooks and the installed seccomp filter, for the life
+of the process. CVE-2024-21626 (a real runc fd leak exploitable in the
+window before seccomp took effect) is direct evidence this is a gap in the
+kernel's own enforcement window, not proof of some separate enforcing
+component picking up the slack. seL4's capability invocation fuses creation
+and access-checking cleanly (i+j), but has no placement concept whatsoever,
+a real, named limit on how far that precedent reaches toward q.
+
+Checked all four digital-counterpart systems by name, at Clarke's insistence
+that they get equal depth to the OS-kernel checks, not a token pass:
+OpenClaw has a genuine, separately-documented policy-cascade layer
+(global→provider→agent→session→sandbox) plus exec-approval allowlists,
+explicit that skills carry no permissions of their own, a real positive
+match verified against its own security docs. Hermes has a real
+gateway/sandbox-host split enforced via SSH ForceCommand, `cap_drop: ALL`,
+and env-var allowlisting at the exec boundary. Letta has RBAC, but only at
+the API-endpoint level, not per-action in-run enforcement, a real partial
+match, a gradient rather than a clean yes or no. Khoj is a genuine negative:
+no first-party enforcement layer exists, and its own community discussion
+explicitly flags self-hosted agent security as unsolved. Checked Kubernetes
+as the real counter-example, the same role it played in Router's pass:
+scheduler, admission controllers, and kubelet are genuinely three separate
+components there, but that split costs a persistent control-plane (etcd,
+the API server) to stay coherent, a cost single-machine Mojo doesn't pay, so
+it reads as a real documented tradeoff, not a refutation of the bundle.
+
+Real find, upgrading something already in the tracker rather than adding
+something new: OpenFang (real repo, real docs, not marketing copy)
+independently converges on this exact bundle under a literal
+`openfang-kernel` component: agents declare required tools, the kernel
+enforces them, capabilities are immutable after creation and enforced
+kernel-side via capability gates and a WASM sandbox, with the same component
+also handling budget and placement metering. That's i+j+q, arrived at
+independently, under the same name. Upgraded from this project's prior
+"unproven, mechanism ideas only" characterization to a genuine candidate for
+scaffolding the kernel's first reference implementation, still young, not
+production-hardened, but real. Clarke had a lead that kernel.chat might have
+become Microsoft Agent Framework; checked, no connection found, MAF is real
+(GA'd April 2026, the Semantic Kernel + AutoGen merger) but nothing ties it
+to kernel.chat specifically, more likely a false memory triggered by
+Semantic Kernel's own name. kernel.chat dropped from j's row and the
+precedent library, no such product exists. Scoped whether MAF itself was
+worth a real research pass and decided against it without spending session
+time: nothing surfaced suggesting it's a capability-enforcement system
+rather than an orchestration framework, so it's not obviously this seam's
+business, and speculative research into an unscoped lead isn't what a piece
+pass is for.
+
+One real prose gap, caught by Clarke, not the research: Kernel's own line,
+"every consequential action... passes through here and is checked," read
+literally, has the kernel gating its own reads and writes of the data it
+enforces, which can't be right, flagged and left open during Router's pass.
+My first fix attempt scoped it to "a run takes," which was too narrow;
+Clarke's catch: it isn't just runs, it's every other system-control sibling
+(router assembling, credential broker injecting, provenance tagging, fleet
+manager admitting a machine) and a client writing straight to the data too,
+the notes-app case. Landed as "every consequential action any other piece in
+the system takes," covering all three, excluding only the kernel's own
+bookkeeping, and actually catching the piece prose up to what seam j's row
+already said ("Kernel ↔ everything consequential") rather than narrowing
+anything. Second, smaller fix: the Pieces table's q-side read "places
+actions," which contradicts the piece's own prose, the kernel authorizes
+placement, Sandbox does the placing; tightened to "authorizes placement."
+
+No new seam-question gaps surfaced beyond what i, j, and q's rows already
+carry. Clarke's call: Kernel is done for now.
+
+## 2026-07-14 — Router (1.8) covered: watching triggers and assembling a run confirmed as one real piece, system control's read/write split named once at the top, two corrections landed in vision.md
+
+Piece pass on Router, seam-sides d (task → a run's assembly) and g (a
+trigger → a run). Started with the real question a piece pass exists to ask:
+is bundling "watches triggers" and "assembles a run" into one piece an
+honest reading of real systems, or an artificial merge nobody else does.
+Checked Apache Airflow's scheduler (its own docs: one required, always-on
+component "handles both triggering scheduled workflows, and submitting Tasks
+to the executor to run") and systemd (PID 1, watches timer/socket/path/D-Bus
+triggers, resolves the unit's dependencies and resource limits on
+activation). Both real, mature, widely-deployed systems land on the same
+two-jobs-one-piece shape Router already had. Checked Kubernetes as the real
+counter-example (CronJob controller and scheduler are separate components) to
+confirm the merge is a genuine design choice, not the only option, before
+accepting it.
+
+Forked the digital-counterpart research (OpenClaw, Hermes, Letta, Khoj) to
+keep the raw scrape noise out of the main thread, three questions: does a
+missed trigger catch up on restart, is scheduling per-device or centralized,
+can more than one run be in flight at once. OpenClaw and Hermes independently
+converge on the same shape, gateway-local scheduler, persisted job state,
+tick loop, a separate concurrency lane for triggered runs so they don't
+starve behind a live conversation. Khoj is the real outlier, scheduling runs
+server-side through Khoj Cloud, one centralized authority rather than
+per-device. Letta's sleep-time compute turned out structurally
+uncomparable, it's memory-consolidation work coupled to the primary agent's
+lifecycle, not a scheduled trigger with a due time to miss.
+
+Clarke's catch, mid-discussion: none of this is about picking an
+implementation mechanism, that's exactly the competition the MSI is supposed
+to leave open. The job was to find out what the standard actually has to
+require. Re-sorted the three findings on that basis:
+
+- **Liveness/catch-up is a real seam question.** OpenClaw's own issue
+  tracker shows the failure mode in the wild, trigger state living only in
+  the running process gets lost across restarts and stale locks jam future
+  ticks, contradicting its own docs' claim that this was a deliberate
+  non-issue. Landed as an open question on g's row: a trigger's evaluation
+  state has to be recoverable from durable, data-shaped storage, not
+  router-process memory, or restart behavior isn't something two compliant
+  routers can be expected to agree on. Whether a trigger record needs an
+  explicit owner-set catch-up policy (systemd's `Persistent=true` is real
+  precedent) or silent-drop-on-restart is an acceptable default stays open
+  for g's real walk.
+- **Scope (per-machine, not flagship-only) wasn't actually open.** Anatomy.md
+  already says system control is singular per machine, and Kernel's own
+  paragraph already gives the reasoning, offline resilience, each machine
+  keeps enforcing even disconnected from the rest of the fleet. Router
+  follows the identical pattern for the identical reason, and cross-machine
+  coordination (two machines' routers reacting to the same fired trigger) is
+  explicitly the fleet manager's problem, seam k, not Router's own — noted
+  as a concrete instance on k's row for whenever that seam gets walked.
+  "Flagship" isn't live vocabulary in this document anymore; that was
+  pre-reset terminology.
+- **Concurrency isn't a Router-specific question at all.** The
+  roster-plus-per-action-kernel-mediation mechanism already established
+  across d/j/q/s during the Sandbox pass is what makes concurrent runs safe
+  regardless of how many a given router allows at once; nothing new needed
+  here. The one real keeper: Hermes disables cron-management tools inside a
+  cron-triggered run specifically to block self-triggering loops. Not a new
+  mechanism either, it's a second real data point for j's existing
+  budget-enforcement finding (the OpenClaw $200 runaway-retry incident),
+  not a new one.
+
+Prose landed two real cuts and one fold-in. Cut: "every grant is made per
+run; which instance actually handles a given action is resolved live,
+through the kernel" — already stated once, under "Services are plural."
+Cut: "a run can spawn sub-runs, each of which gets its own grant,
+recursively" — already stated once, under "Runs are ephemeral." Fold-in: "or
+the owner asks for something" stops being a separate clause and becomes g's
+fourth trigger kind, alongside the clock, outside events, and idle time — a
+direct request isn't a different mechanism, just a different trigger source.
+Router's own paragraph also picked up the per-machine reasoning every
+sibling system-control piece's paragraph already states for itself
+(kernel: offline enforcement; broker: custody can't disagree; provenance:
+laundering through the laxest tagger; fleet manager: fleet membership can't
+have two answers) — Router's prose was the one missing it.
+
+Clarke's question about how Router reads owner policy surfaced a bigger
+finding than Router itself: every system-control piece reads the data, only
+the kernel writes it (grants, narrows, revokes, records — literally
+Kernel's own paragraph, just never named as the general rule). Applies to
+all five, not just Router, so it went into anatomy.md's top-level "System
+control is singular" section as a second rule sitting inside the first,
+rather than getting restated five times across five paragraphs. One real
+loose end flagged rather than resolved: Kernel's own line, "every
+consequential action... passes through here," read literally, would have
+Kernel gating its own reads and writes of the data it enforces, which can't
+be right. Left for j's real walk, recorded on j's row.
+
+Two corrections landed in vision.md, both Clarke's catch, not something the
+piece pass surfaced on its own. First: vision.md's claim that no
+implementation of a kernel or memory-layer analog exists was wrong on its
+own terms, real enforcement logic and real memory stores already run today,
+just buried inside monolithic products (Claude Code's own sandbox, Mem0,
+Zep, Letta, Obsidian plus its community plugins, all already checked during
+earlier piece passes) and never factored out as a swappable piece behind a
+published contract. Rewritten: Mojo's reference implementations get built
+against those buried implementations, codified rather than invented from
+nothing, the same discipline POSIX used against real Unix systems. Second,
+broader correction: it isn't just kernel and memory layer that need a first
+Mojo-built reference. The tracker's own Posture column shows most seams are
+MSI, not Adopt, meaning Router, Sandbox, the credential broker, provenance,
+the fleet manager, and Client sit entirely behind not-yet-invented contracts
+too, same situation as kernel and memory layer, nothing existing can conform
+to a contract that doesn't exist yet. Rewritten to say Mojo builds the first
+reference implementation of every piece behind an MSI-posture seam, kernel
+carrying the most weight of any of them as the enforcement layer, not the
+only one built from scratch.
+
+One thing discussed and deliberately left alone: whether a good-enough
+kernel could become the de facto locked-in piece the way the Linux kernel
+is for most real Unix-like systems, competition converging on one dominant
+implementation even though the standard never mandates it. Judged already
+covered by vision.md's existing "someone smarter than me can and should
+build a better one" framing, plus it's a natural consequence of the kernel
+being the single most competitive piece to build well, not a gap that needs
+new prose.
+
+## 2026-07-13 (later) — Sandbox (1.7) covered, and a bigger cross-cutting mechanism landed alongside it: every service is granted as a roster, resolved per-action through the kernel's existing gate, budget enforcement is a real kernel obligation not an optional extra
+
+Started as a straight piece pass on Sandbox, prior art gathered first
+(Claude Code's own sandbox, the most load-bearing find since it's literally
+what this session runs under: Seatbelt on macOS, bubblewrap+socat on Linux,
+filesystem default-deny outside the working dir and session temp, network a
+domain allowlist enforced by a proxy, credentials injected as sentinels and
+swapped for real values only at the proxy boundary, a working answer for how
+q and the credential broker interact; E2B's always-remote Firecracker
+microVMs; WASI's capability-handle model, no ambient `open()`, only
+`openat()` against handles passed at instantiation; Landlock as a real
+unprivileged default-deny backend; and the digital-counterpart set,
+OpenClaw's opt-in mode/scope/backend sandbox config plus a real SSH
+remote-placement backend with its own host-key auth, Letta's
+no-built-in-sandbox third-party-provider pattern, Khoj's total absence of
+execution isolation, Hermes's Docker-as-whole-boundary). Verdict on the piece
+prose: holds as written, the container/isolated-process/other-machine/
+remote-service category list is real, and "what it can see" stays a single
+clause on purpose, the finer filesystem/network/secret split belongs in seam
+q's contract, not anatomy prose.
+
+That surfaced Clarke's real question, though: an OS-portability check (the
+piece prose already correctly keeps Landlock/Seatbelt/bubblewrap out, those
+are backends, not the contract, nothing to fix there) led into whether "one
+sandbox per run" is even the right granularity, since a single run's
+different turns plainly want different things. Clarke floated three
+candidate mechanisms: the router deciding per step in advance, sub-run
+spawning, or handing the run a set (a roster) with the pick made live. Worked
+through the first and ruled it out on the architecture's own terms, the
+router assembles once, before the run starts, and would need to already know
+the run's steps to pre-bind them, but planning strategy was already carved
+out as harness-internal (seam i). That leaves roster-vs-sub-run, and they
+answer different kinds of "different": sub-run for a genuinely separate unit
+of work, roster for the same ongoing task reaching for a different instance
+mid-stream. The roster shape isn't new, either, f already found it for
+Tools; the proposal was just to recognize it as the general answer, not a
+Tools-specific quirk, made non-arbitrary by the observation that j's kernel
+already mediates every consequential action individually, not per-run, so
+resolving "which granted instance" per action is that same gate doing one
+more job, not a new mechanism.
+
+Stress-tested against real capability/permission systems before accepting
+it: seL4's capability invocation is a local kernel-table check with an
+explicit fast-path built specifically to avoid a round-trip on this exact
+hot path (Liedtke, "IPC performance is the master"); AWS IAM/STS session
+policies are evaluated locally per call against the document attached to the
+credential; MCP itself, already adopted at f, negotiates once per session
+then dispatches cheaply per call to whichever open session owns the tool.
+The rejected alternative, live round-trip to a decision-maker before every
+action, is real too (Kubernetes admission webhooks) and is documented as a
+known operational cost, reached for only when a decision can't be
+precomputed, never a default. Then checked against the actual class of
+system Mojo is standardizing, not just infra, per Clarke's correction: Hermes
+ships almost exactly the proposed mechanism, a main model plus 11
+independently-overridable slots, each with its own fallback chain, swappable
+mid-session with memory intact, including fully automatic swaps; OpenClaw
+supports it via explicit rebinding rather than continuous resolution; Khoj
+is the real negative case, one model fixed per agent, "switching" means
+picking a different agent, which maps onto sub-runs, not roster resolution.
+Hermes also named a real cost honestly, a mid-session model swap resets the
+prompt cache, confirming swapping isn't free and the contract shouldn't
+pretend otherwise.
+
+Clarke's follow-up sharpened it further: why does the kernel check the
+roster at all, and does a roster entry need tags. Separated two jobs that
+were getting conflated, granting a roster is provisioning, an optimization
+surface for whoever picks; checking against it per action is enforcement,
+the kernel not trusting the picker regardless of who or what made the pick,
+same reason Unix enforces file permissions in the kernel instead of trusting
+a process to only open() what it should. That split the tags question
+cleanly too: capability tags (what an instance can do) are pure
+selection-layer metadata the kernel never needs to understand; cost tags
+(what an instance consumes) cross into enforcement, because budget is
+already owner policy data, a hard limit, and metering spend against a hard
+limit is the kernel's job. Checked against real systems: OpenRouter and
+LiteLLM both keep budget enforcement structurally separate from capability
+routing and genuinely hard-blocking (OpenRouter's `limit_usd` returns a 402,
+LiteLLM ships a named "Agent budgets" feature); Hermes enforces a hard
+iteration budget the same separated way but has no dollar-cost enforcement
+at all; OpenClaw has no spend cap whatsoever and has a documented real
+incident, a runaway retry loop burning $200 in one session. Every system
+that skipped hard budget enforcement got burned for it, landed as a real
+argument that budget enforcement belongs in MSI-1's kernel obligations, not
+left optional.
+
+Landed, Clarke confirmed: every service is granted as a roster at assembly,
+resolved per-action through j's existing gate; capability tags serve the
+picker, cost tags serve the kernel's budget enforcement; mid-run swaps carry
+a real, sometimes nontrivial cost (Hermes's cache-invalidation case) that the
+contract must name rather than hide. Recorded as a finding across d (resolves
+its own open multi-endpoint-per-step question), e (the swap-cost caveat), f
+(cross-reference, this is where the roster shape was first found), j (the
+load-bearing mechanism and the budget-enforcement obligation), q (Sandbox
+gets the same roster treatment as everything else), and s (reinforces Memory
+provider's existing plurality finding). Sandbox's own open questions, not yet
+answered, recorded in q's row rather than resolved here: whether isolation
+strength should be a declarable capability tag, whether null/host placement
+is a legitimate placement MSI-1 must express, whether placement nesting
+needs an explicit no.
+
+One more pass followed once the seam findings were recorded: Clarke caught
+that Sandbox's own prose still had it backwards, "where an allowed action
+runs... is the sandbox's" reads as if the sandbox itself decides, when a
+sandbox is the boundary chosen among, not a chooser, the harness reaches for
+one and the kernel confirms the pick was actually granted. That fix
+generalized immediately: Model endpoint's and Tools' prose already carried
+their own versions of the roster-and-optimal-use point (independently, from
+their own earlier piece passes), so the same content was sitting in three
+places at once. Pulled it out to the one spot the document already uses for
+system-wide invariants ("Services are plural," alongside the swappable-piece
+rule at the top), stated once: a run is granted a set per service, not
+handed one, a harness resolves which instance a given action uses at
+whatever granularity the task calls for, a service decides nothing itself,
+and the kernel checks every pick against the grant the same way it checks
+everything else consequential. Clarke confirmed Memory provider fits the
+same shape too, with its own real instance of "different granularity": not
+just different provider instances, different views and scopings over the
+same data (vector vs. grep) picked per need. The four service paragraphs
+trimmed down to only what's actually piece-specific once the general
+statement covered the rest (Model endpoint keeps modality-typing, Tools keeps
+the protocol-vs-kernel distinction, Memory provider keeps the
+derives-never-owns reasoning and the view/scoping point, Sandbox keeps the
+category list and the decides-nothing correction). Router's own paragraph,
+a few lines below Sandbox, was left saying "picks which model endpoint...
+which sandbox" as single picks, a direct contradiction sitting right next to
+the corrected text; synced its wording to match (grants a set, resolution
+happens live through the kernel) without doing Router's actual piece pass,
+no new prior art, no seam confirmation, no Pieces-table flip, that stays at
+1.8 in full.
+
+Edits made: anatomy.md's "Services are plural" bullet and matching ASCII
+diagram line rewritten to state the roster-plus-per-action mechanism once;
+Model endpoint, Tools, Memory provider, and Sandbox prose trimmed to
+piece-specific content only; Router's wording synced for consistency
+(not its full piece pass). research-plan.md's Pieces table Sandbox row
+flipped to Covered; seam rows d, e, f, j, q, s gained this session's
+findings; "Currently on" line advanced to 1.8 (Router); msi-steps.md's 1.7
+checked.
+
+---
+
+## 2026-07-13 — Memory provider (1.6) covered: derives-never-owns confirmed as a deliberate rejection of the real AI-memory market (Mem0/Zep/Letta all store-own, only Obsidian's plugin ecosystem actually derives), curation is a two-tier problem (live incremental write-back already handled by seam i, deep consolidation is an ordinary triggered run needing no new "overseer" piece), and seam s gets a real POSIX lean (VFS operation-table over ioctl's freeform-arg wart)
+
+Piece pass, worked with Clarke end to end. Prior art checked split cleanly
+into two camps. **Derive-only**: Obsidian's vault (canonical plain files) plus
+its plugin ecosystem — Smart Connections (vector semantic search) and Smart
+Relations both build indexes explicitly advertised as rebuildable from the
+vault, no separate database of record, several such plugins running over one
+vault at once. This is the only strong real match for what the piece's prose
+already claimed (the Obsidian analogy), and it isn't even an AI-memory
+product. **Store-owning**: Mem0, Zep, and Letta (already surveyed for other
+pieces) are all the opposite — Zep's own "buy vs build" post describes Mem0
+as a vector index plus KV store that IS the memory, no canonical layer
+underneath; Letta's memory blocks live inside Letta's own agent state. The
+dominant pattern in the actual AI-memory market is exactly what Mojo's
+derives-never-owns rule forbids. Landed as an explicit, acknowledged
+divergence rather than something to paper over: MSI-1 is choosing the
+Obsidian shape on purpose, against the market's dominant real pattern, not
+because no one else does memory servers, but because sovereignty (your data
+survives switching the app) is the actual point and store-owning kills it by
+construction.
+
+That surfaced the real question: is this even buildable given real
+engines assume they own their store? Worked through what "adapt the prior
+art" concretely means. Extraction (LLM reads conversation, produces facts)
+and retrieval (embedding search, graph traversal, ranking) are two different
+things bolted together in every camp-two product. Retrieval is reusable
+regardless of camp, pure implementation detail. Extraction is the part that
+assumes ownership, and it turns out extraction was never this piece's job in
+the anatomy to begin with (the prose only ever listed retrieval, indexing,
+search) — it's a run's normal output, already covered by seam i's existing
+"learnings, incremental, not batched" finding. So a Mem0-shaped provider
+becomes buildable by splitting it: its vector/graph structure stays private
+and genuinely rebuildable (re-embed, re-run the same extraction logic against
+canonical facts); what has to change is that its extracted facts get written
+back through the normal channel into the shared shape instead of living only
+in its own DB.
+
+That led into a second real question, Clarke's: if extraction/curation isn't
+the provider's job, and it's real cognitive work, shouldn't it be its own
+competitive axis rather than baked into whichever harness happens to be
+running today's task? First pass landed on pushing all synthesis into a
+deferred idle-triggered run (Letta's sleep-time compute as precedent,
+already cited on seam g). Clarke pushed back correctly: that contradicts
+seam i's own already-decided incremental write-back, Jarvis has to be
+learning while you're talking to him, not just during downtime. Corrected to
+two tiers, not one replacing the other, matching Letta's own real shape more
+closely than my first pass did (core-memory live edits AND separate
+sleep-time consolidation, not one or the other): live/incremental capture
+(already decided, seam i, nothing new needed) plus a separate deep
+consolidation pass (resolving contradictions, finding patterns, pruning —
+work that live conversation pressure works against) that's still the real
+competitive axis, still swappable, still no new piece needed. Clarke then
+asked whether the consolidation pass needs an always-on "overseer" process
+given it should fire more often than pure idle-time. Answer: no, Router
+already is the overseer (always on, watches triggers, fires a run) — a
+consolidation run is just another triggered run, and cadence (idle, periodic,
+event-count-based) is router-implementation tuning, not a new mechanism.
+No real prior art found for a genuinely continuous always-computing memory
+daemon in any of the six systems surveyed; flagged as unproven, not built.
+
+Landed, with an explicit callback: this whole tiered shape (live edits plus
+periodic reorganization) is what Letta/MemGPT and, loosely, biological sleep
+consolidation already converge on independently — Mojo isn't inventing new
+memory architecture, it's taking a pattern that keeps getting reinvented and
+refusing to let it stay welded to one vendor's box.
+
+Second real finding, on seam s specifically: does locking the harness↔provider
+envelope kill what makes a provider useful, the same worry already resolved
+for e and f? Checked two real POSIX precedents. `ioctl(fd, request, arg)` is
+the literal match (fixed outer call, arbitrary inner meaning) but is a
+well-known design wart exactly because the free inner part lets every driver
+invent an undocumented mini-protocol, quietly defeating the interoperability
+the uniform call appears to promise — the specific failure this seam exists
+to prevent. The VFS operation-table pattern (ext4/NFS/tmpfs implementing the
+same fixed set of typed operations, freedom living underneath each one, not
+inside one opaque call) is the healthier precedent and the new lean for s's
+real walk: a small fixed set of typed operations (search/get/write) with real
+defined shapes, provenance and permission-scoping mandatory on all of them,
+rather than one MCP-tool-name free-for-all. Not yet Decided, a lean for step
+2.7.
+
+Edits made: anatomy.md's Memory provider prose rewritten (front-door framing
+added: a run reads and writes through whichever provider it's handed, never
+touching the data directly); research-plan.md's Pieces table row flipped to
+Covered, seam s/g/m rows gained the findings and flag above; msi-steps.md's
+1.6 checked, "Currently on" line advanced to 1.7 (Sandbox).
+
+---
+
 ## 2026-07-12 (later) — Tools (1.5) covered: instance = one MCP server, a run gets a roster not a pick; piece names collapsed onto profile names (Window→Client, Agent runtime→Harness, Model→Model endpoint); the whole swappable/profile tag scheme simplified; Client confirmed to run on unowned hardware, caching flagged as maybe-not-at-all
 
 Started as step 1.5 (Tools) and detoured into two real structural findings

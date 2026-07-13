@@ -67,6 +67,10 @@ here honestly. Fuller write-ups of many of these exist in git history (pre-reset
 - Code of ethics enforced by identity framing, with a lightweight constitutional
   check as audit layer (ringmaster design, rethought for one agent).
 - Humaniser / style layer: the agent writes in *my* voice when drafting as me.
+- Clients with an explicit mode switch: a visible way to tell a client "you're
+  talking to work-me now" rather than persona selection always being inferred.
+  Surfaced 2026-07-13 discussing how persona scoping actually gets selected per
+  run (seams c/d); not needed yet, revisit once personas themselves are real.
 - Context-aware verbosity: depth of explanation adapts to what it knows I know.
 - Confirmation-gate pattern for all system actions (v0.1 already needs this).
 - `/btw` interrupt channel: inject a thought mid-task without cancelling it.
@@ -187,6 +191,13 @@ here honestly. Fuller write-ups of many of these exist in git history (pre-reset
   system.
 - Community "cloud map" of a craft's known territory — navigable depth, expanded by
   practitioners.
+- Cross-implementation fleets: seams k (machine ↔ machine) and n (machine
+  admission) being real standardized contracts, not just internal plumbing,
+  means a machine running one compliant fleet-manager implementation can join
+  a fleet whose sibling machines run a different one — the same seam pair is
+  what would let independently-built fleets actually federate into a
+  Collective/Armada, surfaced during the Fleet manager piece pass
+  (2026-07-12), not pursued now.
 
 ## Ephemeral Commons
 
