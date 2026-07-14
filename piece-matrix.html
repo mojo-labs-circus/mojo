@@ -1,0 +1,286 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Piece × Piece — seam completeness matrix</title>
+<style>
+:root{
+  --paper:#eef1f5;
+  --ink:#101820;
+  --ink-soft:#3c4a58;
+  --line:#5c7a9e;
+  --line-soft:#c3d0dd;
+  --panel:#ffffff;
+  --accent:#c1440e;
+  --accent-soft:#f4dccc;
+  --flag:#a9761c;
+  --flag-soft:#f3e3c4;
+  --gap-border:#a9b8c6;
+  --none:#d7dee6;
+  --focus:#1c6fb0;
+}
+:root[data-theme="dark"]{
+  --paper:#0c131c; --ink:#e7ecf2; --ink-soft:#a9b7c6; --line:#7ea0c4;
+  --line-soft:#233247; --panel:#121b27; --accent:#e0632f; --accent-soft:#3a2116;
+  --flag:#e0b354; --flag-soft:#3a2f13; --gap-border:#3a4a5c; --none:#1a2432; --focus:#5fa8e0;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0c131c; --ink:#e7ecf2; --ink-soft:#a9b7c6; --line:#7ea0c4;
+    --line-soft:#233247; --panel:#121b27; --accent:#e0632f; --accent-soft:#3a2116;
+    --flag:#e0b354; --flag-soft:#3a2f13; --gap-border:#3a4a5c; --none:#1a2432; --focus:#5fa8e0;
+  }
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  padding:2.5rem clamp(1rem,4vw,3.5rem) 5rem;
+  line-height:1.5;
+}
+.mono{
+  font-family:ui-monospace,"SF Mono","Cascadia Code","Roboto Mono",Menlo,Consolas,monospace;
+  font-variant-numeric:tabular-nums;
+}
+
+header{max-width:52rem}
+.eyebrow{
+  font-size:.72rem; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--line); font-weight:600; margin:0 0 .6rem;
+}
+h1{
+  font-size:clamp(1.5rem,2.6vw,2.1rem);
+  margin:0 0 .75rem; text-wrap:balance; letter-spacing:-.01em;
+}
+header p{ color:var(--ink-soft); max-width:60ch; font-size:.98rem; margin:.4rem 0; }
+header p strong{color:var(--ink)}
+
+.legend{
+  display:flex; flex-wrap:wrap; gap:.5rem 1.4rem;
+  margin:1.8rem 0 2.2rem; padding:.9rem 1.1rem;
+  background:var(--panel); border:1px solid var(--line-soft);
+  border-radius:6px; font-size:.82rem;
+}
+.legend-item{display:flex;align-items:center;gap:.5rem;color:var(--ink-soft)}
+.swatch{
+  width:1.1rem;height:1.1rem;border-radius:3px;flex:none;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.62rem;font-weight:700;
+}
+.swatch.known{background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent)}
+.swatch.broadcast{background:repeating-linear-gradient(135deg,var(--accent-soft),var(--accent-soft) 3px,var(--accent) 3px,var(--accent) 4px);border:1px solid var(--accent)}
+.swatch.ambiguous{background:var(--flag-soft);color:var(--flag);border:1px solid var(--flag)}
+.swatch.gap{background:transparent;border:1.5px dashed var(--gap-border)}
+.swatch.none{background:var(--none);border:1px solid var(--none)}
+
+.matrix-wrap{
+  overflow-x:auto; border:1px solid var(--line-soft);
+  border-radius:6px; background:var(--panel);
+}
+table{border-collapse:collapse;width:100%}
+th,td{ border:1px solid var(--line-soft); padding:0; text-align:center; vertical-align:middle; }
+th.corner{
+  position:sticky;left:0;top:0;z-index:3; background:var(--panel);
+  border-right:2px solid var(--line); border-bottom:2px solid var(--line); min-width:9.5rem;
+}
+th.colhead{
+  position:sticky;top:0;z-index:2; background:var(--panel);
+  border-bottom:2px solid var(--line); padding:.5rem .2rem; min-width:2.9rem;
+}
+th.colhead .label{
+  writing-mode:vertical-rl; transform:rotate(180deg);
+  font-size:.72rem; font-weight:600; color:var(--ink-soft); letter-spacing:.02em;
+}
+th.rowhead{
+  position:sticky;left:0;z-index:1; background:var(--panel);
+  border-right:2px solid var(--line); text-align:left; padding:.4rem .7rem;
+  font-size:.78rem; font-weight:600; white-space:nowrap; min-width:9.5rem;
+}
+th.rowhead .code{color:var(--line);font-weight:700;margin-right:.4rem}
+td.cell{ min-width:2.9rem; height:2.9rem; font-size:.78rem; font-weight:700; position:relative; }
+td.cell.diag{background:repeating-linear-gradient(135deg,var(--line-soft),var(--line-soft) 2px,transparent 2px,transparent 7px)}
+td.cell.known{background:var(--accent-soft);color:var(--accent)}
+td.cell.broadcast{background:repeating-linear-gradient(135deg,var(--accent-soft),var(--accent-soft) 4px,var(--accent) 4px,var(--accent) 5px);color:var(--ink)}
+td.cell.broadcast span{background:var(--panel);padding:.05rem .3rem;border-radius:3px;color:var(--accent);border:1px solid var(--accent)}
+td.cell.ambiguous{background:var(--flag-soft);color:var(--flag)}
+td.cell.gap{border:1.5px dashed var(--gap-border)!important;color:var(--gap-border)}
+td.cell.none{background:var(--none)}
+td.cell.unfilled{background:transparent}
+td.cell.diag.selfnote{background:var(--flag-soft);color:var(--flag);border:1.5px solid var(--flag)!important;font-size:.66rem}
+td.cell .tag{font-size:.62rem;display:block;font-weight:600;opacity:.75}
+
+section.findings{max-width:52rem;margin-top:2.5rem}
+section.findings h2{font-size:1.05rem;margin:0 0 .9rem;letter-spacing:-.01em}
+.finding{ padding:.75rem 0; border-top:1px solid var(--line-soft); font-size:.92rem; color:var(--ink-soft); }
+.finding:last-child{border-bottom:1px solid var(--line-soft)}
+.finding strong{color:var(--ink);font-weight:650}
+.finding .status{
+  display:inline-block; font-size:.68rem; font-weight:700; letter-spacing:.04em;
+  text-transform:uppercase; padding:.1rem .4rem; border-radius:3px;
+  margin-right:.5rem; vertical-align:middle;
+}
+.finding .status.ambiguous{background:var(--flag-soft);color:var(--flag)}
+.finding .status.gap{background:transparent;border:1.3px dashed var(--gap-border);color:var(--ink-soft)}
+.finding .status.resolved{background:var(--accent-soft);color:var(--accent)}
+
+footer{max-width:52rem;margin-top:2.5rem;font-size:.82rem;color:var(--ink-soft)}
+footer code{
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  background:var(--none); padding:.1rem .35rem; border-radius:3px; font-size:.85em;
+}
+
+a{color:var(--focus)}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+</style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Working draft &middot; mojo / MSI &middot; tracked in-repo so it isn't rebuilt from scratch each session</p>
+  <h1>Every piece against every piece</h1>
+  <p>13 nodes: the 11 pieces plus Owner and Identity. Host OS excluded as substrate. Before any letter goes on this board, the node set and the grid's own shape get checked &mdash; a flat same-machine grid didn't have room for every relationship this system has, see Fleet manager's own diagonal below.</p>
+  <p>Nothing is assumed answered. A blank cell means exactly that: not looked at yet, not "no relationship."</p>
+</header>
+
+<div class="legend">
+  <div class="legend-item"><span class="swatch known">&#10003;</span> confirmed seam, one clear letter</div>
+  <div class="legend-item"><span class="swatch broadcast">&#8734;</span> broadcast seam (one piece, open caller set)</div>
+  <div class="legend-item"><span class="swatch ambiguous">?</span> a relationship exists, but which piece(s) isn't settled</div>
+  <div class="legend-item"><span class="swatch gap"></span> plausible relationship, not checked yet</div>
+  <div class="legend-item"><span class="swatch none"></span> checked, no relationship</div>
+</div>
+
+<div class="matrix-wrap">
+  <table id="matrix" class="mono"></table>
+</div>
+
+<section class="findings">
+  <h2>Before we fill in a single relationship</h2>
+  <div id="findings"></div>
+</section>
+
+<footer>
+  Nothing on this board overrides <code>research-plan.md</code>, and nothing here gets written to it until a cell is actually reasoned through, not pre-filled from anatomy.md's own text.
+</footer>
+
+<script>
+// Node order matches anatomy.md's own Pieces section order, not the
+// diagram's visual grouping — the earlier draft put Router third by spatial
+// habit; this one follows the document.
+const NODES = [
+  {id:'own', code:'OWN', name:'Owner'},
+  {id:'cli', code:'CLI', name:'Client'},
+  {id:'har', code:'HAR', name:'Harness'},
+  {id:'mod', code:'MOD', name:'Model endpoint'},
+  {id:'tls', code:'TLS', name:'Tools'},
+  {id:'mem', code:'MEM', name:'Memory provider'},
+  {id:'sbx', code:'SBX', name:'Sandbox'},
+  {id:'rtr', code:'RTR', name:'Router'},
+  {id:'krn', code:'KRN', name:'Kernel'},
+  {id:'brk', code:'BRK', name:'Credential broker'},
+  {id:'prv', code:'PRV', name:'Provenance'},
+  {id:'flt', code:'FLT', name:'Fleet manager'},
+  {id:'idn', code:'IDN', name:'Identity (data)'},
+];
+
+// status: known | broadcast | ambiguous | gap | none
+// Intentionally empty. Nothing gets added here until it's actually been
+// talked through — the first version of this board pre-filled from
+// anatomy.md's own text and got ahead of understanding it.
+const REL = [];
+
+const idx = {};
+NODES.forEach((n,i)=>idx[n.id]=i);
+const table = document.getElementById('matrix');
+const thead = document.createElement('thead');
+const hrow = document.createElement('tr');
+hrow.appendChild(Object.assign(document.createElement('th'),{className:'corner'}));
+NODES.forEach(n=>{
+  const th = document.createElement('th');
+  th.className = 'colhead';
+  const span = document.createElement('div');
+  span.className = 'label';
+  span.textContent = n.code;
+  th.title = n.name;
+  th.appendChild(span);
+  hrow.appendChild(th);
+});
+thead.appendChild(hrow);
+table.appendChild(thead);
+
+const relMap = {};
+REL.forEach(([a,b,cells])=>{ relMap[a+'|'+b]=cells; relMap[b+'|'+a]=cells; });
+
+const tbody = document.createElement('tbody');
+NODES.forEach((rowNode)=>{
+  const tr = document.createElement('tr');
+  const rh = document.createElement('th');
+  rh.className = 'rowhead';
+  rh.innerHTML = '<span class="code">'+rowNode.code+'</span>'+rowNode.name;
+  tr.appendChild(rh);
+  NODES.forEach((colNode)=>{
+    const td = document.createElement('td');
+    td.className = 'cell';
+    if(rowNode.id === colNode.id){
+      td.classList.add('diag');
+      if(rowNode.id === 'flt'){
+        // Fleet manager: confirmed 2026-07-13 (later session) this is the
+        // ONLY diagonal that needs this treatment. Every other
+        // system-control piece's cross-machine coordination routes through
+        // Fleet manager by design (k/n), not piece-to-piece — checked
+        // against anatomy.md's own prose and confirmed directly by Clarke.
+        td.classList.add('selfnote');
+        td.textContent = 'k/n';
+        td.title = "Fleet manager ↔ another machine's Fleet manager. Confirmed the only piece with this shape — every other system-control piece's cross-machine coordination routes through Fleet manager (k/n) by design, not directly.";
+      }
+      tr.appendChild(td);
+      return;
+    }
+    const cells = relMap[rowNode.id+'|'+colNode.id] || [];
+    if(cells.length === 0){
+      td.classList.add('unfilled');
+    } else {
+      const worst = cells.some(c=>c.status==='ambiguous') ? 'ambiguous'
+                  : cells.some(c=>c.status==='gap') ? 'gap'
+                  : cells.some(c=>c.status==='broadcast') ? 'broadcast'
+                  : 'known';
+      td.classList.add(worst);
+      cells.forEach(c=>{
+        const wrap = document.createElement('div');
+        if(worst==='broadcast' && c.status==='broadcast'){
+          wrap.innerHTML = '<span>'+c.letter+'</span>';
+        } else {
+          wrap.textContent = c.letter;
+        }
+        td.appendChild(wrap);
+      });
+      const tags = cells.filter(c=>c.tag).map(c=>c.tag);
+      if(tags.length) td.title = tags.join(' — ');
+    }
+    tr.appendChild(td);
+  });
+  tbody.appendChild(tr);
+});
+table.appendChild(tbody);
+
+const findingsData = [
+  {status:'ambiguous', text:'<strong>Host OS</strong> isn\'t on this grid at all. That\'s a real, already-made call in anatomy.md (it\'s substrate every piece runs on, not a piece with its own seam) — not an oversight, but worth saying out loud instead of just being quietly absent.'},
+  {status:'ambiguous', text:'<strong>Fleet manager\'s own diagonal cell</strong>, marked above, is the one self-pair on this board that isn\'t actually empty. Found by accident building the first version: a same-machine grid has no square for "this piece talking to another machine\'s copy of itself," which is k and n\'s entire job. Still open whether a marked cell is enough or the grid needs a second dimension.'},
+  {status:'resolved', text:'<strong>The diagonal treatment doesn\'t generalize.</strong> Checked whether Kernel, Router, Credential broker, and Provenance need the same flag — they don\'t. Anatomy.md is explicit that cross-machine coordination for every other system-control piece routes through Fleet manager, not piece-to-piece (Router\'s own line: "not the router\'s own"). Confirmed directly by Clarke: "all things shared cross-machine should be done through fleet-manager because that is its one job."'},
+  {status:'gap', text:'<strong>l\'s target isn\'t a node.</strong> Seam l connects to "outside agents" — a different owner\'s system entirely, not one of these 13 things. Adding a 14th node would conflate "haven\'t checked this pair yet" with "not the owner\'s system at all." The real question is which piece\'s row owns the l boundary, still zero attribution anywhere.'},
+  {status:'ambiguous', text:'<strong>Live discussion: does Fleet manager absorb l, and get renamed?</strong> Clarke\'s proposal: Fleet manager\'s real job might be "connect to anything that isn\'t local," which would fold l in alongside k/n and mean a rename away from "Fleet." Not decided — see devlog / conversation for the counter-consideration (k/n is about maintaining one trusted identity across the owner\'s own machines; l is explicitly the opposite, no trust extended at all) and the real precedent still to verify (does Matrix or XMPP keep federation and foreign-network bridging as one component or two?).'},
+];
+const findingsEl = document.getElementById('findings');
+findingsData.forEach(f=>{
+  const div = document.createElement('div');
+  div.className = 'finding';
+  div.innerHTML = '<span class="status '+f.status+'">'+f.status+'</span>'+f.text;
+  findingsEl.appendChild(div);
+});
+</script>
+</body>
+</html>

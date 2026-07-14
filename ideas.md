@@ -198,6 +198,17 @@ here honestly. Fuller write-ups of many of these exist in git history (pre-reset
   what would let independently-built fleets actually federate into a
   Collective/Armada, surfaced during the Fleet manager piece pass
   (2026-07-12), not pursued now.
+- Relationship formation between two owners' fleets, and the ongoing shared
+  state that follows once one exists, are two structurally different things,
+  and neither is seam l: A2A is transactional, no concept of a persistent
+  jointly-writable resource. Formation is the cross-owner cousin of n
+  (admission), weaker by design, scoped and revocable, never full
+  membership. Shared state, once formed, is k/Matrix-shaped peer agreement
+  across a partial-trust boundary, not request-response. Surfaced walking
+  through why "ask them to do a task" and "give them data" aren't actually
+  the only two reasons two owners' systems talk (2026-07-13, later session).
+  This is what a Collective literally is; neither half has a seam or a piece
+  yet, both wait for the Collectives phase.
 
 ## Ephemeral Commons
 

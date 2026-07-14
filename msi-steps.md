@@ -9,6 +9,13 @@ so a cheaper model can drive it: the model's job is to bring the prior art and
 lay out the real options, Clarke's job is to actually decide, and nothing gets
 marked landed on the model's say-so alone.*
 
+**Paused above phase 2, 2026-07-13 (see devlog):** don't run the procedure
+below yet. The current real work is two things neither phase 1 nor phase 2
+covers: confirming anatomy.md's own shape and seam list are actually
+complete (a piece-by-piece matrix, not yet a file in this repo), and working
+out how a piece/seam map turns into a real standard at all (a document that
+doesn't exist yet). Read AGENTS.md's Current stage section first.
+
 ## How to run a session against this file
 
 1. Read the last devlog entry, then find the first unchecked step below.

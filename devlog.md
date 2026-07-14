@@ -6,7 +6,1172 @@ where the reasoning trail lives.*
 
 ---
 
-## 2026-07-13 (latest) — Phase 1 closed, anatomy.html rebuilt as a real diagram, seam l turned out to have no owner anywhere, phase 2 (seam pass) drafted then suspended on a bigger question: is a seam even the right unit
+## 2026-07-14 — How standards actually get made, researched end to end; the plan inverted (build before the document); seam-method amended; standards-research.md and making-the-standard.md land
+
+The handoff question from last session, run as its own thread: not "is
+seam-method.md right" but how have standards actually been made,
+historically, decomposition through document through validation through
+publication through ongoing help. Three research passes (findings, with
+sources and flagged unverified items, in standards-research.md) against
+POSIX, Kubernetes' CRI/CNI/CSI and admission webhooks, LSP, OCI, Matrix,
+XMPP, Linux, IETF/W3C process, and the failure cases (OSI, CORBA).
+
+The headline, and it's unambiguous: no successful standard published its
+document before running code existed, and the trigger for publishing an
+interface was almost always a concrete second party arriving (rkt for CRI,
+Red Hat/Codenvy for LSP, appc for OCI). Extraction from a working system is
+the dominant modern pattern. POSIX, the one convergence case, still invented
+at every seam where real systems' semantics collided under one name
+(termios, O_NONBLOCK, pax), and had a procurement stick (FIPS 151) this
+project doesn't. Matrix, the one a-priori design, was built by veterans and
+still paid years of spec revisions; its own stated method is now ours: build
+an implementation first, prove the protocol works, then spec it. LSP shows
+the bill for publishing with one dominant implementation and no conformance
+machinery: VS Code's behavior silently became the spec (UTF-16 offsets,
+field semantics reverse-engineered by every other client). And the real
+done-gate everywhere serious: two independent, interoperable
+implementations, per feature (IETF RFC 2026, W3C CR exit). A first
+implementation proves implementability; only a second, independent one
+proves the document carries the interface.
+
+What changed because of it, all discussed before writing:
+
+- **The ordering inverted.** The old plan had the finished document gating
+  the build; that's the OSI shape. New sequence in roadmap.md and
+  making-the-standard.md: existence pass to build-ready (not complete),
+  verify build inputs, build the first system, extract the MSI-1 draft from
+  what runs, publish draft and release together, and "done" means a
+  stranger built a second implementation from the text alone. The September
+  framing is wiped; progress is scope, not calendar.
+- **seam-method.md amended, three ways**, from the prior-art check of the
+  six problems (which held overall: the six are contract questions where
+  the fallacies of distributed computing are channel physics): liveness
+  widened to cover partial failure (outcome-unknown, what forces idempotency
+  into contracts, not derivable from "may be down"); independent
+  administration named as the root fact under versioning, trust, and
+  discovery; step 5's shape match now has to respect boundary physics
+  (latency, round trips, the CORBA lesson).
+- **Harness decision**: the first harness will be a LangGraph-style runtime,
+  not Claude Code or Codex CLI. Flagged with it: since I assemble that
+  harness, the hotswap demo must swap to an independently-built harness
+  before publish, or the draft becomes "whatever my harness does", LSP's
+  failure exactly.
+- **OpenFang hypothesis banked, not asserted**: the kernel and the
+  identity/memory layer might be findable in OpenFang. Its internals were
+  the undocumented ones in the Harness-row research, so this is the first
+  verification task of the build-inputs step, checked before the kernel
+  plan hardens.
+- **Honest answers to "can one person do this, how long"**: one person can
+  reach the publish moment; the build scope after adoption is schemas, a
+  small policy daemon, per-harness shims, glue, and the hotswap demo (Linux
+  0.01 was 10,239 lines, and Linus had POSIX handed to him; the survey work
+  here is that half of the job). One person cannot pass the done-gate, by
+  definition; publishing exists to attract the person who does. No dates;
+  publish when the hotswap demo is reproducible by a stranger and the draft
+  describes only exercised seams.
+
+Closed the session on the scope question: extracting MSI-1 from what runs
+means it's minimal, so does every piece go in? No, and the record is
+comfortable with that (POSIX.1-1988 was just the system interfaces, OCI
+added specs as scope earned them, the hourglass theorem is the theory for
+why small first versions win). The first system gets minimized harder than
+the anatomy: Fleet manager is definitely out of the first build, and which
+pieces form the minimal base is a build-time decision, made once the
+adoption survey shows what's actually available, not a paper decision now.
+The floor: the draft covers enough seams that the hotswap demo is
+specifiable from the text alone. The vision still gets across at publish
+through three layers that never mix: informative material carries the full
+map, the by-implementer-role structure reserves named slots without
+half-specifying them (normative text for an unexercised seam is the
+OSI/CORBA move), and the MSC-style change rule is the door
+designed-but-unbuilt pieces come through later, working implementation
+attached. Fleet manager stays in scope for the family, its own document,
+normative only when a system actually runs across two machines. Landed as
+making-the-standard.md's Scope and growth section, plus a line in
+roadmap.md's build step.
+
+Files: standards-research.md (new, findings archive), making-the-standard.md
+(new, the plan, the document item 2 called for), roadmap.md rewritten,
+AGENTS.md Current stage rewritten, .claude/rules/msi-research-sessions.md
+updated (build-ready finish line, both gates answered), research-plan.md's
+Currently-on pointer updated. msi-steps.md untouched and still frozen,
+pending rewrite or retirement next housekeeping session.
+
+Next session: verify the OpenFang extraction hypothesis and the
+LangGraph-style harness's interception surface; then the existence pass
+resumes at Model endpoint's row under the new finish line.
+
+---
+
+## 2026-07-13 (yet later) — Harness's row closed, "discuss before write" made explicit, Fleet manager scoped in (sequenced last, not cut), AGENTS.md gets a standing prior-art rule
+
+Continued the existence pass onto Harness's row, ten pairs. Opened the same
+way Client's row almost did last time: took a fork's prior-art findings and
+went straight to writing them into piece-matrix.md. Stopped twice in one
+session before it landed. First catch: reasoning from anatomy.md's own prose
+and treating it as checked, when anatomy.md is Mojo's own thinking, not
+prior art — real-system verification is required per pair, not just for the
+handful of claims that settle several pairs at once. Second catch, sharper:
+even *real, cited* research doesn't get written straight into the tracked
+docs. The actual shape is a loop, research comes back, gets discussed, gets
+iterated on, sometimes through several more rounds of follow-up research,
+and only then gets written. Both corrections are now standing rules, added
+to AGENTS.md (a new "Grounding in prior art" section, stating the POSIX
+comparison explicitly) rather than left as one-off fixes.
+
+Four research rounds later, the row closed with real findings, several of
+them corrections to the first pass:
+
+- **Harness–Sandbox** started with only Letta confirmed and OpenFang's
+  internals undocumented; a second round found OpenClaw and Hermes both
+  document the same direct-dispatch shape explicitly, three of five systems
+  now, gap closed.
+- **Harness–Kernel** turned out to be the most load-bearing pair on the row.
+  Real systems don't agree on single-checkpoint vs. defense-in-depth, but
+  the disagreement resolved toward Mojo's own instinct rather than away from
+  it: OpenFang, Claude Code, and Codex CLI all independently converge on
+  multi-layer enforcement, and Claude Code's own docs state outright that
+  permission rules are "enforced by Claude Code, not by the model" — the
+  exact Harness/Kernel split Mojo draws, just usually built in-process
+  rather than factored out as its own piece. seL4's pure resource-side
+  model is the outlier among four systems checked, not an even split.
+- **Harness–Model-endpoint gating** resolved into something more precise
+  than expected: no system gates the *primary* session's model choice
+  live, it's config/policy scoped once at spawn everywhere checked. But
+  Claude Code has a real, live, per-call gate specifically for *sub-run*
+  model requests (`Agent(model:opus)`, checked through the same pipeline as
+  tool calls, because spawning a sub-run is itself a tool call in its
+  implementation) — meaning this was never a separate mechanism from
+  Harness–Kernel's already-established live check, just that seam covering
+  one more category of consequential action.
+- **Harness–Fleet-manager** stayed "no," but the citation for it was wrong
+  on the first pass. "No real system does live cross-machine task handoff"
+  turned out too strong; Letta's Constellation looked like a counter-example
+  until checked directly, and it isn't one: the agent's reasoning loop lives
+  permanently in Constellation's cloud and never relocates, machines are
+  just selectable Sandbox targets for the next tool call. So the "no" holds,
+  for a cleaner reason than first claimed.
+
+That last thread pulled in a real scope conversation, not a research
+correction: is Fleet manager (cross-machine coherence) actually in MSI-1's
+scope, given it's the piece with the thinnest prior art and the rest of the
+existence pass has already shown real systems mostly don't attempt it?
+Landed, after actually rereading research-plan.md's already-banked
+2026-07-12 Fleet-manager pass rather than assuming it was thin: it isn't.
+Plan 9's 9P, Letta's Constellation, Apple Continuity/Handoff (real precedent
+that "who's driving" is architecturally separate from bulk sync), Signal's
+linked-device model, and git-vs-CRDT for conflict resolution are all
+already-banked, real findings, not a blank slate. Fleet manager stays in
+MSI-1's scope, full stop, not deferred to a later Mk (roadmap.md already
+commits to this by September regardless: laptop now, PC then, one identity
+across both). What changes is sequencing, not scope, matching an old
+archived candidate walk order that already said the same thing on its own:
+federation and admission get walked last, after the single-machine seams
+they depend on (data shape, enforcement, run contract) are settled, because
+the contract can't be written well any earlier, not because it matters
+less.
+
+One design point corrected mid-conversation, flagged on the Harness–Fleet-
+manager entry rather than silently fixed: the 2026-07-12 research read as
+foreclosing an external, company-run cloud service as a Fleet-manager
+implementation. Clarke's read: that's too strong. A company's hosted
+service should be a legitimate implementation an owner can choose, the same
+way hiring a frontier model is a choice, as long as the contract still
+guarantees portability and no lock-in regardless of topology. The MSI
+standardizes the contract, not the topology. Left as an open flag for
+Fleet-manager's own row, not fixed in research-plan.md now, since
+research-plan.md is frozen archive, new findings get cited directly in
+piece-matrix.md/seams.md where they're actually used, not written back into
+the old file, and some of what's already in there may need correcting later
+too, a separate future cleanup, not tonight's.
+
+Real open question, unresolved on purpose: the existence pass is now
+running much deeper per pair than msi-research-sessions.md's own text
+describes ("can run in bulk, many pairs in one sitting, since they're
+mostly grounding in anatomy.md's own already-written text"). That
+description no longer matches how the work is actually happening, now that
+every pair gets checked against real systems and discussed before writing.
+Worth a rule update, and worth deciding whether every remaining row gets
+this same depth or whether structurally-simple pairs (ones a shortcut
+already covers) get a lighter pass. Not decided this session.
+
+33 of 78 pairs now settled (Owner, Client, Harness). 45 remain across nine
+rows: Model endpoint, Tools, Memory provider, Sandbox, Router, Kernel,
+Credential broker, Provenance, Fleet manager.
+
+---
+
+## 2026-07-13 (later still) — Client's row closed: caught writing conclusions to the file before checking them, three real findings (Memory provider flips to yes, Provenance grounded instead of hand-waved, the vault/keychain thing was never a Client), one more piece-list-adjacent flag banked
+
+Continued the existence pass onto Client's row. Opened by drafting all
+eleven pairs solo and moving straight to a file edit — got stopped hard.
+Clarke's correction: the existence pass has to actually be walked together,
+pair by pair, not decided alone and presented as a fait accompli for
+sign-off after the fact. That's a process rule now, not just a one-off
+correction: results get proposed, Clarke checks them for coherence and
+pushes back or signs off, *then* they get written down. Nothing from the
+aborted first draft made it into piece-matrix.md; the row that actually
+landed was rebuilt through real back-and-forth.
+
+**Client–Memory provider flipped from no to yes**, caught by Clarke, not
+found solo. First pass reasoned Memory provider is only ever granted to a
+Harness by Router, so a bare Client can't hold one — Clarke pushed back with
+a concrete case, a client built specifically to be good at editing memory,
+no agent run needed. Checked against real precedent rather than accepted on
+architecture-reasoning alone (Clarke's explicit ask: verify all of it, don't
+invent): Khoj's docs state its search "operates independently from the chat
+features"; Letta documents `archival-memory/search` as its own external API,
+separate from the agent's own tool call for the same thing; Mem0 is built
+explicitly for use "in client applications outside of agent contexts." Three
+independent systems, same pattern, so it held. (Checked and rejected as a
+fourth data point: Obsidian's Smart Connections plugin bundles its own
+private index rather than calling a separate provider — that's the raw-file
+pattern, not this one.)
+
+**Client–Provenance got waved off too fast on the first pass, then actually
+checked.** Clarke's pushback: what about copy-pasted content, does the owner
+typing something versus pasting someone else's words in need a different
+trust tag, and what does real prior art actually do about it, since the
+project's whole discipline is standardizing what exists, not inventing what
+sounds clean. Checked rather than guessed: no real system tags provenance
+below the message/turn boundary. Anthropic's own prompt-injection guidance
+wraps tool-result content in delimiters at the tool-call boundary, not
+inside what the user typed; the published instruction-hierarchy work ranks
+system > user > retrieved content as three tiers, "user" staying one tier
+regardless of what the user chose to include; Microsoft's
+Spotlighting/Prompt Shields tags external/retrieved documents specifically,
+never sub-spans of a user's own input. Real answer: the owner is
+accountable for whatever they put in their own turn, full stop, which is
+the Tools/fetched-content-vs-Client boundary the project already has.
+Nothing finer to standardize here, on purpose — left for the community to
+build on top of once this publishes, not invented now to look complete.
+
+**The vault/keychain thing was never a Client, on either row.** Owner's row
+(closed last session) had reasoned "owner types a password into a vault at
+setup" reduces to Owner–Client, since a local secrets UI counts as a Client.
+Clarke caught this while reviewing the Client row: a password manager or OS
+keychain doesn't reach the assistant, it's substrate the owner already has,
+same as buying a hardware token, entirely outside the Mojo piece boundary.
+So Owner–Credential broker's "no" verdict was right, but for the wrong
+reason as written — fixed in both rows. Real lesson: a "settled" row from a
+prior session isn't immune from a hole a later row's walk exposes, exactly
+what AGENTS.md already says about the piece list, now confirmed true of
+matrix rows too.
+
+Landed for Client, all verified against real prior art, not asserted: yes
+to Harness (two-way, live for the run's duration, OpenClaw/Letta), yes to
+Router (one-way, the trigger), yes to Memory provider, Fleet manager, and
+Identity; no to Model endpoint, Tools, Sandbox, Kernel, Credential broker,
+Provenance.
+
+**Flagged, not resolved:** Client isn't one shape, it's three — conversational
+(→ Harness), raw-file (→ Identity), provider-mediated (→ Memory provider) —
+each pair above only ever needed one of them. Reads like a conformance-type
+split (the way Model endpoint is one piece with typed modalities), not a
+piece-list problem, but not deciding that here. Also open: whether Client's
+trigger to Router is a live call or a queue Router polls, which changes
+what that crossing looks like once Router gets classified for real.
+
+Next: Harness's row, a fresh session per the existence-pass pacing.
+
+---
+
+## 2026-07-13 (late night) — the existence pass actually started: anatomy.md split into pieces.md, the matrix moved out of HTML into a plain md working file, Owner's row closed, and the method itself amended mid-pass for prior art and for not writing ahead of agreement
+
+First real session working seam-method.md's step 1 rather than tooling
+around it. Opened by rereading anatomy.md, seam-method.md, seams.md, and the
+still-empty piece-matrix.html cold, then walking Owner's row as a first
+attempt, and got corrected twice in a row in ways that reshaped how the rest
+of this pass has to run, not just what Owner's row says.
+
+**First correction: stop citing the old letters as evidence.** First pass at
+Owner's row leaned on "this is already seam a" as if a prior label were
+proof a crossing was real. Clarke stopped this outright: the whole point of
+redoing seams from scratch is that the old eighteen-letter list might be
+wrong, so it can't be used to check itself. Redid the row from raw existence
+reasoning only. Landed on: wipe the old letters everywhere rather than let
+them bias reasoning quietly, but don't lose them, since a correct old
+answer should be allowed to reappear on its own merit, not be pre-empted by
+erasure. They didn't need saving anywhere new: anatomy.md was clean at
+`d35483b`, so that commit is the checkpoint to diff against once this pass
+is done, to see what reappears and what doesn't. Stripped the lettered
+annotations out of anatomy.md's map and deleted the old seam table entirely;
+[seam-method.md](seam-method.md) and [seams.md](seams.md) already didn't
+depend on the letters.
+
+**Mid-correction, Clarke's own idea: split pieces out of anatomy.md.**
+Watching the letter-strip happen, Clarke proposed pulling anatomy.md's whole
+piece-by-piece section into its own file, [pieces.md](pieces.md), the same
+move already made for seams when research-plan.md's flat table stopped
+fitting. Agreed it was the right call and well-timed rather than premature,
+since the piece list is explicitly revisable per AGENTS.md and a focused
+file makes that a small diff instead of surgery on a big narrative doc.
+Moved the full piece descriptions into pieces.md verbatim; anatomy.md is now
+the union, intro, map, and "what survives, what swaps," pointing at
+pieces.md and seams.md rather than duplicating either. Updated every
+forward-pointing reference across the repo (AGENTS.md's current-stage
+pointer, roadmap.md, seam-method.md, seams.md, the session rule file);
+historical mentions in devlog.md and research-plan.md's archive were left
+alone, they're accurate records of what existed when they were written.
+
+**Second correction: piece-matrix.html itself was the wrong home for the
+work.** Attempted an edit to the HTML file's embedded JS arrays mid-pass;
+Clarke stopped it: encoding actual reasoning as JS array literals inside an
+HTML file wastes tokens on presentation nobody's looking at yet, and all
+real work should happen in plain markdown, full stop, not just for this
+file. Moved the actual matrix data into a new [piece-matrix.md](piece-matrix.md);
+piece-matrix.html now stays stale, a rendering to regenerate from
+piece-matrix.md later when there's something worth looking at, not touched
+during the pass itself.
+
+**Then walked Owner's row for real**, stress-testing each verdict with a
+concrete scenario instead of pattern-matching off a first read, per Clarke's
+explicit ask ("don't want things to slip through the cracks"). Landed on:
+Owner only ever crosses with Client, ten other pairs all no, each with its
+own tried scenario (a mid-task confirmation prompt for Harness, handing a
+tool a credential directly, typing a password into a vault at setup, and so
+on), because Client is *definitionally* the owner's only reach into the
+system, nothing else in the piece list has a channel to the Owner as a
+person, only to owner-authored data already sitting in Identity.
+
+**Third correction, twice in one exchange: Owner–Client isn't one-way, and
+I'd bundled two different facts and then mishandled the split.** First
+pass called Owner–Client "verification, full stop," with "proactive
+delivery" written off as bundled-in noise to relocate elsewhere. Clarke
+caught two separate things wrong with that. First: delivery is real, and it
+still has to reach the owner through *some* client, so the actual live
+question is which of the owner's several clients gets picked, not whether
+delivery happens at all, exactly the "outward reach" half of what Client
+already is (his own framing: Jarvis contacting Tony through his phone, his
+workshop speakers, his watch). Second, once that landed: I'd overcorrected
+by pulling delivery entirely out of the Owner–Client pair, when the actual
+human-facing leg of it (the phone actually ringing, the text actually
+landing) is exactly Client's outward-facing half and belongs to this pair
+after all. What's genuinely a separate, still-open question is upstream of
+that: which piece decides a message needs to go out at all (Router, since
+it watches triggers? Kernel, since it flags consequential actions? both?),
+and how that decider picks from, or broadcasts across, the owner's roster of
+live clients. Fixed: Owner–Client is real and two-way, verification one way,
+delivery the other, both belonging to this one pair; the decider-and-roster
+question stays parked for Router's and Kernel's rows against Client.
+
+**Fourth correction: verify the row against real systems before calling it
+closed, not just from the piece definitions.** Clarke's framing: MSI
+standardizes what real systems already do, it doesn't invent structurally
+clean claims and assume they hold. Forked a check of the "Owner only ever
+touches Client" claim against the same five digital-counterpart-shaped
+systems already used for the piece-completeness pass (OpenClaw, Hermes,
+Khoj, Letta, OpenFang), specifically for whether any of them let a user
+touch a backend component directly, or ran proactive delivery through
+something other than the same channel/UI layer the user already uses. Held
+clean in four of five; Letta has no proactive-delivery concept to check at
+all, worth stating plainly rather than guessing. Khoj's scheduled
+automations deliver by email specifically, the one case that looked
+different at first, but that's just an always-live Client instance (unlike
+a terminal or app, which is only live while open), the same roster/discovery
+question already parked, not a break in the claim. Noted the liveness
+variation within Client as a real thing to carry into its eventual
+classification, not a reason to split the piece.
+
+**Fifth correction: stop writing conclusions into the working file ahead of
+actual agreement.** Had written all ten of Owner's "no" verdicts into
+piece-matrix.md right after reasoning through them, before Clarke had
+actually signed off, while he was still pushing on Owner–Client. He stopped
+before I could compound it further. Standing process from here: reason
+through a pair out loud first, write it into piece-matrix.md only once
+Clarke's actually said it's right, not just when he's stopped objecting to
+something else.
+
+**Landed as a real amendment to seam-method.md, not just a one-off fix**:
+prior art now runs throughout the procedure, not deferred to step 5's shape
+match. A structural shortcut used to settle several pairs at once (like
+Client being Owner's only reach) gets checked against the standing prior
+art, the five digital-counterpart systems for how real systems actually
+shape this kind of relationship, and research-plan.md's deeper archive for
+protocol shape, before it's accepted, not asserted from anatomy.md's prose
+alone and only rescued with research afterward if it starts to feel shaky.
+
+Owner's row is closed in piece-matrix.md: one real two-way crossing, ten
+no's, each with its own tried scenario, checked against prior art, corrected
+twice by Clarke along the way. Client's row is next, started (section header
+only, no pairs walked yet). Session ends here on Clarke's request, for fresh
+context next time rather than carrying this one further.
+
+## 2026-07-13 (night) — seam-method.md got a persistence question and a cross-cutting object registry, both requested by Clarke reviewing the method cold
+
+Clarke reviewed seam-method.md as written (not as a continuation of the
+evening session's outside-conversation discussion, he came at it fresh) and
+raised three points. First, a missing structural question: step 3's
+authority question ("who owns the shared fact") silently assumes a fact
+exists, and breaks down for crossings like Harness to Model where nothing
+survives the interaction. Second, a prediction that walking step 5 across
+every seam will reveal a handful of shape families rather than eighteen
+unrelated seams, correctly identified as not a method gap, step 5's six-shape
+taxonomy already sets that up, nothing to add until seams actually get
+shaped. Third, a warning that pairwise analysis (piece-matrix.html is
+literally a grid, one cell per pair) can't represent an object that's really
+one thing with several bilateral faces, a Grant issued by one piece, checked
+by a second, revoked by a third, showing up as three cells each capable of
+passing step 6's substitutability test in isolation while the schema drifts.
+
+That third point is the same object-model idea from the evening session's
+outside conversation (Task, Run, Grant, Capability, Event, Artifact, Identity
+Fragment, Trust Tag, Secret Reference), landing independently, this time
+from Clarke rather than the outside conversation, and phrased as a concrete
+failure mode rather than a proposed replacement axis. The evening session had
+already judged the idea genuinely strong but oversold as a replacement for
+piece-to-piece work, correct as a second axis composed with it, gated on
+surviving m's "verify per object, never assert" discipline before adoption.
+First build of this pre-filled a candidate list (a shorter seven-object
+guess at the outside conversation's nine), Clarke caught it immediately: he'd
+thrown out those seven as an illustrative guess, not a considered list, and
+the registry pre-filling itself from a guess is exactly the mistake
+piece-matrix.html's own "nothing assumed answered" rule exists to prevent.
+Corrected: the registry table starts genuinely empty, a row only gets added
+the first time an actual seam's "What crosses" field names something for
+real, and `confirmed` now requires a second independent seam hitting the
+same name, not just one. Nothing pre-filled, same discipline piece-matrix.html
+already enforces.
+
+Concrete edits: seam-method.md's step 3 gained a fourth question (does a
+fact survive this crossing or does nothing remain), step 7's recording
+instructions now check "what crosses" against the registry too. seams.md
+gained the registry section, a placeholder for two future rollups (by
+matched shape, by shared object, not the same grouping and a seam can sit in
+both), and the entry template gained Persistence and Shared object fields.
+No seam has been walked yet under the updated method, still just tooling
+before seam-method.md's step 1 actually runs.
+
+## 2026-07-13 (evening) — the outside conversation landed and got critiqued rather than adopted, seams rebuilt from first principles instead of patched, a real seam-finding method derived and locked in seam-method.md, and research-plan.md demoted from tracker to archive
+
+Opened with the outside conversation Clarke had flagged as incoming (2026-07-13,
+later still's handoff). It proposed three matrices in sequence (authority, who
+owns the fact; information flow, what crosses; interaction pattern, protocol
+shape, only derived last) and, more centrally, that seams should be found by
+defining a shared object model first (Task, Run, Grant, Capability, Event,
+Artifact, Identity Fragment, Trust Tag, Secret Reference) and deriving seams
+from which pieces create/read/update/replicate/validate which objects, rather
+than walking piece-to-piece pairs directly. It also flagged what it called a
+missing Identity-to-Kernel seam: who defines what a capability string like
+`email.send` actually means.
+
+Ran it through a real critique rather than adopting it wholesale. Most of it
+turned out to already be landed in anatomy.md verbatim (the "who decides"
+framing is just Kernel's own paragraph; "memory as filesystem not service" is
+already the Memory provider piece's "Obsidian and your vault" line; "data as
+the swap test" is already m's flagship-seam framing), useful as outside
+confirmation the organizing principle reads clearly cold, not new work. The
+missing-seam claim didn't survive: j's row already picked seL4-style
+capabilities specifically to dodge the RBAC-registry problem being described,
+and the actual residual question (who declares the vocabulary a capability
+cashes out to for a given tool) is very likely already answered by the
+registration-vs-negotiation split found in the 2026-07-13 (later) session's
+CRI/CNI/CSI-vs-LSP research, just never cross-referenced onto j. Flagged as a
+cross-reference to add during the real walk, not a 14th seam. The two ideas
+that survived scrutiny: the matrix-sequencing order is a real upgrade over
+piece-matrix.html's current one-axis status legend, and the object-model idea
+is genuinely strong but oversold as a replacement for piece-to-piece work
+rather than a second axis composed with it, and its object list needs to
+survive m's own already-standing "verify per object, never assert" discipline
+before being adopted, the same discipline that already caught trigger/
+routing-policy/roster/checkpointed-state/audit-record almost getting treated
+as five separate shapes instead of one.
+
+Clarke's actual call, once that landed: scrap the patch-the-old-list approach
+entirely. Take the piece list as given, zero seams, and have the method
+actually taught and derived from first principles rather than inherited from
+either the old eighteen letters or the outside conversation's framing. This
+is not a deviation from AGENTS.md's own standing plan, it's exactly what it
+already called for ("expected to mostly get discarded and rebuilt fresh...
+seeded by an outside conversation"), just executed as genuine derivation
+instead of direct adoption of what the conversation seeded.
+
+The teaching arc, run as real back-and-forth, not a lecture dump. First
+question: strip away everything a same-process function call gets for free
+(same memory, same version, same author, same trust, always running) and name
+what breaks. Clarke's own first pass named real things, mixed together: shape
+agreement (his signed/unsigned int example), a namespace concern he wasn't
+sure about, versioning across "different language versions," and function B
+containing malware. Sorted into six named problems rather than corrected
+outright: shape and vocabulary as genuinely distinct (his `pull()`/`get()`
+example is vocabulary, not shape), his namespace instinct renamed to discovery
+(how does one side even find the other, distinct from namespace collision,
+which is a same-process problem that mostly disappears once two things are
+separate processes), his versioning sharpened from "different language
+versions" to protocol skew, two live versions of an interface coexisting
+forever once more than one implementation exists in the wild, not just
+sequential spec releases, trust kept as-is (his malware line, a completely
+different axis from the other four, about belief and permission rather than
+understanding), and liveness added as the one he missed entirely: "the other
+side isn't running right now" is a normal state across a seam with zero
+equivalent inside one process, where a function either runs or the whole
+program is dead.
+
+Tried a worked-example comparison next as a check, Kernel-Sandbox versus
+Fleet-manager-to-Fleet-manager against the six problems, meant for Clarke to
+run himself. He refused outright, and was explicit about why: not "stop
+teaching me," specifically "stop assigning homework," he'll learn from
+watching the reasoning happen rather than doing the exercise himself. Real
+interaction-style correction, worth carrying forward for future teaching
+moments in this project, distinct from wanting less depth, he pushed back
+again one turn later when the correction got over-read as "wrap up faster."
+Ran the comparison directly instead. Kernel-Sandbox: same machine, so
+discovery and liveness are near-zero; shape and vocabulary carry the real
+weight because Sandbox is meant to be swappable (container, isolated process,
+another machine) and all of them have to satisfy the same placement contract;
+trust turned out asymmetric and non-obvious, not "is this actor legitimate"
+but "does this sandbox actually deliver the isolation it claims," a
+truthfulness problem rather than an authentication one, and it connects
+directly to the already-open declarable-isolation-strength question sitting
+in p and q's rows. Fleet-manager-to-Fleet-manager came out close to the exact
+mirror image: shape, vocabulary, discovery, and versioning all carry real
+weight (peer state, cross-implementation interop, machines rejoining after a
+partition, rolling upgrades), trust means "is this still one of my machines"
+rather than legitimacy or truthfulness, and liveness isn't just a factor,
+partition tolerance is the entire reason the piece exists. Generalized from
+the two into three structural facts that determine which of the six problems
+actually bite for any given pair, derived rather than handed down this time:
+locality (same machine/process versus across machines), cardinality (how many
+live instances actually sit on each side at the moment of this specific
+crossing, not how many vendors build the piece type, which is always plural
+by design and so never discriminates anything), and authority (one side owns
+the shared fact versus both sides being peers).
+
+Taught the purpose layer last, since Clarke asked explicitly to dwell on "what
+seams are trying to do" before moving to method. Landed on: a seam is
+specifically a piece's outward-facing surface, not any internal interaction
+(Harness's own insides, deliberately unstandardized so harnesses can compete,
+is anatomy.md's own existing example of the not-a-seam case), and the bar it
+has to clear is blind interoperability, independently-built implementations
+working correctly together on first contact with zero coordination, the same
+bar TCP/IP, POSIX, and HTTP actually clear in practice. Tied this directly to
+"every Mojo piece designed to be outcompeted": that promise is only real if
+the boundary a competitor has to hit is written down to that same standard,
+otherwise the only way to build a competitor is reverse-engineering whatever
+the reference implementation happened to do. The mechanism for finding where a
+seam belongs and whether it's specified correctly is the substitutability
+stress test: swap either side for a hypothetical competing implementation,
+does the other side still work, blind, against only what's written down. A
+failure diagnoses one of two things, an incomplete contract (something crossed
+that never got written down) or a wrong boundary (the two "pieces" weren't
+really separable, redraw the piece list itself), and this is exactly, if never
+named as such before, the test that already caught seam q and seam l each
+hiding two real relationships under one letter.
+
+Locked all of it into a seven-step procedure: existence pass across every
+piece pair (grounded in anatomy.md's own text, most pairs a fast no); a
+seam-worthy filter (does MSI actually want independent implementations to
+interoperate here, mostly yes by design in this system, kept explicit anyway
+for edge cases like Owner, a person, never swapped); structural
+classification (the three drivers above); working out the load-bearing
+problem subset from those three answers; matching the load-bearing profile
+against the six-shape taxonomy already researched over the prior two sessions
+(static shared format/OCI-POSIX-base-definitions, one-boundary-many-operations
+open-caller-set/POSIX syscalls, one-caller-many-providers live session
+negotiation/LSP-DAP, one-orchestrator-many-vendored-plugins live per-call
+negotiation/CRI-CNI-CSI, peer replication with deterministic conflict
+resolution/Matrix-git, lease-and-grant capability authorization/seL4-AWS-STS);
+the substitutability stress test; and recording the result.
+
+One real correction landed mid-write, caught by Clarke before it went in a
+file: the first pass at the cardinality driver was phrased as "one canonical
+implementation versus plural," meaning vendor count, which is meaningless
+here since every MSI piece is designed to have competing implementations by
+construction, so it never discriminates anything. The actual, discriminating
+version is runtime cardinality at the moment of a specific crossing, how many
+live instances are reachable right then, already implicit in anatomy.md's own
+"one live instance per machine" language for the system-control pieces against
+the explicitly plural service pieces, and already the exact axis
+piece-matrix.html's own broadcast-cell legend encodes. Fixed in seam-method.md
+before it was written, not after.
+
+A second real correction, same exchange: research-plan.md shouldn't keep
+holding per-seam findings going forward, its table format assumes every seam
+is the same uniform shape, a POSIX-style flat list, the exact assumption two
+sessions of research already proved wrong. Landed the split Clarke asked for:
+[seam-method.md](seam-method.md), the procedure, new file; [seams.md](seams.md),
+the tracker, new file, one flexible entry per seam tagged by its matched shape
+instead of uniform table columns, empty and ready for the existence pass;
+research-plan.md demoted to a research archive, its real prior-art findings
+(Vault/STS, seL4, LSP, POSIX, the digital-counterpart research) kept and now
+cited from seams.md entries rather than duplicated, its old seam table and
+proposed walk order marked as archived input rather than the live plan. A
+PostToolUse formatter hook reflowed seam-method.md's markdown right after it
+was written, confirmed to be a pure line-wrap, no content change.
+
+Closed the loop before Clarke ended the session (lunch): AGENTS.md's file
+guide and Current stage section rewritten to point at the new files and name
+the concrete next step; roadmap.md's numbered work list updated the same way,
+explicit that seam-method.md is not the still-unstarted piece/seam-to-standard
+document (item 2, a distinct later thing that decides how a seam/piece map
+becomes one buildable spec, not how individual seams get found and shaped);
+`.claude/rules/msi-research-sessions.md` rewritten wholesale, steps 1-2 of the
+new procedure can run in bulk across the grid in one sitting, steps 3-7 stay
+one seam at a time per session, the same one-seam-per-session discipline the
+old rule had, and a `settled` seams.md entry explicitly does not trigger
+drafting msi.md, that's still gated on item 2. Confirmed, when Clarke asked
+directly, that msi-steps.md itself needs no change and stays frozen, unchanged
+from the standing rule before this session. Next session's actual first move,
+not yet started: seam-method.md's step 1, the existence pass across
+piece-matrix.html's grid.
+
+---
+
+## 2026-07-13 (latest) — piece list stress-tested against five real digital-counterpart systems plus a second agent's independent read, no 14th piece found, a real durable-state correction landed (only Identity owns state), the userspace-tampering question it raised answered in layers, and Identity confirmed to stay one matrix node
+
+Picked up with Clarke's own sequencing for the session: settle the piece list
+is actually complete first, then work the matrix for seams, then start on the
+standard-shape document. This entry is the first part only, the matrix pass
+itself didn't start yet.
+
+Checked the 13-node list two ways before touching a single cell. Against
+anatomy.md's own accounting (1 reach + 1 run + 4 services + 5 system-control +
+Owner + Identity, Host OS excluded) it already balances. Against real
+precedent (Kubernetes' major components, Matrix's actors) nothing extra fell
+out either. Clarke then asked for the harder version: check against the real
+digital-counterpart systems this project already treats as real prior art
+(OpenClaw, Hermes, Khoj, Letta), not just general-purpose distributed systems,
+and added a fifth mid-session, OpenFang, which he'd heard was some kind of
+kernel for agent systems but hadn't verified himself. Forked five parallel
+research agents, one per system, each told to inventory the system's real,
+current, whole-architecture components from actual docs/repos (not
+recollection) and map every one onto the 13-node list, flagging anything that
+didn't fit.
+
+Verdict across all five: no 14th piece. OpenFang turned out to be a real
+project (RightNow-AI/openfang, "Agent Operating System," disambiguated from an
+unrelated embedded-bootloader project of the same name) and Clarke's hunch was
+right that it's kernel-shaped, though its `openfang-kernel` crate actually
+fuses Router, Kernel, and budget-tracking into one component, real evidence
+that bundling is an implementation choice, not evidence Mojo's split is wrong.
+Real findings worth carrying forward, dumped raw at the top of
+research-plan.md rather than integrated properly, since Clarke was explicit
+that whole file is getting rewritten once the standard-shape document lands
+and there's no point polishing something about to be redone: OpenClaw's
+Pairing & Device Trust System is a real trust tier between a bare Client and a
+Fleet-admitted machine that anatomy.md doesn't currently name (open question,
+not resolved: does kernel-permission-plus-sandbox-placement already cover it);
+OpenFang has active egress/taint-tracking, a real gap distinct from both `p`
+(ingress custody) and `r` (ingress trust-tagging), likely `j` or `q`'s scope
+rather than a new piece; and OpenFang runs a separate wire protocol for its
+own agent-mesh distinct from A2A, independent third-party precedent for the
+k-vs-l split already landed last session.
+
+Clarke then pasted in a second AI agent's independent read of anatomy.md,
+asked for it cold rather than pre-framed. It converged with the five-system
+check (no glaring missing piece, "architecture feels surprisingly complete")
+but raised four real challenges, walked one at a time rather than accepted
+wholesale:
+
+- **Provenance as a piece vs. a schema field.** The other agent's challenge:
+  maybe trust-tagging is just metadata on the data, and "Provenance" should
+  fold into Kernel, the way Kubernetes' admission control lives inside the
+  API server's pipeline rather than as its own top-level component. Real
+  precedent, taken seriously rather than waved off. Weighed against
+  anatomy.md's own laundering argument (content often arrives with no trust
+  metadata at all; something has to assign it consistently or a run could
+  route to the laxest tagger) and Clarke's own call: keep it standalone.
+- **A missing registry/discovery piece.** Resolved rather than left open: the
+  Khoj fork's own finding already showed a real system's "state management" is
+  just plumbing holding the roster, not a piece, and every adopted service
+  protocol (MCP's `tools/list`, an OpenAI-compatible `/models` endpoint)
+  already carries its own discovery handshake. Discovery is already
+  distributed into `e`/`f`/`s`'s adopted standards; Router just reads the
+  resulting roster as data via `d`. Not a gap, one line for `d`'s row later.
+- **Router might be two pieces** (Trigger Manager vs. Run Planner, the way
+  Kubernetes split controller-manager from the scheduler over time). Real,
+  and the other agent's own instinct, flag it, don't split yet, is the right
+  call: doesn't change today's node count, parked as a watch-item for `d`/`g`'s
+  real walk.
+- **The durable-state lens**, the sharpest of the four. Its table (Fleet:
+  yes, Kernel/Broker/Router: maybe) got checked against anatomy.md's actual
+  text rather than left as a guess, and it doesn't survive as written: Broker
+  explicitly doesn't own storage ("doesn't own the storage; it scopes and
+  injects") and Router doesn't record anything (Kernel does, per `j`).
+
+That last point led somewhere bigger. Clarke asked directly whether Kernel and
+Fleet manager should keep their own private durable state at all, given the
+whole point of the system is that everything is swappable except the data.
+Anatomy.md turned out to already answer this, just not consistently: Identity's
+own description already lists "a record of who wrote what under what
+authority" as part of the data, literally Kernel's audit ledger, and line
+72-77 already states "among the singular pieces, only the kernel writes...
+[Fleet manager and the others] all read the data to do their jobs; none of
+them author it." That second line already forecloses a private Fleet-manager
+membership store: admission is just a permission event, Kernel-authored into
+Identity's shape like anything else. Extended the same logic to Kernel itself
+by analogy by `m`'s own already-stated rule for providers ("providers derive,
+they never own... any write it accepts lands in the data's standard shape"):
+if Kernel kept a private ledger, swapping kernel implementations would strand
+the system's entire permission history outside the one thing that's supposed
+to be portable, breaking the "package up the data, drop it into a different
+assembly, still the same assistant" invariant for the single most
+security-critical record in the system. Landed: nothing but Identity owns
+durable state. Kernel and Fleet manager are exactly as swappable as Router or
+Broker; Kernel is licensed to *write*, not to *own*. One loose end flagged
+rather than resolved: Kernel's own audit-write into Identity is presumably a
+privileged internal operation that doesn't need to re-check itself against its
+own enforcement, the same non-issue a journaling filesystem has writing its
+own journal, but worth naming explicitly in `m`'s row rather than silently
+assumed.
+
+Clarke then asked the obvious next question: if the data is just plain
+userspace files, what actually stops direct tampering, bypassing Kernel
+entirely by editing the files by hand? Anatomy.md already commits to not fully
+solving this, on purpose: "Host OS... every piece above, the kernel included,
+is ordinary software running in OS userspace. No kernel modules, no custom
+OS." Clarke's own instinct, that a later, more mature MSI might eventually earn
+real kernel-space enforcement (merged into Linux, or its own thing) once
+there's enough behind the project for someone to build it, was affirmed
+directly as a legitimate future-MSI direction rather than a gap MSI-1 fails to
+close. For what MSI-1 can do without a real kernel, landed a three-layer
+answer built entirely from pieces already in the anatomy, no new mechanism
+invented: sandbox isolation (`q`) is the actual first line, since the real
+threat isn't the owner editing their own files (that's ownership, not an
+attack) but a harness or sandboxed action bypassing Kernel, and if a sandbox
+never exposes Identity's raw files the problem shrinks to "can something
+escape its sandbox," already modeled; tamper-evidence via content-addressing
+and hash-chaining, git's object model (already `m`'s own precedent) and
+OpenFang's real Merkle hash-chain audit trail found in this session's own
+research, catches tampering after the fact rather than preventing it; and
+encryption at rest keyed through the broker (`p`) so a raw file edit without
+the key produces garbage, a real connection between `p` and `m` worth naming
+explicitly rather than leaving implicit.
+
+Finally, landed the identity-split node count Clarke had guessed would be at
+least 3, and pushed back on that guess rather than just confirming it. The
+test that mattered: the matrix tracks relationships between pieces, and
+Identity isn't a piece, so sub-shapes only matter to the matrix if some other
+piece's actual seam relationship to Identity differs by sub-shape. Checked
+directly rather than assumed: Credential broker's own row already says it
+"don't[s] care whose name is on an account or secret, only owner policy gates
+action," Kernel's permission-gating path is the same regardless of what it's
+gating, Provenance tags incoming content before it's filed anywhere, and
+Memory provider's whole plurality argument depends on the data staying one
+shape underneath multiple views. Nothing changes seam-wise, which matches what
+the original 2026-07-11 flag already said and had been read past: "a
+schema-naming question to settle when m is walked, not a new mechanism." Not a
+new mechanism means not a new relationship, means not a new node. Landed:
+**Identity stays one node on the completeness matrix.** The sub-shape count
+itself (the original 3: owner data, the agent's own operational identity,
+relationship/provenance; a candidate 4th, task/project working context, from
+Hermes's Context File System, probably not real evidence, it reads like
+ordinary Tools/Sandbox file access bundled into a memory subsystem for
+implementation convenience, versus Letta's MemFS, a stronger candidate since
+it's explicitly framed as persistent memory and personas would plausibly need
+to scope it differently than personal history) stays open, parked for `m`'s
+real schema walk, not resolved here.
+
+Session closed here at Clarke's request, piece list settled well enough to
+move on (not frozen: it can still move if seam work exposes a real hole, the
+way it already did once for seam l). research-plan.md's "Currently on" line
+and AGENTS.md's "Current stage" section both rewritten to match. Next
+session: the seam list itself (anatomy.md's eighteen letters) is expected to
+mostly get discarded and rebuilt fresh rather than re-walked in the old order,
+seeded by an outside conversation Clarke is bringing in. Explicitly not yet
+the gated phase-3 walk, since the standard-shape document (item 2, how a
+piece/seam map becomes a real standard) hasn't been touched this session at
+all and still blocks it.
+
+---
+
+## 2026-07-13 (later still) — piece-matrix.html landed in the repo, seam l resolved into existing pieces without a new one via a real A2A spec check, and walking concrete examples split "why do two owners' systems talk" into four shapes instead of two
+
+Picked up the blank 13-node matrix from the handoff. Clarke had a second copy
+of it from earlier the same day, better designed (warm paper/terracotta
+palette, a five-state legend: known/broadcast/ambiguous/gap/none, vertical
+sticky column headers, a findings section under the grid) and asked to save
+it into the repo rather than keep rebuilding it from scratch each session,
+the actual point being to stop burning tokens regenerating the same
+artifact. Merged the two: kept the better version's design and findings
+section wholesale, corrected the node order to match anatomy.md's own
+Pieces section order rather than the earlier draft's spatial grouping
+(Router had been placed third, right after Client, by diagram habit; the
+document itself puts it after every service). Landed as `piece-matrix.html`
+at the repo root, the same pairing anatomy.html already has with anatomy.md.
+One finding folded into it directly: checked whether Fleet manager's own
+flagged diagonal cell (the same-machine-grid-has-nowhere-for-k/n problem
+found last session) generalizes to Kernel, Router, Credential broker, and
+Provenance too, since all five are singular-per-machine. It doesn't:
+anatomy.md is explicit that every other system-control piece's cross-machine
+coordination routes through Fleet manager by design, not piece-to-piece
+(Router's own prose: "not the router's own"). Clarke confirmed directly,
+"all things shared cross-machine should be done through fleet-manager
+because that is its one job," so this is landed, not just leaned on.
+
+Clarke then proposed folding seam l (system ↔ outside agents) into Fleet
+manager and renaming it, since Fleet manager's job could be read more
+broadly as "connect to anything that isn't local." Real tension surfaced
+before accepting it: k/n's whole point is maintaining one trusted identity
+across the owner's *own* machines; l is explicitly the opposite, "different
+owners, opaque, no trust extended," per anatomy's own Outward paragraph.
+Recalled, not yet verified, that Matrix keeps federation (its own k/n)
+structurally separate from bridging to non-Matrix networks (Discord, IRC),
+and XMPP has the same split historically (s2s vs. gateway/transport
+components) — real precedent, if it held up, against merging a
+trust-extending piece with a trust-refusing one just because both are drawn
+as outward arrows on the same diagram edge.
+
+Forked a real check of the actual A2A spec (a2a-protocol.org) rather than
+trust that recollection, testing a sharper hypothesis first: l might not be
+one relationship at all, it might split by direction, outbound (a harness
+delegates a task to another owner's agent, structurally a protocol variant
+of f, tool-calling) and inbound (another owner's agent reaches Mojo first,
+structurally a fifth instance of g's "outside events" trigger kind, no new
+piece needed either way), unless A2A's discovery mechanism forces something
+always-on the way Router or Fleet manager are but Harness isn't. Verdict
+came back clean against the real spec text: Agent Cards are static JSON
+metadata, §8.3 defines what one must contain, never that it must be served
+by a live, always-reachable process, and §14.3's `.well-known` hosting
+convention is explicitly optional. §3 names Client/Server as per-exchange
+roles, not fixed identities, matching the outbound/inbound split exactly.
+The task lifecycle (direct response, polled Task objects, SSE, webhook push)
+never requires a standing daemon either, Mojo-as-server can process
+asynchronously and call back later. The only genuinely "always-on"
+requirement is the mundane one any web server has, something listening at a
+stable address, and Router already is that. Same bug shape as q, one letter
+hiding two real relationships: l dissolves into an outbound seam-side on
+Harness and an inbound seam-side on Router, no new piece, no rename. A
+sub-case fell out along the way: a bare capability query (fetch my Agent
+Card, nothing more) doesn't need a run at all, it's data-serving, the same
+shape as a Client reading the identity with no live session.
+
+Clarke pushed one step further: if talking to another machine outside a
+harness is already a real thing (k/n, Fleet manager to Fleet manager, no run
+involved, ever, for the owner's own fleet), is task-delegation and
+data-exchange actually the only two reasons two owners' systems would ever
+talk? Walked concrete examples rather than reasoning abstractly: booking a
+table (delegation), asking a friend's agent for a recommendation (feels like
+data, structurally still one request-response task, no different shape from
+booking), two coworkers' agents keeping a shared project timeline in sync
+(not a task at all, ongoing, bidirectional, needs write reconciliation, A2A
+has no mechanism for this whatsoever), a family wanting standing trust
+between their assistants so they're not re-verifying every exchange (not a
+task and not data, establishing that a relationship exists in the first
+place), and an open capability lookup (no relationship, no run, just
+discovery). Four categories fell out, not two: discovery (no run, no
+relationship), one-shot task/query (l itself, zero standing trust, both
+"delegate a task" and "give me data" collapse into this one shape since a
+data request is just a task with an informational payload), relationship
+formation (negotiating that an ongoing partial-trust relationship exists
+between two owners at all, the cross-owner cousin of n, weaker by design,
+scoped and revocable rather than full membership, no seam or piece anywhere
+yet), and ongoing shared state (only possible once a relationship exists,
+not request-response shaped at all, k/Matrix-shaped peer state agreement
+across a partial-trust boundary). Clarke's own read: the last two are
+literally what a Collective is, not adjacent to the idea, the actual
+substance of it.
+
+Ran an extensibility check before parking those two, since Clarke's
+instruction was explicit, only solve them now if MSI-1 can solve them well,
+otherwise make sure MSI-1 doesn't foreclose them later. m's per-unit
+permissions, j's grants, and r's origin-based tagging all read as
+principal-agnostic already in how they're already written, none hardcode
+"owner-internal only," so extending "principal" to a future Collective
+member looks additive, not a rework. k's write-reconciliation is the one
+real open leap, whether the mechanism that converges one owner's own writes
+across their own machines generalizes to reconciling two different owners'
+writes into a shared Commons, left unverified on purpose. The one actual
+foreclosure risk found was wording, not architecture: if l's row asserted
+"no trust extended" as an absolute property of A2A rather than a
+description of the no-standing-relationship case specifically, it would
+contradict the standard's own text the moment a relationship ever formed.
+Fixed by scoping l's row narrowly on purpose, landed directly in
+research-plan.md rather than parked, since it's a correction to existing
+content, not new design. The relationship-formation and shared-state finding
+itself went to ideas.md's Collectives section, next to the existing Armada
+and cross-implementation-fleet notes, explicitly gated behind the
+Collectives phase, not designed further here.
+
+Clarke's explicit call on scope, worth recording verbatim in spirit: leave
+research-plan.md's own meta-status framing (the "Currently on" line, phase
+bookkeeping) to drift rather than housekeeping it this session, since it's
+all going to change again once the next two real milestones land, dialing
+in the anatomy's pieces and seams for real, and the overall shape of the
+standard itself (the four-shapes taxonomy from the prior session). That
+housekeeping instinct got corrected mid-session rather than followed.
+Session paused here at Clarke's own request, and his read on the pacing
+change itself: taking this slower and making sure the standard actually
+gets built properly is the better path than the faster version phase 2 was
+running on before it got suspended.
+
+---
+
+## 2026-07-13 (later) — POSIX checked for real and confirmed a real but partial precedent, four more real standards surveyed, the seam list reframed as several genuine shapes wearing one template, a piece-completeness matrix started from scratch, and the project's own stated current phase corrected to match
+
+Picked up the handoff: check anatomy.md's pieces against real POSIX
+structure, and resolve whether a seam is a strict two-piece pairing or
+POSIX-syscall-shaped, using j, p, and q as the test case, before touching
+phase 2's steps again. Went and read the actual Open Group Base
+Specifications rather than working from recollection. XSH (System
+Interfaces) turned out to be a single flat alphabetical list of 1123
+functions, no grouping by which subsystem answers a call anywhere in the
+document; XCU (Shell & Utilities) is the same shape, a second, separate flat
+list, not a subdivision of XSH. Conformance runs through Option Groups,
+named bundles of related functions an implementation opts into as a whole,
+real precedent for the ten conformance profiles already in research-plan.md,
+but a conformance-grouping concept, not a grouping of the interface list
+itself. And POSIX's own spec text never names "the kernel" or any other
+component at all, only observable behavior at the process-facing boundary,
+confirming research-plan.md's method section was already right on this
+point before any of today's research happened. One correction worth
+recording: "a piece's real definition is the union of the seam-sides it
+implements" is a reasonable derived corollary of how real Unix ecosystems
+achieve swappability (independent implementations satisfying the same
+interface contract), not something lifted directly from POSIX's own
+document structure, which has no Pieces table at all. Doesn't change the
+piece list, just how honestly the method section should describe where the
+idea actually comes from.
+
+The 1:1 question resolved cleanly against that evidence. XSH is one
+boundary (process ↔ kernel) decomposed into many individually named
+operations, with an open, unenumerated caller set, not organized by which
+process is calling. j and p are already written this way in anatomy.md's
+own Connects column ("Kernel ↔ everything consequential," "Broker ↔
+anything needing a secret"), just never formalized as a legitimate seam
+shape or decomposed into actual named operations the way XSH decomposes
+into read/write/open. The scarier version of the original doubt, that p
+might really be an operation hiding under j's one boundary, doesn't survive
+contact with phase 1's own already-completed work: the Kernel and
+Credential broker piece passes independently checked *different* real
+mechanisms for j and p (seL4/AWS IAM/STS/Kubernetes admission webhooks for
+j; Vault/STS/Claude Code's sandbox proxy/OpenClaw's sentinel swap for p). If
+p were really j's clothes, that research would have found the same
+mechanism twice; it didn't. q, on the other hand, turned out to be an
+ordinary attribution bug, not a shape problem: anatomy.md's Connects column
+says "Kernel → sandbox," but Kernel's own row and Harness's own row (via "q
+(executes inside)") both already claim it, two different real relationships
+(kernel authorizing placement; a harness's action executing once placed)
+wearing one letter, exactly the shape seam l's gap already was.
+
+That reopened the bigger question from a different angle: is POSIX even the
+right precedent for the *whole* seam list, or just being force-fit onto
+something it doesn't actually cover, since POSIX standardizes one monolithic
+kernel's boundary and MSI has to standardize several independently-swappable
+pieces built by different vendors, none of which exist yet. Forked four
+parallel research passes to check real alternatives without filling this
+session with scrape noise: Kubernetes' CRI/CNI/CSI, the Language Server
+Protocol and Debug Adapter Protocol, the Open Container Initiative's
+multi-spec structure, and Matrix's federation API alongside XMPP's older
+server-to-server shape. All four came back with real, sourced, structural
+findings, not vibes.
+
+CRI/CNI/CSI is the inverse of POSIX's own shape: one caller (the
+orchestrator core), many independently-vendored implementers, live
+capability negotiation (CSI's `GetCapabilities` RPCs, CNI's capability
+dicts) rather than POSIX's static compile-time conformance. Real cautionary
+tale from CNI's own history: staying deliberately thin without a declared
+extension mechanism didn't keep it thin, the ecosystem bolted on external
+daemons and CRDs instead, producing a documented lifecycle mismatch (a
+synchronous plugin call depending on an async daemon that might be
+mid-crash). LSP/DAP is the tighter fit for the session-scoped, one-caller
+many-swappable-providers seams (e, f, s, h): a real, shipped `initialize`
+handshake exchanging typed `ClientCapabilities`/`ServerCapabilities`
+objects, unknown fields ignored for forward compatibility, servers
+registering capabilities dynamically mid-session, directly answering
+research-plan.md row d's open question (how a harness knows what a given
+service instance supports) with a solved, shipped mechanism rather than
+something MSI has to invent. Between LSP and CRI/CNI/CSI, a real seam
+d/e/f/s question surfaced: registration (is a provider instance available
+on this machine at all, CRI/CNI/CSI's territory, probably d's job) and
+per-run capability negotiation (LSP's territory, e/f/s's actual job) had
+been treated as one layer and are probably two.
+
+OCI's image-spec, runtime-spec, and distribution-spec are genuinely
+separate, independently-versioned specs (image-spec 1.0 in 2017, runtime-spec's
+reference implementation in 2021, distribution-spec proposed in 2018), real
+precedent for msi.md possibly not being one file, but the split emerged from
+reconciling an already-forking real ecosystem (Docker's format versus
+CoreOS's competing appc/rkt format), not from a clean-sheet design decision,
+worth being honest about since MSI has no existing fork to reconcile, the
+case for splitting now is foresight, not urgency. Matrix's Server-Server
+(federation) API is kept as a wholly separate spec from its Client-Server
+API on purpose, real precedent that k and n (federation, admission) are a
+genuinely different kind of spec, peer replication of shared state via a
+deterministic State Resolution v2 algorithm (not automatic CRDT
+convergence, closer to the git side of the git-vs-CRDT question already in
+k's row) rather than client-calls-provider or piece-boundary-with-operations.
+Honest and useful: Matrix is a decade old and well-funded and is still
+actively re-engineering state-resolution performance in 2025 (Project
+Hydra), real evidence k is hard, not a reason to avoid modeling it properly.
+XMPP's server-to-server shape turned out structurally different, not just
+older: it routes messages, it doesn't replicate shared state, so it only
+matches k/n if Mojo's fleet problem turns out to be message-routing rather
+than state-convergence, and anatomy.md's own framing (one identity,
+sync/conflict/partition) says it's the latter.
+
+Checked one more thing before calling shape A settled: Kubernetes'
+admission control and RBAC, the closest thing inside Kubernetes to j's own
+shape (every consequential action checked against policy). Verdict:
+supplements, doesn't replace. RBAC turned out to be identity-based ACLs
+looked up centrally, the exact shape already rejected for j in favor of
+capabilities, with a documented real failure mode (over-permissioned roles,
+hidden escalation paths). Admission webhooks confirmed, with real numbers
+(a default 10s timeout, a documented 30s global admission budget clusters
+actually blow through), that a live round-trip per check is a genuine
+operational cost, not a rumor, the same cautionary example already sitting
+in j's row. Two real details worth keeping regardless: the mutate-then-validate
+two-phase admission lifecycle (a request can be narrowed before the final
+accept/reject, something XSH never had to model since it has no "narrow"
+verb) and Kubernetes' tiered audit-log design (Metadata/Request/RequestResponse).
+
+Landed, provisionally, on four real shapes the eighteen seams sort into
+(fixed-known-deal with an open caller set, POSIX-XSH-and-seL4-shaped;
+negotiate-first between one caller and many swappable providers,
+LSP-and-CRI/CNI/CSI-shaped, itself splitting into a registration layer and a
+per-run capability layer; peer agreement between instances of the same
+piece across machines, Matrix-shaped; and a fourth category that isn't a
+conversation at all, a shared data format, POSIX-XBD-shaped, m's own
+existing home), plus an "adopted vs. invented" modifier that can stack on
+any of the four rather than being a fifth shape.
+
+Then Clarke pulled the session back hard, and rightly: confusion was real,
+this is genuinely unfamiliar territory, and the actual goal, a community
+forming around MSI and helping build both the standard and its
+implementations, only works if the standard is something a stranger can
+build against without ever asking either of us a question. Getting the
+shape taxonomy theoretically right means nothing if it's not actually
+understood. The rest of the session became deliberate ground-up teaching
+rather than more research: why a standard is needed at all (so independently-built
+pieces can be swapped without every builder needing to ask); the four
+shapes, one at a time, using non-jargon analogies (a function call; a text
+editor plugin system that has to ask a language backend what it supports
+before using it; a group chat with no admin where everyone still has to
+agree; a shared file format nobody "calls"), checked for understanding
+before adding the next one, rather than delivered as one dense brief.
+
+Built a 13-node piece-by-piece completeness matrix (an HTML working
+artifact, not yet a file in this repo) so Clarke had something concrete to
+look at instead of holding eighteen letters in his head, and so the
+seam list's completeness could actually be checked rather than assumed. The
+first version, pre-filled mechanically from anatomy.md and research-plan.md's
+own existing text, surfaced five real findings just from the act of
+building it: Router, Kernel, Credential broker, Provenance, and Fleet
+manager all read the data per anatomy.md's own top-level system-control
+section, but only Memory provider and Harness own an explicit seam-side
+into it, a real, previously-unasked question; only the kernel writes the
+data per anatomy.md's own second system-control rule, and no lettered seam
+actually covers that write path; b, c, d, and g all name "system" or "a
+trigger" instead of an actual piece, unlike every other seam, never
+flagged before; q's already-known second-party bug and l's already-known
+zero-attribution gap, now visible as literal blank or ambiguous cells
+instead of devlog footnotes.
+
+Clarke asked to wipe it and rebuild slower, and to actually question
+whether the 13 nodes themselves were right rather than assumed. Answering
+that honestly surfaced a real flaw in the tool itself, not a filling-in
+gap: k and n (federation, admission) are relationships between a piece and
+another machine's copy of itself, and a same-machine, piece-by-piece grid
+has nowhere to put that, since the diagonal (self-pairs) is normally just
+blanked out as not-applicable. Found by trying to build it, not spotted in
+advance. Fixed by marking Fleet manager's own diagonal cell as an open
+question rather than hiding it, not by pretending the grid's shape was
+already right. Host OS's absence from the matrix was confirmed correct but
+worth stating out loud rather than silently missing (the same
+observable-behavior-not-mechanism move from the POSIX research earlier in
+the session, applied a second time); l's target, a different owner's system
+entirely, was confirmed to have no node yet, open whether it needs one on
+the edge of the grid or stays off it on purpose. Board rebuilt fully blank,
+with "not looked at yet" and "checked, no relationship" given genuinely
+different visual treatment, since the first version had quietly conflated
+them.
+
+That fed directly into a real architecture discussion on k/n's
+primary-vs-peer question, prompted by Clarke asking whether the earlier
+per-machine-instance rule (settled during Router's and Fleet manager's
+piece passes) actually forecloses an owner's own machine acting as a
+designated primary. Re-checked what was actually settled versus assumed:
+only an *external* cloud-authoritative point (Letta's Constellation) was
+ruled out; an internal primary-among-the-owner's-own-machines strategy was
+explicitly left open in k's own row, Signal's linked-device model already
+named as the closer precedent. Worked through the real tradeoff: a
+designated primary would make convergence far simpler (no genuine
+multi-writer conflict, matching how a primary sidesteps needing anything
+like Matrix's State Resolution), but Mojo's own offline requirement means
+even a primary-mode fleet needs some independent-operation fallback for
+when the primary itself is unreachable, so a real reconciliation mechanism
+probably can't be avoided entirely, just exercised less often.
+
+Clarke then asked whether MSI would need to fully specify both a primary
+algorithm and a peer algorithm, since anything that could silently diverge
+between compliant implementations has to be exact, not implementer's
+choice, a rule that fell out of this same conversation (mode *selection* is
+safe as owner policy data, same shape as Router's existing hard-limits
+pattern; the reconciliation *mechanics* underneath aren't, because divergent
+algorithms across vendors would silently corrupt the identity's literal-
+equivalence guarantee, the one thing this whole project promises
+unconditionally). Real POSIX precedent exists for defining several exact,
+selectable strategies (real-time scheduling policies, `SCHED_FIFO` /
+`SCHED_RR` / `SCHED_OTHER`), but a cheaper alternative was floated and not
+yet verified against real precedent: one convergence algorithm (needed
+regardless, for offline resilience) with a tunable priority weighting,
+where "primary" is just that weighting set heavily toward one machine
+rather than a structurally separate mechanism. Clarke's own follow-up,
+asking why you'd ever want a separate primary mode if the weighted version
+covers it, led to splitting what "primary" was actually doing into two
+unrelated jobs: data-conflict tiebreak (dissolves into the weighted
+setting, no separate mode needed) and admission authority (probably
+dissolves too, into an ordinary use of seam a, the owner authenticated from
+whichever device they're using, not a special machine at all). Not landed,
+a strong lean, flagged for real verification next time, not something to
+treat as decided from one conversation.
+
+Clarke separately pushed back on weighted tiebreaks specifically, leaning
+toward git-style explicit merge conflict resolution instead (surfacing
+conflicts rather than silently resolving them), which is one of the two
+options k's own row already names; not resolved, correctly left open rather
+than picked under momentum. Checked whether Signal's actual admission
+mechanism (QR-code scan) is the right one to adopt, prompted by Clarke's
+own instinct to question it: no, not literally, since it assumes a screen
+and a camera present together, which breaks for the headless server case
+anatomy.md already wants to support; the asymmetric, inherit-don't-negotiate
+shape underneath it probably still holds, the specific mechanism doesn't
+transfer. The bootstrapping worry Clarke raised (how do two machines agree
+on a mode before they're synced) resolved the same way: mode agreement
+isn't symmetric peer negotiation at all, it's resolved asymmetrically at
+admission, the joining machine inherits it as part of what it's handed, the
+same shape as Signal's new-linked-device inheriting state rather than
+negotiating from zero information; machine #1 has no real version of this
+problem since there's nothing to coordinate with until a second machine
+exists.
+
+Clarke's own work-laptop example (wanting a new machine admitted to the
+fleet but scoped to only work-relevant data) gave real teeth to an already-open
+question sitting unanswered on seam n's row, whether an admitted machine
+gets the full data immediately or a scoped subset, and surfaced a further,
+not-yet-resolved distinction worth carrying forward rather than deciding on
+the spot: whether machine-level scope and persona-level scope are the same
+mechanism or two independent, intersecting restrictions (a work laptop
+staying work-only even if a casual persona were selected on it). Clarke
+flagged confusion about this specific point; it needs re-explaining fresh
+next time, not assumed understood from this session.
+
+Also surfaced, connected to the primary/peer discussion rather than
+resolved: anatomy.md's identity already names "policies" as one of its five
+data slices (memory, personas, policies, budgets, provenance); fleet
+coordination mode is the first genuinely concrete content anyone has found
+for that slice. Clarke's own instinct that Nix's declarative module system
+(typed options, mode-gated sub-options) might be real precedent for how
+"policies" gets structured was validated as a strong, real candidate worth
+a proper research pass, explicitly deferred to seam m's own walk rather
+than designed mid-conversation about k, since m is the long, flagship seam
+and this session was already deep in k.
+
+Closed by correcting the project's own stated current phase to match
+reality rather than leaving it stale: AGENTS.md's Current stage section,
+roadmap.md's Now section, research-plan.md's "Currently on" line, and a new
+redirect note at the top of msi-steps.md all now say the same thing,
+neither phase 2 nor phase 3 is where a session works right now, the actual
+current work is finishing the piece-completeness matrix and working out how
+anatomy becomes a real standard, both argued out loud with Clarke rather
+than assumed, before msi-steps.md gets rewritten and its phases resume.
+Nothing from this session is written into research-plan.md's actual seam
+rows yet, on purpose, per Clarke's own instruction to get both foundational
+things down correctly before writing anything else.
+
+---
+
+## 2026-07-13 (earlier) — Phase 1 closed, anatomy.html rebuilt as a real diagram, seam l turned out to have no owner anywhere, phase 2 (seam pass) drafted then suspended on a bigger question: is a seam even the right unit
 
 Closed phase 1 (step 1.13). Coherence read of anatomy.md end to end: clean,
 no edits needed, no stray peripheral/seam-o references, no em dashes,
