@@ -6,6 +6,240 @@ where the reasoning trail lives.*
 
 ---
 
+## 2026-07-14 — Existence pass complete: all 78 pairs across piece-matrix.md's 13 nodes resolved
+
+HANDOFF. Closed the last pair, Fleet manager–Identity: yes, two-way, and the
+best-evidenced Fleet manager finding in the whole pass, real precedent at
+two scales (Matrix's device-list sync plus State Resolution v2 for
+partition-healing; Obsidian Sync's diff-match-patch merge, CRDT-based Local
+Sync as a zero-conflict alternative). Flagged on write-up: pieces.md's own
+Fleet manager definition bundles two different problems into one sentence,
+this pair only resolves the data-sync half ("sync, conflict, partition"),
+not the mutual-exclusion half ("who is driving a live task"), which stays
+exactly as open as Router–Fleet-manager already left it.
+
+Whole existence pass (seam-method.md step 1) is done as of today, started
+2026-07-13 with Owner's row, ten rows and one correction (Tools' Credential
+broker entry, fixed after Sandbox's row resolved the disagreement) later.
+Three genuinely open items carried forward rather than forced, all now
+recorded together in piece-matrix.md's new closing section: Router–Fleet-
+manager (live trigger-claiming, zero real-system verification, likely
+resolved when Fleet manager's own seam is walked, itself likely Horizon-
+scoped); the merged Memory-provider/Provenance/Identity tag-persistence
+question (does a trust tag survive a durable write, no prior art either
+way, a real decision still needed); two lower-stakes speculative-only
+flags (Tools–Model-endpoint's tool-scoped grant, Router–Credential-broker's
+trigger-source credential).
+
+Next session: step 2, the seam-worthy filter across every surviving
+crossing (does MSI actually want independent implementations interoperating
+here, or is this one piece's internal wiring mislabeled as two), then steps
+3-7 one seam at a time per session as msi-research-sessions.md already
+requires (structural classification, the load-bearing problem set, shape
+match to real precedent, a substitutability stress test, recording into
+seams.md as `settled`). That's what turns this existence pass into the
+completed anatomy making-the-standard.md's plan needs, which then gets
+shrunk to MSI-1's minimal core via the elimination test (would the hotswap
+demo still run without this piece), everything past that floor published
+alongside as Horizon material rather than dropped.
+
+## 2026-07-14 — Provenance's row closed in piece-matrix.md, its open flag merged with Memory provider's
+
+Fleet manager decomposed cleanly (same eventually-consistent shape as
+Kernel's and Credential broker's pairs). Identity turned out to be the more
+fundamental version of the question already left open in Memory provider's
+row: whether a trust tag survives being written durably. Identity is this
+piece list's actual canonical store, Memory provider is explicitly the
+derived index over it, so it's one question wearing two piece names, not
+two separate unknowns. Merged both flags in place rather than resolving one
+and leaving the other inconsistent. Sharpened, not settled: a real US
+patent exists specifically because losing taint on serialization is the
+default failure mode in practice, while Microsoft Purview's sensitivity
+labels are a shipped proof the general problem is solvable in an adjacent
+domain. Still an open decision, not resolved in this pass.
+
+Only one pair left in the whole existence pass: Fleet manager–Identity.
+
+## 2026-07-14 — Credential broker's row closed in piece-matrix.md, existence pass continues
+
+Quietest row yet: all three pairs (Provenance, Fleet manager, Identity) came
+back "no," each a clean decomposition into an already-settled crossing
+rather than a new one. Provenance and Identity fold into Kernel's already-
+settled pairs the same way most X–Kernel pairs did earlier in this pass.
+Fleet manager is the more interesting "no": custody has to be strict (two
+machines can never disagree about a secret), but strict doesn't require
+live coordination, HashiCorp Vault's own docs describe single-primary-writer
+with near-real-time replication and stalled reads masking staleness, not
+live locking. Same shape as Kernel–Fleet-manager, not Router's still-open
+live-coordination problem.
+
+Provenance is next in the fixed order (remaining pairs: Fleet manager,
+Identity).
+
+## 2026-07-14 — Kernel's row closed in piece-matrix.md, existence pass continues
+
+Three real seams. Provenance is genuinely new, the second time in this pass
+a piece turned out not to decompose into Harness–Kernel the way most X–Kernel
+pairs do (Sandbox was the first): OpenFang's own docs directly confirm the
+kernel enforces "tainted content cannot trigger tool calls," a taint tag
+actively gating a permission decision, not just Harness passively receiving
+pre-tagged content. Identity is two-way, read side solid across three real
+systems (Claude Code, OpenFang, Codex CLI all store policy as plain
+owner-authored files), write side (the audit trail) weakly evidenced
+externally but implied directly by Mojo's own definition, flagged rather
+than asserted as confirmed. Credential broker is real but sourced outside
+the five canonical comparison systems, a broader agent-security catalog
+(Warden, Riptides, the phantom-token pattern) instead, flagged honestly as
+off-roster evidence rather than treated as equal-strength to the usual
+five-system findings.
+
+Fleet manager decomposes cleanly this time (policy propagation tolerates
+eventual consistency, unlike Router's live trigger-claiming problem left
+open last row), no new open flag there.
+
+Credential broker is next in the fixed order (remaining pairs: Provenance,
+Fleet manager, Identity).
+
+## 2026-07-14 — Router's row closed in piece-matrix.md, existence pass continues
+
+One real seam written in: Router–Identity, one-way, Router reads its own
+trigger/schedule/policy config straight from identity data, same shape as
+Harness reading Skills, weakly evidenced externally but grounded directly
+in pieces.md's own already-committed text. Kernel and Provenance both
+decompose into already-settled crossings; Credential broker flagged
+speculative, no evidence either way.
+
+Router–Fleet manager left open rather than written as "yes," the first pair
+in the whole existence pass with zero real-system verification available,
+not a disagreement between systems but a genuine absence: none of the five
+comparison systems run personal multi-device fleet coordination at all.
+pieces.md already asserts the shape directly, but per AGENTS.md's grounding
+rule, that's not enough on its own to settle it here. Decided when Fleet
+manager's own row gets walked. Confirmed in discussion: Fleet manager in
+general is likely Horizon-scoped, informative material published alongside
+MSI-1 rather than normative text in the first draft, per
+making-the-standard.md's own worked example for exactly this piece. The
+existence pass keeps going regardless, since the full anatomy still needs
+walking before MSI-1's own scope gets cut down by the elimination test;
+what's Horizon-bound just isn't news, expected going in.
+
+Kernel is next in the fixed order.
+
+## 2026-07-14 — Sandbox's row closed in piece-matrix.md, Tools' row corrected, existence pass continues
+
+Sandbox turned out to be the busiest row yet: 3 real seams, not the usual
+one or two. Kernel is genuinely new, not a decomposition like every other
+X–Kernel pair so far, a second resource-side enforcement layer distinct from
+Harness–Kernel's dispatch-time gate. OpenFang runs WASM-level sandboxing
+(fuel/timeout metering, workspace-confined file access) as defense-in-depth
+alongside the capability check, and Claude Code's own docs independently
+name the same two-layer shape ("sandbox restrictions prevent commands from
+reaching resources outside defined boundaries, even if [Harness's]
+decision-making [is] bypass[ed]"). Provenance is also genuinely new, not the
+same crossing as Tools–Provenance under a different name: Tools tags what it
+fetches from outside, Sandbox tags what execution itself produces
+(OpenFang's distinct `SystemCommand` taint category).
+
+Credential broker resolved the disagreement carried forward from Tools' row
+instead of adding a new one. Broke the tie using Mojo's own already-written
+definitions rather than forcing a read of two disagreeing systems:
+pieces.md names exactly three places a secret must never rest ("a model's
+context, a harness's hands, or a sandboxed action's own view"), Tools isn't
+a fourth, and Sandbox's own definition ("wherever a permitted action
+actually executes") makes a tool's call running the same place as Sandbox.
+OpenFang's placeholder-in-sandbox-substituted-at-egress pattern satisfies
+Mojo's own rule directly. Corrected Tools' already-closed row to match: its
+Credential broker entry now reads "no, decomposes into Sandbox–Credential
+broker" instead of "genuine invention-risk zone, not resolved." First time
+this pass has gone back and fixed an already-closed row, worth noting as
+precedent: a later row's research can correct an earlier one when it
+resolves something that row left open, the row stays "closed," the
+correction gets dated and explained in place rather than treated as
+reopening it.
+
+Router next in the fixed order.
+
+## 2026-07-14 — Memory provider's row closed in piece-matrix.md, existence pass continues
+
+Three real seams: Credential broker (one-way, conditional on the storage
+backend requiring auth, same shape as Model endpoint's); Identity, two-way,
+read side directly evidenced (Khoj's `fs_syncer`), write side stated plainly
+as Mojo's own deliberate anti-lock-in choice, not current practice (no real
+system rebuilds its index from a separate identity layer the way pieces.md
+requires) — kept anyway because it's the same hotswap-survives-a-swap
+principle already applied to Harness and Model endpoint. Kernel decomposes
+into the already-settled Harness–Kernel gate, better evidenced this round:
+OpenFang's manifest declares `memory_read`/`memory_write` as capability
+types in the same RBAC system as tools; the earlier "bypasses the scheduler"
+citation was about Router, a different component, not the kernel gate.
+
+Two genuinely open questions, not forced: fine-grained per-document/per-agent
+memory access control is a live unsolved gap in real systems (Letta's own
+open issue #3320, the FragFuse paper), sitting one level below the general
+Harness–Kernel gate that does hold. And whether a trust tag survives a
+memory write-then-read round trip or resets to trusted on landing in
+storage — no real system documents this either way. Leaning toward tags
+surviving the write (the reset-to-trusted alternative is a real
+memory-poisoning path, untrusted content laundered into an established
+fact), but left open for an actual decision, not asserted.
+
+Sandbox is next in the fixed order; its row also needs to resolve the
+Tools/Sandbox-vs-Credential-broker disagreement carried forward from Tools'
+row.
+
+## 2026-07-14 — Tools' row closed in piece-matrix.md, existence pass continues
+
+One real seam: Tools–Provenance, one-way, fetched content gets tagged
+untrusted right at the tool-return boundary, resolving the flag left open in
+Harness's row. Everything else came back no, decomposing into an
+already-settled crossing one layer up (Harness–Sandbox, Harness–Kernel,
+Router→Harness) or reading as static config data, not a live protocol.
+
+One open flag, not forced: OpenFang and OpenClaw disagree on where secret
+injection actually targets for a tool call (sandbox at egress vs. the tool
+process itself at spawn). Left as a genuine invention-risk zone per
+making-the-standard.md, decided when Sandbox's own row gets walked. Memory
+provider is next in the fixed order.
+
+## 2026-07-14 — Model endpoint's row closed in piece-matrix.md, existence pass continues
+
+Owner, Client, and Harness rows were already closed; Model endpoint was next
+in the fixed order. Researched via fork against the five digital-counterpart
+systems, discussed before writing anything in (per the standing rule), then
+landed. Two real crossings found: Model endpoint–Memory provider (two-way,
+embedding calls are separate from chat calls and go straight from the
+provider to an embedding-typed endpoint, confirmed independently by Letta's
+`embedding_config`/`llm_config` split and Khoj's separate bi-encoder search
+model), and Model endpoint–Credential broker (one-way, broker to point of
+call, conditional on the endpoint actually requiring auth). Seven pairs came
+back "no," each decomposing into an already-settled crossing one layer down
+(Harness–Kernel, Harness–Provenance) or falling outside Mojo's piece
+boundary entirely (vendor-hosted code execution, tool-internal model calls).
+
+Worth remembering why the Credential broker crossing needed a careful
+write-up, not just a yes/no: raised and answered in discussion, not written
+into the doc as a caveat until asked. The model itself never receives the
+credential as input, the broker hands it to whatever code makes the
+outbound HTTP call, injected as an auth header at the point of transmission.
+And the crossing is conditional, not universal: a local, unauthenticated
+endpoint (vLLM/Ollama on the owner's own box, no API key configured) has
+nothing to hand over, so the crossing simply doesn't fire for that
+deployment. Both of these matter concretely for this project, since local,
+self-hosted models are a real preferred deployment target here, not just a
+hypothetical one, alongside vendor-hosted ones, system-agnostic by design.
+
+Three flags carried forward, none blocking: whether a tool could ever get
+its own model-endpoint grant distinct from the Harness's (no evidence either
+way); whether a vendor-bundled, ungated code-execution surface (Anthropic's
+hosted tool, OpenAI's Code Interpreter) is compatible with a conformant
+endpoint at all, since it bypasses Kernel enforcement entirely; and
+LiteLLM's real live health-checking/latency-routing pattern, which lives
+inside Harness's own outbound call path rather than as a separate Router
+piece, worth a second look when Harness reaches step 3 classification.
+
+No genuine cross-system disagreement on this row, so no invention-risk zone
+flagged. Tools is next in the fixed order.
+
 ## 2026-07-14 — Scope and growth section sharpened, three additions from an outside session
 
 A separate conversation (not this repo) independently reached the same
