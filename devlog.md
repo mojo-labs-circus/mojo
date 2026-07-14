@@ -6,6 +6,62 @@ where the reasoning trail lives.*
 
 ---
 
+## 2026-07-14 — Scope and growth section sharpened, three additions from an outside session
+
+A separate conversation (not this repo) independently reached the same
+inversion landed earlier today and added three things worth keeping, folded
+into making-the-standard.md's Scope and growth section after discussion:
+a concrete elimination test for which pieces belong in MSI-1 (if the piece
+disappeared, would the hotswap demo still run? if yes, it's not MSI-1);
+deferred scope reframed explicitly as room left for whoever shows up at
+publish, not scope lost; and the growth loop named directly, the idea
+backlog already in ideas.md/vision.md publishes alongside the minimal spec
+and each idea moves through visible states (idea, researched, prototype
+exists, multiple independent implementations exist, candidate document,
+standardized) so the queue is legible enough for someone else to pick up a
+rung. Everything else in that outside conversation was already covered by
+today's earlier landing; no other document changed.
+
+Pushed further into the org/repo question itself: not now, shape isn't
+settled, but before publish the whole org needs rework, not just the
+`mojo` repo's internal structure. Landed, not yet acted on: mojos leans
+further into NixOS specifically (a personal system he builds his own
+implementation on top of), which goes past roadmap.md's current Horizon
+line about Nix as package manager, not NixOS, worth reconciling later, not
+now; mojo-agent as a standalone repo likely goes away entirely, which
+isn't a new call so much as this session's own adopt-don't-build
+conclusion finally reaching the repo layer; ringmaster gets archived; every
+doc across the org needs reframing for its post-publish job as the
+community hub. Recorded in ideas.md's Product/org section rather than
+acted on, since none of it is decided enough to execute yet. Also surfaced:
+Clarke has no mentor yet for this project specifically and wants Claude
+leading and teaching more actively on calls like this one, not just
+executing on request (saved to global memory).
+
+Corrected: restated making-the-standard.md's "kernel/identity/memory glue"
+build list back to Clarke as settled. It isn't; that section already sits
+in tension with the same doc's own Scope and growth hedge that piece
+selection is a build-time call, not a paper one. Not fixed in the doc
+itself this session, just flagged, since which piece actually resolves it
+isn't decided either. Ringmaster: already archived on GitHub by Clarke,
+directly, not through this session. And the portability question from
+earlier in this session got answered directly: the reference implementation
+and whatever a stranger tries out at publish has to run on any Linux
+distro, not just his own machine, no exception for however deep the
+personal NixOS build goes. Matches roadmap.md's existing "Nix, not NixOS"
+line already, so nothing there needed changing, just confirmed.
+
+Closed the night on a good compression of the whole day's work, from a
+separate conversation: MSI-1 doesn't have to be the digital counterpart
+standard, it has to make one possible, proving identity/memory survive a
+harness swap without claiming to deliver the whole vision in one draft.
+Not new mechanism, everything under it (three-layer publish, the growth
+loop, the elimination test) already landed earlier today, but the line
+itself was sharp enough to land verbatim as the closing thought of Scope
+and growth in making-the-standard.md. Also filed a name, not a mechanism,
+for the informative-layer-plus-backlog once the org rework is real: "MSI
+Horizon", into ideas.md next to the rest of tonight's org thinking.
+
 ## 2026-07-14 — How standards actually get made, researched end to end; the plan inverted (build before the document); seam-method amended; standards-research.md and making-the-standard.md land
 
 The handoff question from last session, run as its own thread: not "is

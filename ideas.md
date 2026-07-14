@@ -246,3 +246,20 @@ here honestly. Fuller write-ups of many of these exist in git history (pre-reset
 - Essay series: craft problem → sovereignty → collectives. Blog + professors +
   forums; essays stand alone, project attached only when asked.
 - Docs maintenance needs a fresh plan once this structure has been lived with.
+- Full org rework before publish, shape not settled yet, not now: mojos likely
+  becomes a personal NixOS build with mojo layered deeply on top (possibly its
+  own NixOS-feature-specific implementations), a step further than roadmap.md's
+  current Nix-the-package-manager-not-NixOS deployment story, reconcile the two
+  when this gets picked up; mojo-agent as its own repo likely goes away
+  entirely, consistent with 2026-07-14's adopt-don't-build call in
+  making-the-standard.md, whatever it was going to hold folds into the actual
+  reference implementation instead; ringmaster gets archived. Every README and
+  doc across the org needs reframing for its post-publish job as the community
+  hub (where a stranger lands, what they read first, where proposals go), not
+  just internal notes to self. Surfaced 2026-07-14 thinking through repo layout
+  ahead of publish. Possible name for the informative-layer-plus-backlog piece
+  of that, once it's real: "MSI Horizon", the future-seams map published
+  alongside MSI-1, not normative until exercised. Not a new mechanism, just a
+  name for what the three-layer publish and the growth loop in
+  making-the-standard.md already do; naming it can wait for the org rework
+  itself.

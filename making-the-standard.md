@@ -88,7 +88,9 @@ MSI-1 is minimal on purpose, and the first system is even smaller. Not all
 thirteen pieces get built first: Fleet manager is definitely out of the
 first build, and which pieces form the minimal base is a build-time
 decision, made once it's clear what can actually be adopted, not a paper
-decision made now. The floor is fixed, though: the draft has to cover enough
+decision made now. The test for each piece is the hotswap demo itself: if
+the piece disappeared entirely, could the demo still run? If yes, it's not
+MSI-1. The floor is fixed, though: the draft has to cover enough
 seams that the hotswap demo is specifiable from the text alone. Below that
 it's not a standard, it's a README.
 
@@ -97,7 +99,9 @@ just the system interfaces; the shell came in 1992, real-time and threads in
 1996, as amendments to a live standard. OCI shipped runtime-spec alone and
 added image-spec and distribution-spec as scope earned them. The hourglass
 theorem is the theory for why: every operation added to a first version
-shrinks the set of systems that can implement it.
+shrinks the set of systems that can implement it. Deferring a piece isn't
+losing it: it's leaving room in the queue for whoever shows up at publish to
+help build it.
 
 The full vision still gets across at publish, through three layers that
 never mix:
@@ -119,9 +123,24 @@ never mix:
   future isn't a promise in the spec; it's a visible queue with a known
   door.
 
+This is the growth mechanism, not just the scope discipline. Publish carries
+the full backlog already sitting in ideas.md and vision.md alongside the
+minimal spec, not vague ambition: named ideas, with a rough sense of where
+each stands. Each one moves through visible states as it matures: idea,
+researched, prototype exists, multiple independent implementations exist,
+candidate document, standardized. The MSC discipline above is what gates the
+last step; the states before it are what make the queue legible enough for
+someone else to walk in and take a rung. Nobody joins a spec. They join a
+runnable thing with a backlog they can see themselves contributing to.
+
 Fleet manager is the worked example: in scope for the standard family, its
 own document when it comes, entering normative text only when a system
 actually runs across two machines.
+
+MSI-1 doesn't have to be the digital counterpart standard. It has to make
+one possible: proving identity and memory survive a harness swap is a
+prerequisite for that vision, not the vision delivered whole, and the two
+are allowed to arrive on different timelines.
 
 ## Document mechanics MSI-1 commits to
 
