@@ -38,13 +38,24 @@ not shared tribal knowledge, carries the interface.
    decides it. POSIX only ever invented at exactly those spots (termios,
    O_NONBLOCK, pax), never speculatively, and pax is the standing warning
    that even ratified inventions get ignored.
-2. **Verify the build inputs before the build plan hardens.** Three checks,
-   none assumed: whether OpenFang really contains an extractable kernel and
-   identity/memory layer (a hypothesis, not a finding; its internals were
-   the undocumented ones in the Harness-row research); whether the first
-   harness's interception surface can actually carry the Harness-Kernel
-   seam (current intent: a LangGraph-style runtime, not Claude Code or
-   Codex CLI); licensing on every adopted part.
+2. **Verify the build inputs before the build plan hardens.** Checked as of
+   2026-07-15: OpenFang's kernel and identity/memory layer turned out real
+   but not extractable, a well-shaped in-process capability trait
+   (`KernelHandle`) whose generic check path is actually dead code, and a
+   durable SQLite store schema-coupled to OpenFang, not a neutral file
+   primitive, good design reference for both Kernel and Memory provider,
+   adoptable as neither. Same verdict, independently, on the memory-provider
+   side from Letta (DB-owned, fails the derive-never-own contract), Khoj
+   (the closest real fit, a genuine hash-diff resync, but read-only and
+   AGPL-blocked from linking, the pattern gets reimplemented, not linked),
+   and Mem0 (architecturally inverted, but its pluggable vector-backend
+   interface is a reusable, permissively-licensed internal component). Still
+   open: whether OpenClaw's router code (the `supports()` predicate, the
+   prepared-attempt object) is actually reusable or just a pattern; which two
+   harnesses the hotswap demo actually uses, reopened rather than resolved
+   (OpenFang's approval-flow shape and OpenClaw's real Codex bridge are both
+   genuine precedent that external interception is achievable, but neither
+   pins down the pair); a full licensing pass once the adopted set is final.
 3. **Build the first system.** Adopt everything that exists (harness, model
    endpoints, MCP tools, sandbox, most of the rest); build only what
    doesn't: the kernel (a policy daemon plus per-harness shims), the
@@ -93,6 +104,20 @@ the piece disappeared entirely, could the demo still run? If yes, it's not
 MSI-1. The floor is fixed, though: the draft has to cover enough
 seams that the hotswap demo is specifiable from the text alone. Below that
 it's not a standard, it's a README.
+
+Applied on 2026-07-15, tightened further the same day: Identity, Kernel,
+Router (thin, run-assembly from a static roster, not the always-on
+trigger-watcher), Client (a chat loop, not a one-shot command, per the
+Client piece's own definition), two harnesses, two model endpoints, and two
+memory providers all clear the test and get built for real. Tools, Sandbox,
+Credential broker, Provenance, and Fleet manager all fail it: dropping the
+one tool call the demo would have used left nothing for Sandbox to place or
+Credential broker to inject, and nothing untrusted ever crosses for
+Provenance to tag. None of the five are stubs; none are present at all.
+Kernel stays fully load-bearing regardless: it still gates every memory
+read and write and which harness/model/provider a run may use, none of
+which ever depended on a tool call existing. One thing the test doesn't
+resolve on its own, still open: which two harnesses.
 
 Minimal is the property that works, not a loss to manage. POSIX.1-1988 was
 just the system interfaces; the shell came in 1992, real-time and threads in

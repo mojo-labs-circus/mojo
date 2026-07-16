@@ -23,19 +23,27 @@ spec gets extracted from or validated by a working system, never the reverse.
 [making-the-standard.md](making-the-standard.md) is the full plan. The short
 version, in order but overlapping on purpose:
 
-1. **Finish the existence pass to build-ready, not to completeness.**
-   [seam-method.md](seam-method.md) step 1 across
-   [piece-matrix.md](piece-matrix.md), same per-pair rigor against real
-   systems, new finish line. Where the counterpart systems agree, that's
-   settled practice, write it down. Where they genuinely disagree, flag the
-   pair as an invention-risk zone (POSIX's termios cases) and let the build
-   decide it, not paper.
-2. **Verify the build inputs.** OpenFang as candidate source for the kernel
-   and the identity/memory layer (a hypothesis to check, not a finding; its
-   internals were the undocumented ones in the Harness-row research). The
-   first harness, a LangGraph-style runtime rather than Claude Code or Codex
-   CLI, and whether its interception surface can actually carry the
-   Harness-Kernel seam. A licensing pass over every adopted part.
+1. **The existence pass is done, cut back rather than carried to full
+   seam-method depth.** [seam-method.md](seam-method.md) step 1 across
+   [piece-matrix.md](piece-matrix.md) closed 2026-07-14, all 78 pairs. Steps
+   2-7 (the seam-worthy filter through recording) don't run across every
+   surviving crossing before building starts: making-the-standard.md's own
+   scope rule, that which pieces form the minimal base is a build-time
+   decision and not a paper one, means full seam treatment only happens for
+   seams the minimal build actually exercises, decided by the elimination
+   test (would the hotswap demo still run without this piece), applied
+   concretely 2026-07-15 in [making-the-standard.md](making-the-standard.md)'s
+   Scope and growth section. Everything past that floor stays at
+   existence-pass depth, reserved for the informative layer, not lost.
+2. **Verify the build inputs.** Checked 2026-07-15: OpenFang and three
+   memory-provider candidates (Letta, Khoj, Mem0), full findings in
+   [making-the-standard.md](making-the-standard.md)'s sequence step 2.
+   Verdict across all of them: real design references, nothing adoptable
+   wholesale, for either Kernel or Memory provider. Still open: OpenClaw's
+   router code as a literal reuse candidate, which two harnesses the hotswap
+   demo actually uses (reopened, not resolved, given OpenClaw's Codex bridge
+   is real precedent for external interception), and a licensing pass once
+   the adopted set is final.
 3. **Build the first system.** Stitched from existing parts wherever a real
    one exists (harness, model endpoints, MCP tools, sandbox), built only
    where nothing does: the kernel (a policy daemon plus per-harness shims),

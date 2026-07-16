@@ -6,6 +6,182 @@ where the reasoning trail lives.*
 
 ---
 
+## 2026-07-15 — Scope cut to a minimal build via the elimination test, MSI-1 kept over MSI-0.1, five-system prior-art survey closes Kernel and Memory provider as build-not-adopt
+
+HANDOFF. Diverged from the prior HANDOFF's stated next step (the seam-worthy
+filter across every surviving crossing, then steps 3-7 one seam at a time)
+and instead had the conversation making-the-standard.md's own scope rule
+already called for: finish full seam-method depth across every discovered
+seam before cutting back to a minimal build, or cut back now and defer the
+rest. Landed on cutting back now. The reasoning was already sitting in the
+plan, just not acted on: "which pieces form the minimal base is a
+build-time decision... not a paper decision made now" means running steps
+3-7 across every pair first repeats the OSI mistake the plan already
+rejected, fully specifying before code exists. The elimination test (would
+the hotswap demo still run without this piece) is the actual mechanism, and
+it's cheap: existence-pass depth is enough for anything that doesn't clear
+it, reserved for the informative layer rather than left unfinished.
+
+Considered renaming the target MSI-0.1, saving "MSI-1" for a complete
+digital-counterpart standard. Argued against and dropped: semver 0.x
+conventionally signals no compatibility guarantee, which contradicts the
+no-flag-day-breaking-changes commitment already made in making-the-
+standard.md's Document mechanics section, and the draft-ness is already
+honestly carried by literally labeling it draft until the two-implementation
+gate passes, that's the right place for it, not the version number. Stayed
+MSI-1.
+
+Applied the elimination test concretely against the hotswap demo (swap
+harness, swap model endpoint, swap memory provider, identity and policy
+unmoved, at least one leg independently-built): Identity, Kernel, Router
+(thin, run-assembly from a static roster, not the always-on
+trigger-watcher), Client (a chat loop, not a one-shot command, per the
+Client piece's own definition), two harnesses, two model endpoints, and two
+memory providers all clear it and get built for real. First pass left in a
+single light, no-secret tool call with Sandbox and Credential broker as
+pass-through stubs to service it; tightened further the same session once
+it was clear the tool call was only ever a taste call, not a scope
+requirement. Cutting it left Sandbox nothing to place and Credential broker
+nothing to inject, so both dropped entirely rather than staying as stubs
+with nothing to do. Provenance doesn't clear the test at all, nothing
+untrusted crosses in a demo where every input is owner-authored. Fleet
+manager stays out, already decided. Kernel stays fully load-bearing
+regardless of the tool call's removal: it still gates every memory read and
+write and which harness/model/provider a run may use. Landed into
+making-the-standard.md's Scope and growth section.
+
+A second thread: whether OpenFang and known memory-layer OSS (Letta, Khoj,
+Mem0) already solve Kernel or Memory provider, which would mean adopting
+rather than building. Checked directly against source, not docs, same
+discipline as the ACP/OpenClaw check earlier this session. OpenFang
+(RightNow-AI/openfang, dual MIT/Apache-2.0, star count checked legitimate)
+has a genuinely well-shaped in-process capability trait (`KernelHandle`,
+requires_approval/request_approval) but it's same-binary only, can't be
+crossed by an independently-built harness in a different language, and its
+generic `CapabilityManager` grant/revoke store turned out to be dead code,
+nothing in the repo calls `.check()` against it, real enforcement is a
+separate human-approval flow. A genuine lesson, not just a negative result:
+whatever Kernel's own check path ends up looking like, it has to actually
+gate something from day one, not sit next to the real mechanism looking
+generic and unused. OpenFang's memory layer (`openfang-memory`, durable
+SQLite with real migrations, an actual audit_entries table) is the most
+durable, most open store found anywhere in this project's research so far,
+but it's OpenFang's own relational schema, not the neutral file primitive
+Identity needs.
+
+Same verdict, more texture, from the memory-provider side specifically:
+Letta (Apache-2.0) is DB-owned, embeddings live as a native Postgres/SQLite
+column, fails "derives, never owns" on its main path; a separate git-backed
+storage-backend abstraction it has is a minor, permissively-licensed
+pattern, not the retrieval engine. Khoj (AGPL-3.0) is the closest real fit
+found anywhere: a genuine hash-diff resync indexer, delete the index, rerun
+against the files, get an equivalent one back, real derives-never-owns on
+the read side, but read-only, no write-back path defined, and AGPL's
+network-use clause blocks linking the code into a service without
+open-sourcing the whole service around it, so it's a pattern to reimplement,
+not code to adopt. Mem0 (Apache-2.0) inverts the whole shape, the vector
+store is the primary record, no file layer underneath at all, fails the
+contract outright, but its pluggable vector-backend interface (15+ backends
+behind one clean abstraction) is a genuinely reusable internal component
+once something upstream of it actually derives from files. Net, across five
+systems now (OpenClaw and ACP checked earlier this session, OpenFang/Letta/
+Khoj/Mem0 today): confirms, source-verified rather than asserted, that
+everything Mojo's Kernel and Memory provider seams want to standardize
+exists today, buried inside somebody's monolith, never published as a
+contract a stranger could build a second implementation against. Good
+evidence for MSI-1's own rationale companion later.
+
+A separate thread, further out: whether any existing project or community,
+obscure or mainstream, already attempts Mojo's full composite claim, not
+just Kernel or Memory provider alone, but identity, memory, and
+owner-set-and-externally-enforced permission together, published as an
+adoptable cross-vendor standard rather than shipped as one more product.
+Real web and GitHub search, not assumption. Closest two: soul-protocol
+(qbtrix/soul-protocol), portable `.soul` identity files with the spec
+deliberately separated from its reference runtime, the same instinct this
+project already has, but policy lives inside the protocol rather than as an
+externally-enforced layer, and only one implementation exists so it hasn't
+cleared the interoperability bar either; markspace
+(opinionated-systems/markspace), an external guard that takes identity from
+infrastructure rather than the model and never executes a rejected action,
+the closest Kernel-mechanism match found anywhere including this project's
+own five-system survey, but built for multi-agent fleet coordination, a
+different core problem than one owner's continuous identity. Also found: an
+unshipped hackathon RFC on the cognee project independently landing on
+almost this project's exact thesis (memory without enforced permissions
+isn't sovereign, it's just legible), real validation the insight is right,
+not competition; and OASIS CoSAI's WS4 working group, which has an open
+issue on cross-platform agent identity, corrected on the spot once actually
+checked (the repo is literally named `ws4-secure-design-agentic-systems`):
+their concern is attestation, proving which vendor's agent this is for
+trust purposes, not portability of one owner's memory and policy, a
+different motivation entirely, not a more-advanced version of the same
+problem. Verdict: nobody found assembles the composite claim, several
+serious people are independently converging on pieces of it right now, real
+validation of the timing, not a reason to scope up and compete with any of
+them. Practical takeaway: move fast, stay narrow, and there's now a real,
+specific list of who to eventually talk to, soul-protocol's author and the
+cognee RFC's author especially, as likely collaborators rather than
+competitors. Low-key outreach is fine anytime; the real ask waits for the
+running demo.
+
+One correction to the record, made in the course of this: the 2026-07-13
+entry on OpenClaw claims it swaps between an embedded runtime, Codex CLI,
+and Claude CLI as harnesses. Rechecked against the actual source this
+session: only the Codex bridge is real and live (`extensions/codex/`, a
+genuine app-server bridge routing Codex's own approval requests through
+OpenClaw's internal `runBeforeToolCallHook`). What looked like Claude Code
+support is `extensions/migrate-claude/`, a one-time import tool, not a live
+harness adapter. Also flagging again, now for OpenClaw specifically: `gh
+repo view` returned 383,006 stars, implausibly high, unverified, matches the
+same scraped-stats caution already logged once before in the 2026-07-13
+entry. Don't cite either number for OpenClaw without a manual check.
+
+Talked through the actual build order too, dependency-first rather than
+feature-first: Identity, then Kernel, then the two memory providers, then
+Router, then Client, then harness shims last (the riskiest, most external
+part, done once there's something real to test it against), then the one
+light tool. Hotswap demo run privately before anyone outside sees it, MSI-1
+extracted only from what that system verifiably does, packaged with Nix,
+published together with the informative layer (the full thirteen-piece
+anatomy as prose) and reserved, unnamed-in-detail slots for what got cut.
+
+Clarke's framing on his own role, worth recording since it'll shape pacing
+going forward: he sees himself as a steward of this once it has real
+traction, not necessarily the long-term primary maintainer, has a career and
+real learning to get back to, and expects people who know more than him to
+eventually take the actual reins if it lands right. Consistent with, not a
+change to, what making-the-standard.md's Who does what section already says
+(the second implementation and everything downstream of it can't be carried
+solo, by definition), this just makes it personal rather than abstract.
+Practically: don't plan around Clarke personally grinding out months of deep
+systems work; the plan already doesn't require that for the pieces currently
+in scope, all Python-buildable, and that's worth staying true to on purpose,
+not by accident.
+
+Still open, next session: whether OpenClaw's router code is a literal reuse
+candidate or just a pattern, a licensing pass once the adopted set is final,
+and the harness pair itself, reopened this session (OpenFang's
+approval-flow shape and OpenClaw's real Codex bridge are both genuine
+precedent that an external interception point is achievable) but
+deliberately not resolved, left for its own session. Once that lands, the
+actual next job is specing and designing the build itself against the
+now-final scope above: Identity's file primitive (plain, human-readable,
+git for history and rollback, not JSON), Kernel's grant/check/audit shape,
+the two memory providers' resync-plus-pluggable-backend design, built in
+that dependency order, harness shims last.
+
+A thread worth carrying forward rather than filing as resolved: real
+anxiety this session about being the one doing this, a second-year CS
+student with no mentor for this project, checked each time against real
+evidence rather than argued away on reassurance alone, and it held up every
+time, no project found doing this better, no evidence found anywhere that
+credentials rather than running code and honesty ever decided one of these.
+Landed on a steadier frame going forward: a steward who starts it and hands
+the harder parts to whoever's better at them, not the long-term primary
+maintainer, matching what making-the-standard.md's own Who does what
+section already argues, just made personal rather than abstract.
+
 ## 2026-07-14 — Existence pass complete: all 78 pairs across piece-matrix.md's 13 nodes resolved
 
 HANDOFF. Closed the last pair, Fleet manager–Identity: yes, two-way, and the
