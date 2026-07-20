@@ -29,6 +29,23 @@ here honestly. Fuller write-ups of many of these exist in git history (pre-reset
   configuring, not just the GUI alone. Closes the capability gap for the config
   layer itself, not just for using the agent — customised machines for everyone,
   not just Windows default-slop.
+- Walk-up reproducible OS: Ventoy boot menu over one Nix flake, four disko/
+  impermanence targets — destructive bare-metal, dual-boot coexist, RAM-only
+  ghost mode, thin-client server-portal. General-purpose, no AI content,
+  buildable independent of Mojo's own timeline; Jarvis is a layer that connects
+  into whatever's booted, not a dependency of it. Surfaced 2026-07-16 chasing a
+  "beat cloud computing" framing that turned out to decompose cleanly: real
+  local CPU/GPU use is just Model endpoint/Sandbox (already plural, per-run
+  granted, hardware controlled-not-owned for the session's length), and "walk
+  up to any machine, feel like my own computer" is a separate systems project
+  Mojo rides on top of, not something Mojo itself needs to define.
+- Mini-Jarvis for OS setup: a small, purpose-built assistant baked into the
+  boot ISO above, good specifically at Nix/OS configuration, not a fork of
+  Jarvis's identity — identity never belongs on removable media or
+  unauthenticated hardware. Forks the engine only (harness/config), empty of
+  memory, unbound until the owner credential connects over the mesh and the
+  real identity attaches. Sharpens why identity sits apart from every other
+  swappable piece in the first place.
 
 ## mojo-agent
 
@@ -240,6 +257,14 @@ here honestly. Fuller write-ups of many of these exist in git history (pre-reset
 - Enterprise angle from internship observations: determinism/probabilism boundary
   design, migration, vendor lock-in — companies need the framework's discipline.
   (`raw/docs/vision/pain-points.md` in git history.)
+- Employer-owned work identity: a company holds its own Owner credential for a
+  worker's work persona, granting live scoped access to a company-run memory
+  provider (proprietary data) without that data ever writing into the worker's
+  own portable identity, so it stays revocable and never leaves with them. Open
+  wrinkle, not designed: when the agent reasons over that granted data and
+  produces something derivative (a summary, a decision, learned behavior), does
+  that count as new memory, and whose identity does it get written into.
+  Surfaced 2026-07-19 discussing the org readme and portability guarantees.
 - The objections doc: honest answers to "why would this work" — worth reviving as a
   public FAQ once there's a working system (`raw/docs/vision/why-this-works.md` in
   git history).

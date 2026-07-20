@@ -258,3 +258,52 @@ have. The first one has only one honest answer: build small and real, learn
 relentlessly, and let the proof compound.
 
 Not certain it works. Building anyway.
+
+## Ownership, not always sovereignty (raw, 2026-07-19, unresolved)
+
+Surfaced while drafting the org readme, sitting here to work through properly
+later rather than resolved on the spot.
+
+"Sovereignty is an axiom" (above) may be overclaiming what the standard
+itself can actually guarantee. The standard can guarantee two things:
+ownership stays unambiguous (the system always knows exactly whose credential
+permissions trace back to), and identity data stays portable across
+implementations. It cannot guarantee, and probably shouldn't try to, that the
+owner is always the individual using the system. A company can hold the
+Owner credential for its own deployment, the same way POSIX never asked who
+owned the hardware. That's not a loophole, it's the same "allow, don't
+mandate" posture already written above, just followed one step further than
+I'd taken it: sovereignty is a choice an owner (individual or company) can
+make, not something the standard hands out by default. What's actually
+non-negotiable is narrower and sharper than "sovereignty": ownership clarity
+plus portability, full stop, or it isn't Paredros at all, the same way a mail
+server that won't speak SMTP isn't a restricted kind of email, it's just not
+email.
+
+Worked through one concrete case that made this precise: a company wants
+digital counterparts for its workers, built on compliant pieces. Can they
+lock it down? Two legitimate shapes, and one that isn't. If the company holds
+the Owner credential, it's their deployment, full lockdown is fine, the
+"worker's" counterpart is really the company's, closer to a managed laptop
+than a personal assistant. If the worker holds the Owner credential, the
+company can still scope a work persona hard (restricted tools, monitored,
+revocable) using permissions the identity data already carries, without
+touching the worker's ownership of the whole. What isn't legitimate: calling
+the worker the Owner while quietly blocking them from exporting their own
+data. That's not a locked-down configuration, it's non-compliance wearing
+the label.
+
+Extended one step further, still unresolved: what if the company wants the
+persona to use proprietary business data during work, without that data
+ever landing in the worker's own portable identity? Plausible mechanism:
+the company runs its own memory provider (memory providers are already
+plural, per the piece list), and grants the work persona a scoped, revocable,
+live read connection to it, the way a persona might be granted access to any
+other external tool. Nothing gets written into the owned identity just by
+being queried; provenance tags what came from where so the kernel can
+enforce different rules for owner-authored memory versus company-granted
+access. Real open wrinkle, not solved: if the agent reasons over that granted
+data and produces something derivative, a summary, a decision, a bit of
+learned behavior, does that count as new memory, and whose identity does it
+get written into? Genuine seam-shaped question, not answered by the
+architecture as it stands.

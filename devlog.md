@@ -6,6 +6,175 @@ where the reasoning trail lives.*
 
 ---
 
+## 2026-07-19 — Org rename to Paredros, full repo triage begun, org readme drafted and pushed, AGENTS.md's status-tracking cut
+
+Second session today, deliberately not a continuation of the prior entry's
+"Clarke rewrites the repo alone, no AI" plan, division of labor instead: AI
+for getting the overall shape and structure right first (renaming, repo
+triage, the org readme), Clarke doing specific paragraph and section
+rewrites solo once that shape is settled. Started from wanting the org
+readme in good enough shape to show opencoven, ended up going much deeper:
+a full rename and the first pass of a much bigger repo triage.
+
+**Renamed Mojo/mojo-labs/mojo-labs-circus to Paredros, then to
+paredros-standard.** Two real reasons surfaced, not just taste: "mojo-labs"
+was already earmarked as a future separate company name, which would have
+meant the standard sharing a name with a founder's eventual for-profit
+company, the exact credibility problem Docker solved by donating its format
+to become OCI rather than keeping it Docker-branded. Separately,
+naming-conventions.md already had an unresolved, flagged collision with
+Modular's existing Mojo programming language. Explored Greek/Latin roots for
+"a personal AI counterpart," landed on paredros (πάρεδρος), the actual term
+from the Greek Magical Papyri for a personal attendant spirit summoned to
+serve one person, checked for collisions (one obscure, inactive
+"ParedrosPenandPaper" org, not a real conflict). Tried to rename the GitHub
+org to `paredros` directly; blocked, turned out to be a live personal user
+account since 2013, unrelated. Landed on `paredros-standard` instead,
+confirmed available, renamed successfully.
+
+**Repo triage, first pass.** `mojo-agent` deleted outright, README and
+LICENSE only, status said design hadn't started, nothing to lose. `mojos`
+(MojOS) transferred to the personal account
+(`Dequavis-Fitzgerald-III/mojos`): it's personal OS infrastructure, not part
+of the standard itself, may become its own Mojo Labs product someday,
+separate thought for later. `dotfiles` transferred to personal too, will
+fold into MojOS later via home-manager/stylix. `ringmaster` transferred to
+personal, with a real snag: an unrelated, stale, accidentally-duplicated
+copy already existed there from an earlier session (copied instead of
+moved), deleted the stale one, transferred the org's newer, more-developed
+copy over in its place. The org now holds exactly two repos: `paredros`
+(renamed from `mojo`, this repo) and `.github`.
+
+**Standard shape: hybrid, Kubernetes-bootstrapped but POSIX/IETF-governed.**
+Worked through whether Paredros is POSIX-shaped (a document) or
+Kubernetes-shaped (a real running project whose interfaces, CRI/CNI/CSI,
+became standards after the fact, still permanently centered on Kubernetes'
+own codebase for conformance). Landed on: it'll likely get built the
+Kubernetes way, but it can't be governed that way without contradicting the
+whole "built to lose on purpose" premise. Conformance has to mean "matches
+the text, proven by independent implementations agreeing with each other,"
+never "works with Paredros's own kernel," or the standard quietly becomes a
+product with a pseudo-standard orbiting it. Corrected a mischaracterization
+along the way from pasted-in outside research: POSIX is already
+interface-only, not implementation-mandating, so "POSIX is too rigid,
+switch to Kubernetes' model" was a false binary, not a real finding.
+
+**Ownership and portability, not sovereignty, as the actual guarantee.**
+Worked out that "the data is yours" overclaims what the standard can
+actually promise, since a company can legitimately hold the Owner
+credential for its own deployment. What's actually guaranteed, and has to
+be non-negotiable: ownership stays unambiguous, and identity data stays
+portable, enforced through what "compliant" even means (the SMTP/email
+analogy: a mail server that won't speak SMTP isn't restricted email, it
+isn't email), not a legal mandate on companies. Worked through the
+employer-deployment case concretely: employer-as-Owner (fully locked down,
+fine, it's their deployment) versus worker-as-Owner-with-a-scoped-work-persona
+(company restricts through permissions, not by seizing ownership) versus the
+one illegitimate shape (claiming the worker owns it while blocking real
+export). Extended to proprietary company data specifically: a company-run
+memory provider can grant a work persona live, scoped, revocable access
+without that data ever landing in the worker's owned, portable identity,
+using provenance to tag what came from where. Real open wrinkle, not solved:
+whether the agent reasoning over that granted data and producing something
+derivative counts as new memory, and whose identity it belongs in. All of
+this pulled the readme's old "Sovereignty is an axiom" language into
+question; appended as new, explicitly unresolved material to philosophy.md
+("Ownership, not always sovereignty") rather than resolved on the spot, and
+the org readme's Philosophy section got dropped for now rather than shipped
+half-settled. The employer-owned-work-identity mechanism and its memory
+wrinkle also went into ideas.md under Product / org.
+
+**Shipped:** the org readme (hook, problem, what Paredros is, who's
+building this, repositories, no philosophy section, no tagline) rewritten
+from scratch section by section and pushed live to
+`paredros-standard/.github`'s profile README. Internal links still point at
+`mojo-labs-circus` since the org rename hadn't landed yet when it was
+pushed; GitHub redirects handle it for now but they need updating to
+`paredros-standard` directly. Org and repo GitHub descriptions still carry
+old "Mojo"/"circus" text, never got touched. AGENTS.md: removed the entire
+"Current stage" section, that kind of running status content doesn't belong
+in an AGENTS.md by real convention (build/test/structure info, not project
+state), roadmap.md already owns that job. Did not do a full Mojo→Paredros
+rename pass through the rest of AGENTS.md, deliberately, since its actual
+shape is still an open question for the bigger triage below. Also deleted
+two stale, gitignored, never-committed `.claude/rules/` files
+(framework-sessions.md, dead, pointed at a docs/framework/ path that no
+longer exists; msi-research-sessions.md, superseded by this session's
+broader direction), no git history existed for either, gone for good.
+
+HANDOFF. The bigger triage is mid-flight, not done: next session goes
+file by file through the whole repo (every .md file and directory, not just
+AGENTS.md) deciding what's genuinely public-repo material versus what moves
+to Clarke's own private space, sorting out anatomy.md's shape for a
+community audience, possibly starting RFC-shaped work once that's further
+along. Also queued: fix the readme's internal links now that
+`paredros-standard` is confirmed live, update the org and `paredros` repo's
+GitHub descriptions, and eventually rename `mojos`/`dotfiles`/`ringmaster`
+themselves away from old branding now that they're personal anyway. On the
+personal-versus-public devlog question raised this session: resolved that
+devlog.md keeps doing what it already does, the public project-reasoning
+trail, that's a feature once this is a community repo, not a liability;
+genuinely personal, non-project material has an existing, already-private,
+already-gitignored home in `.obsidian/` that's just never been used for
+that yet, no new mechanism needed.
+
+---
+
+## 2026-07-19 — Community-building idea session: broadcast deferred, the real bottleneck named as one real partner not a crowd, org checked clean, repo rewrite handed back to Clarke alone
+
+Started from an executive-decision impulse: anatomy and the piece/seam findings feel organized enough, time to open the GitHub org, post publicly, maybe a subreddit or Discord, start pulling people into a community. Checked against the actual repo state first: mojos and mojo-agent are both docs-only resets, zero runnable code in either, and roadmap.md already gates the publish-and-recruit step behind building the first system and extracting a draft from it, for the exact OSI/CORBA reason standards-research.md already found. Posting anatomy.md alone and inviting a crowd would repeat that mistake with extra steps.
+
+Pushed hard on what actually distinguishes this from an existing crowd. Found OpenCoven (opencoven.ai), a real, live "meta-harness" project with its own Discord, close enough to the seam concept that it needed checking seriously, not waved off. Direct outreach into their Discord got tried mid-session and landed almost no response, real data rather than a hypothetical, that cold digital asks into an existing community don't work without something concrete to react to. Confirmed OpenCoven is its own branded product and ecosystem, not a standard, which sharpened rather than dissolved the actual claim: not "memory persists across a harness swap" (stale, every serious product already does that inside its own walls, nobody would say wait how), but that the seam is a real, precise, third-party-buildable boundary, the kind nobody in this space has incentive to build since portability kills lock-in. Landed on: the only thing that actually proves that claim is the two-implementation gate already named in roadmap.md's Next section, not a solo-built demo, since an author testing a spec against their own code proves nothing about whether a stranger could hit it blind. Re-derived, and confirmed already settled, that pieces can be products but the standard can't, distro-shaped, every piece designed to be outcompeted, same shape already landed 2026-07-09.
+
+Found real supporting precedent along the way: a paper called Engram (SSRN, June 2026) already built reference implementations bridging OpenClaw and Nous Research's Hermes on the memory piece specifically, without shared code, logged in interoperability.md's "why no one's built this yet" section, real activity exists per piece, nobody's done the integration. Consistent with the five-system survey closing Kernel and Memory provider as build-not-adopt: the hard parts genuinely haven't converged, that's not delusion, that's the actual gap.
+
+The real landing wasn't about channels, though. Diagnosed the actual problem directly: solo sessions, with or without AI, produce exploration and reorganizing, not convergence, no external accountability. Traced this straight back to the 2026-07-03 reset entry, the same pattern caught once already. What's actually wanted isn't a public community, it's one real, in person, aligned partner, a cofounder but not for a startup, someone to whiteboard with, argue with, share ownership with. That's a September problem, not a July one; the population of people who could be that person mostly doesn't exist in reach until uni starts. Checked Richmond in the meantime: Data & AI Social Club (low key recurring meetup, worth going to now) and RamHacks (VCU hackathon, historically fall, no 2026 date announced yet). Checked the org too: mojo-labs-circus is already clean, mojo, mojo-agent, mojos, and .github belong, dotfiles and ringmaster don't anymore and need transferring out, ringmaster's already archived.
+
+Landed on: broadcast (public GitHub push, subreddit, Discord) waits until there's either real running code or a repo scoped down enough to make the pitch legible in one sitting, neither of which exist yet, both doable solo without a partner first. Decided the next concrete step is Clarke rewriting most of the repo himself, archiving the current sprawl and rebuilding the flat files from scratch in his own voice, without AI this time, to keep the voice his and to test whether dropping AI, not just adding a partner who isn't available yet, changes the exploration-without-convergence pattern. Flagged as an open risk, not a settled fix: the actual missing ingredient diagnosed all session was another person's real stake in it, and solo-no-AI doesn't add that back, it only removes one variable. No project files touched this session besides this entry; the rebuild is Clarke's, next.
+
+---
+
+## 2026-07-16 — Walk-up OS idea session: Nix/Ventoy reproducible desktop split from Jarvis, mini-Jarvis-for-setup lands as engine without identity
+
+Idea session, not seam work, didn't touch current-stage discipline. Started
+from a "beat cloud computing" framing: walk up to any computer on earth, have
+your own OS on it within minutes, connected to Jarvis, using its real
+CPU/GPU, remove Jarvis whenever, and if everyone runs their own server there's
+no need for cloud compute.
+
+Pushed on whether this needed new Mojo pieces or seams. It doesn't, once
+separated. "Use the machine's resources" is just Model endpoint/Sandbox,
+already plural and per-run granted; a Ventoy-booted machine gives full
+physical control (no hypervisor) for the session, which is a stronger
+control claim than "owns," and control is the word pieces.md actually uses.
+"The whole OS, not just a client" decomposes into two separable projects: a
+Nix flake + Ventoy + disko + impermanence reproducible desktop (general-
+purpose, no AI content, buildable independent of Mojo's own timeline), and
+Jarvis connecting into whatever's booted, which is just Client, already
+covered. Sketched the boot menu as four disko/impermanence targets off one
+flake (destructive bare-metal, dual-boot coexist, RAM-only ghost mode, thin-
+client server-portal), which maps cleanly onto that split.
+
+Flagged the totalizing "beat cloud computing" framing as stronger than
+philosophy.md's actual axiom (sovereignty possible and cheap, never
+compulsory, a cloud implementation can still be MSI-compliant, line 147).
+Landed back on the existing line, not a new one.
+
+Real design question surfaced near the end: an agent baked into the boot ISO
+to help with Nix/OS setup can't be a fork of Jarvis's identity, that data
+should never sit on removable media or run before the owner credential has
+authenticated over the mesh. It can fork the engine only (harness/config)
+with an empty tank, unbound until real identity attaches. Narrowed further
+on its own: not a general Jarvis-engine fork, a small purpose-built
+assistant specifically good at Nix/OS setup, mini-Jarvis. Sharpened, didn't
+resolve as a decision, why identity is separated from every other piece in
+the first place, that split is what makes this safe at all.
+
+Landed as two entries under MojOS in ideas.md. No roadmap or seam-file
+changes.
+
+---
+
 ## 2026-07-15 — Scope cut to a minimal build via the elimination test, MSI-1 kept over MSI-0.1, five-system prior-art survey closes Kernel and Memory provider as build-not-adopt
 
 HANDOFF. Diverged from the prior HANDOFF's stated next step (the seam-worthy
